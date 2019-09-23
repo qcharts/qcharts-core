@@ -22,9 +22,9 @@ const data = [
   }
 ]
 
-const { Chart, Progress, Tooltip } = qcharts
+const { Chart } = qcharts
 
-const chart = new Chart({ container: '#app'})
+const chart = new Chart({ container: '#app' })
 
 chart.source(data, {
   row: 'sex',

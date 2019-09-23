@@ -35,7 +35,7 @@ const data = [
   }
 ].sort((a, b) => a.count - b.count)
 
-const { Chart, RadialBar, Legend, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({
   container: '#app'

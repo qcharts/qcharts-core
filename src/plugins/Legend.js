@@ -462,3 +462,5 @@ export class Legend extends BasePlugin {
     setTimeout(() => this.checkAlign())
   }
 }
+
+export default Legend

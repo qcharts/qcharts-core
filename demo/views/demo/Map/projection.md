@@ -8,7 +8,7 @@
 fetch('http://s0.qhres.com/static/4e8ebcccf5b5ea78.json')
   .then(res => res.json())
   .then(mapData => {
-    const { Chart, Tooltip, Text, Map } = qcharts
+    const { Chart } = qcharts
 
     const chart = new Chart({
       container: '#app'
@@ -517,7 +517,7 @@ fetch('http://s0.qhres.com/static/4e8ebcccf5b5ea78.json')
 fetch('http://s0.qhres.com/static/10ae1d45499595ba.json')
   .then(res => res.json())
   .then(mapData => {
-    const { Chart, Tooltip, Text, Map } = qcharts
+    const { Chart } = qcharts
 
     const chart = new Chart({
       container: '#app'

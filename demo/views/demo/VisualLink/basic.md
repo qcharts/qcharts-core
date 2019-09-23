@@ -12,7 +12,7 @@ const data = [
 ]
 const total = data.reduce((a, c) => (a += c['value']), 0)
 
-const { Chart, Pie, Progress, Legend, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({
   container: '#app'

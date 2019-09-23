@@ -112,7 +112,7 @@ const data = [
 ]
 const render = data => {
   data.sort((a, b) => a.height - b.height)
-  const { Chart, Axis, Scatter, Legend, Tooltip } = qcharts
+  const { Chart } = qcharts
 
   const chart = new Chart({
     container: '#app'

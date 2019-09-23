@@ -94,7 +94,7 @@ const ds = chart.dataset
   const size = ['40%', '40%']
   const pos = [i === 0 || i === 2 ? '10%' : '50%', i > 1 ? '50%' : '10%']
 
-  const pie = new qcharts.Pie({
+  const pie = new Pie({
     radius: 0.6,
     size,
     pos
@@ -106,8 +106,8 @@ const ds = chart.dataset
   chart.add(pie)
 })
 
-const legend = new qcharts.Legend({ vertical: 0 })
-const tooltip = new qcharts.Tooltip({
+const legend = new Legend({ vertical: 0 })
+const tooltip = new Tooltip({
   formatter: d => `${d.product}: ${d.year}: ${d.sales}`
 })
 
@@ -212,7 +212,7 @@ const ds = chart.dataset
   const size = ['40%', '40%']
   const pos = [i === 0 || i === 2 ? '10%' : '50%', i > 1 ? '50%' : '10%']
 
-  const pie = new qcharts.Pie({
+  const pie = new Pie({
     radius: 0.6,
     innerRadius: 0,
     size,
@@ -227,8 +227,8 @@ const ds = chart.dataset
   chart.add(pie)
 })
 
-const legend = new qcharts.Legend({ vertical: 0 })
-const tooltip = new qcharts.Tooltip({
+const legend = new Legend({ vertical: 0 })
+const tooltip = new Tooltip({
   formatter: d => `${d.product}: ${d.year}: ${d.sales}`
 })
 

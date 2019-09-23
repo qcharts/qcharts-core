@@ -3,7 +3,7 @@
 :::demo
 
 ```javascript
-const { Chart, Axis, Scatter, Legend, Tooltip } = qcharts
+const { Chart } = qcharts
 const data = [
   {
     continent: 'Americas',

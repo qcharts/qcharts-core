@@ -13,7 +13,7 @@ const data = [
   { value: 1300, label: 'TOP7' },
   { value: 400, label: 'TOP8' }
 ]
-const { Chart, Bar, Tooltip, Axis, Legend } = qcharts
+const { Chart } = qcharts
 const chart = new Chart({
   container: '#app'
 })
@@ -32,7 +32,9 @@ bar.style('pillar', { fillColor: '#47A1FF' })
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
 })
-const legend = new Legend({ align: ['center', 'bottom'] }).style('text', { text: '图例一' })
+const legend = new Legend({ align: ['center', 'bottom'] }).style('text', {
+  text: '图例一'
+})
 const axisBottom = new Axis().style('scale', false).style('grid', true)
 const axisLeft = new Axis({
   orient: 'left'

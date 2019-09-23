@@ -21,7 +21,7 @@ const data = [
   { value: 2750, name: '图例10' }
 ]
 
-const { Chart, Pie, Legend, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({
   container: '#app'

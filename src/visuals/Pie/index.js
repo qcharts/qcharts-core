@@ -326,3 +326,5 @@ export class Pie extends BaseVisual {
     )
   }
 }
+
+export default Pie

@@ -50,7 +50,7 @@ const data = [
     sales: 56
   }
 ]
-const { Chart, Bar, Tooltip, Axis, Legend } = qcharts
+const { Chart } = qcharts
 const chart = new Chart({
   container: '#app'
 })

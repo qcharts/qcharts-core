@@ -27,7 +27,7 @@ const data = [
   }
 ]
 
-const { Chart, ArcPie, Legend, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({
   container: '#app'

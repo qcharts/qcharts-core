@@ -34,7 +34,7 @@ const data2 = [
   }
 ]
 
-const { Chart, Progress, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({ container: '#app' })
 
@@ -113,7 +113,7 @@ const data2 = [
   }
 ]
 
-const { Chart, Progress, Tooltip } = qcharts
+const { Chart } = qcharts
 
 const chart = new Chart({ container: '#app' })
 

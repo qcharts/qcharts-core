@@ -22,3 +22,5 @@ export class Text extends BasePlugin {
     )
   }
 }
+
+export default Text

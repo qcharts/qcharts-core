@@ -105,3 +105,5 @@ export class ArcPie extends Pie {
     )
   }
 }
+
+export default ArcPie

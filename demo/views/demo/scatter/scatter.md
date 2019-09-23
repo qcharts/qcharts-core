@@ -237,7 +237,7 @@ const data = [
 ]
 
 const render = data => {
-  const { Chart, Axis, Scatter, Legend, Tooltip } = qcharts
+  const { Chart } = qcharts
 
   const chart = new Chart({
     container: '#app'

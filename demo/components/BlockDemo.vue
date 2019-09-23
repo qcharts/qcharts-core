@@ -1,15 +1,30 @@
 <template>
-  <div :class="['block-demo', isFullscreen ? 'block-demo--fixed' : '']" ref="block">
+  <div
+    :class="['block-demo', isFullscreen ? 'block-demo--fixed' : '']"
+    ref="block"
+  >
     <div class="preview" ref="preview">
       <div class="demo" ref="demo"></div>
     </div>
     <div v-show="showEditor" class="editor" ref="editor">
       <div class="bock-demo__ctrl">
         <!-- <button>复制</button> -->
-        <span title="运行" @click="syncCode" class="icon"><img src="./play.svg" alt="运行"></span>
-        <span v-if="!isFullscreen" title="全屏" @click="fullscreen" class="icon"><img src="./full-screen.svg" alt="全屏"></span>
-        <span v-if="isFullscreen" title="取消全屏" @click="fullscreen" class="icon"><img src="./recovery.svg" alt="取消全屏"></span>
-        <span @click="copyCode" class="icon"><img src="./code-copy.svg" alt="复制代码"></span>
+        <span title="运行" @click="syncCode" class="icon"
+          ><img src="./play.svg" alt="运行"
+        /></span>
+        <span v-if="!isFullscreen" title="全屏" @click="fullscreen" class="icon"
+          ><img src="./full-screen.svg" alt="全屏"
+        /></span>
+        <span
+          v-if="isFullscreen"
+          title="取消全屏"
+          @click="fullscreen"
+          class="icon"
+          ><img src="./recovery.svg" alt="取消全屏"
+        /></span>
+        <span @click="copyCode" class="icon"
+          ><img src="./code-copy.svg" alt="复制代码"
+        /></span>
       </div>
       <div class="bock-demo__code">
         <textarea ref="textarea"></textarea>
@@ -32,7 +47,7 @@ export default {
     source: String
   },
 
-  data() {
+  data () {
     return {
       editor: null,
       visible: true,
@@ -43,16 +58,16 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     let tip = this.tip.split(',')
 
     try {
       tip = JSON.parse(JSON.stringify(tip))
-    } catch (e) {}
+    } catch (e) { }
 
     let innerWidth = window.innerWidth
     this.isFullscreen = tip.indexOf('fullscreen') > -1
-    ;(this.showEditor = innerWidth >= 768) && this.initSplit()
+      ; (this.showEditor = innerWidth >= 768) && this.initSplit()
 
     this.initEditor()
     try {
@@ -65,29 +80,29 @@ export default {
   },
 
   methods: {
-    copyCode(){
+    copyCode () {
       let val = this.editor.getDoc().getValue();
       let $text = this.$refs['copytxt'];
-      $text.value =  val;
+      $text.value = val;
       $text.focus()
       $text.select()
       document.execCommand('copy')
       alert('复制成功！')
     },
-    toggle() {
+    toggle () {
       this.visible = !this.visible
     },
-    unescape(html) {
+    unescape (html) {
       return unescape(html)
     },
 
-    initSplit() {
+    initSplit () {
       Split([this.$refs['preview'], this.$refs['editor']], {
         sizes: [50, 50]
       })
     },
 
-    initEditor() {
+    initEditor () {
       this.editor = CodeMirror.fromTextArea(this.$refs['textarea'], {
         mode: 'application/javascript',
         extraKeys: {
@@ -102,16 +117,39 @@ export default {
       this.editor.getDoc().setValue(this.unescape(this.source))
     },
 
-    syncCode() {
+    syncCode () {
       const oDemo = this.$refs['demo']
 
       oDemo.innerHTML = `<iframe class="chart-frame" frameborder="0"></iframe>`
 
+      const modulesList = [
+        'qcharts.core',
+        'qcharts',
+        'Legend',
+        'Axis',
+        'Tooltip',
+        'Text',
+        'ArcPie',
+        'Area',
+        'Bar',
+        'Funnel',
+        'Gauge',
+        'Line',
+        'Pie',
+        'Progress',
+        'Radar',
+        'RadialBar',
+        'Scatter'
+      ]
+      const modulesSrc = modulesList.map(src =>
+        (`<script src='${location.origin}/modules/${src}.js'><\/script>`)
+      )
+
       // FIXME: 发布以后改地址
       let qchartsSrc =
         process.env.NODE_ENV === 'development'
-          ? location.origin + '/qcharts.js'
-          : 'https://unpkg.com/@qcharts/core/lib/index.js'
+          ? modulesSrc.join('\n')
+          : '<script src="https://unpkg.com/@qcharts/core/lib/index.js"><\/script>'
       const spritejsSrc =
         process.env.NODE_ENV === 'development'
           ? 'https://unpkg.com/spritejs/dist/spritejs.js'
@@ -121,15 +159,15 @@ export default {
       iframe.contentWindow.document.write(
         `<div id="app" style="width: 100%; height: 100%; overflow: hidden"><\/div>
         <script src=${spritejsSrc}><\/script>
-        <script src=${qchartsSrc}><\/script>
+        ${qchartsSrc}
         <script>${this.editor.getValue()}<\/script>`
       )
     },
 
-    fullscreen() {
+    fullscreen () {
       this.isFullscreen = !this.isFullscreen;
-      if(window.parent){
-        window.parent.postMessage({fullScreen:this.isFullscreen},'*');
+      if (window.parent) {
+        window.parent.postMessage({ fullScreen: this.isFullscreen }, '*');
       }
     }
   }
@@ -155,9 +193,9 @@ export default {
 .gutter {
   background: #efefef00;
   cursor: col-resize;
-  position:relative;
+  position: relative;
   z-index: 100;
-  left:5px;
+  left: 5px;
 }
 
 .block-demo button {
@@ -232,19 +270,39 @@ export default {
   width: 100%;
   height: 100%;
 }
-.block-demo+h4{margin-top:0;padding-top:3.6rem;}
+.block-demo + h4 {
+  margin-top: 0;
+  padding-top: 3.6rem;
+}
 
 .CodeMirror {
   height: 100% !important;
   font-family: Menlo, Monaco, Consolas, Courier, monospace;
   font-size: 14px;
 }
-.CodeMirror-gutters{background-color:#f7f9fb;border-right:none;}
+.CodeMirror-gutters {
+  background-color: #f7f9fb;
+  border-right: none;
+}
 .cm-s-default .cm-string {
   color: #f84e44ff;
 }
-.icon{cursor:pointer;opacity:0.6;font-size:20px;margin-left:12px;}
-.icon:hover{opacity:1}
+.icon {
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 20px;
+  margin-left: 12px;
+}
+.icon:hover {
+  opacity: 1;
+}
 
-.copytxt{width:100%;height:1px;opacity:0;position:absolute;bottom:0;left:0;}
+.copytxt {
+  width: 100%;
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
 </style>
