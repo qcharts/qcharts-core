@@ -11,7 +11,7 @@ const data = [
   { value: 3000, label: '邮件营销' }
 ]
 
-const { Chart } = qcharts
+const { Chart, Funnel, Tooltip, Legend } = qcharts
 
 const chart = new Chart({
   container: '#app'

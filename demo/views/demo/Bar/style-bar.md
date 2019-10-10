@@ -11,7 +11,7 @@ const data = [
   { value: 3100, label: '邮件营销' }
 ]
 
-const { Chart } = qcharts
+const { Chart, Bar, Tooltip, Axis } = qcharts
 
 const chart = new Chart({
   container: '#app'
@@ -166,7 +166,7 @@ const data = [
     sales: 2100
   }
 ]
-const { Chart } = qcharts
+const { Chart, Bar, Tooltip, Axis, Legend } = qcharts
 const chart = new Chart({
   container: '#app'
 })
@@ -241,7 +241,7 @@ const dataNew = [
   { value: 6004, label: '05-07' },
   { value: 3005, label: '05-08' }
 ]
-const { Chart } = qcharts
+const { Chart, Bar, Tooltip, Axis, Legend } = qcharts
 const chart = new Chart({
   container: '#app'
 })

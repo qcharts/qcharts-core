@@ -6,7 +6,7 @@
 fetch('http://s5.qhres.com/static/81bf507dbbc7c08d.json')
   .then(res => res.json())
   .then(mapData => {
-    const { Chart } = qcharts
+    const { Chart, Tooltip, Text, Map } = qcharts
 
     const chart = new Chart({
       container: '#app'

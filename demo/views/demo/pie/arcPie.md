@@ -27,7 +27,7 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, ArcPie, Legend, Tooltip } = qcharts
 
 const chart = new Chart({
   container: '#app'
@@ -54,8 +54,8 @@ arcPie.style('title', { fontSize: 24 })
 const legend = new Legend({
   orient: 'vertical',
   align: ['right', 'center'],
-  formatter: (_, i) => {
-    let d = data[i]
+  formatter: (_, da, i) => {
+    let d = da[0]
     return (
       `${d.type}` +
       Array(8 - d.type.length)

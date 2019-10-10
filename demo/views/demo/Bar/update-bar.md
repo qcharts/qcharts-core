@@ -38,7 +38,7 @@ const data2 = [
 ]
 
 let bool = true
-const { Chart } = qcharts
+const { Chart, Bar, Tooltip, Axis, Legend } = qcharts
 const chart = new Chart({
   container: '#app'
 })

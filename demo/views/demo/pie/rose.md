@@ -10,7 +10,7 @@ const data = [
   { value: 254, name: '视频广告' },
   { value: 200, name: '搜索引擎' }
 ]
-const { Chart } = qcharts
+const { Chart, Pie, Tooltip, Legend } = qcharts
 
 const chart = new Chart({ container: '#app' })
 
@@ -57,7 +57,7 @@ const data = [
   { value: 254, name: '视频广告' },
   { value: 200, name: '搜索引擎' }
 ]
-const { Chart } = qcharts
+const { Chart, Pie, Axis, Tooltip, Legend } = qcharts
 
 const chart = new Chart({ container: '#app' })
 

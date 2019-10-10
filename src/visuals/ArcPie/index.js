@@ -1,8 +1,7 @@
-import * as spritejs from 'spritejs'
+import { Group, Arc, Label } from 'spritejs'
 import { Pie } from '../Pie'
 import { isFunction } from '../../util'
 
-const { Group, Arc, Label } = spritejs
 export class ArcPie extends Pie {
   getDefaultAttrs() {
     return Object.assign({}, super.getDefaultAttrs(), {

@@ -1,6 +1,6 @@
 {
   "name": "zzl_qcharts",
-  "version": "0.1.47",
+  "version": "0.1.49",
   "description": "A visulization library based on spritejs and sprite-extend-shapes",
   "main": "lib/index.js",
   "miniprogram": "miniprogram",

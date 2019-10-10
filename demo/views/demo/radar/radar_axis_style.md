@@ -21,7 +21,7 @@ const data = [
   { label: '技术', category: '节能减排', value: 32 }
 ]
 
-const { Chart } = qcharts
+const { Chart, Radar, Tooltip, Legend } = qcharts
 
 const chart = new Chart({
   container: '#app'

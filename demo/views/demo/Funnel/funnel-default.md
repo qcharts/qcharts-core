@@ -13,7 +13,7 @@ const data = [
   { value: 1204, label: '未完成交易' }
 ]
 
-const { Chart } = qcharts
+const { Chart, Funnel, Tooltip, Legend } = qcharts
 
 const chart = new Chart({
   container: '#app'

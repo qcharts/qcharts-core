@@ -16,7 +16,7 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, Tooltip } = qcharts
 
 const chart = new Chart({
   container: '#app',
@@ -104,13 +104,13 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, Tooltip } = qcharts
 
 const chart = new Chart({
   container: '#app'
 })
 
-const pie = new Pie({
+const pie = new qcharts.Pie({
   radius: 0.7
 })
   .source(data)
@@ -139,13 +139,13 @@ const data = [
   { value: 1548, label: '搜索引擎' }
 ]
 
-const { Chart } = qcharts
+const { Chart, Tooltip } = qcharts
 
 const chart = new Chart({
   container: '#app'
 })
 
-const pie = new Pie({
+const pie = new qcharts.Pie({
   radius: 0.7,
   startAngle: Math.PI * 1,
   endAngle: Math.PI * 1.5

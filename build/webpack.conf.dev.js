@@ -15,7 +15,7 @@ module.exports = merge(common, {
     qcharts: path.resolve(__dirname, '../src/')
   },
   devServer: {
-    contentBase: path.resolve(__dirname, '../lib/'),
+    contentBase: path.resolve(__dirname, '../src/'),
     compress: true,
     hot: false,
     inline: true,

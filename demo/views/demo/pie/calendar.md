@@ -24,7 +24,7 @@ const data2 = days.reduce((a, c) => {
   return a
 }, [])
 
-const { Chart } = qcharts
+const { Chart, Pie, Legend, Text, Toolbox } = qcharts
 
 const chart = new Chart({
   container: '#app'

@@ -11,7 +11,7 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, Gauge, Legend, Tooltip } = qcharts
 
 const chart = new Chart({ container: '#app' })
 
@@ -52,7 +52,7 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, Gauge, Legend, Tooltip } = qcharts
 
 const chart = new Chart({ container: '#app' })
 

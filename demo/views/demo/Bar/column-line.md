@@ -86,7 +86,7 @@ var data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Chart, Axis, Line, Bar, Legend } = qcharts
 
 const chart = new Chart({
   container: '#app'
@@ -114,7 +114,7 @@ const line = new Line({
 const tooltip = new qcharts.Tooltip({
   formatter: d => `${d.name}: ${d['月份']}： ${d['月均降雨量']}`
 })
-const legend = new Legend({ align: ['center', 'bottom'] })
+const legend = new Legend({align: ['center', 'bottom']})
 
 const axisBottom = new Axis()
 const axisLeft = new Axis({ orient: 'left' })

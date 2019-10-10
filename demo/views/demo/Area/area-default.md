@@ -1,20 +1,20 @@
 ## Basic Area Chart 基础面积图
 
-:::demo
+:::demo 
 
 ```javascript
 const data = [
-  { date: '05-01', category: '图例一', sales: 15.2 },
-  { date: '05-02', category: '图例一', sales: 39.2 },
-  { date: '05-03', category: '图例一', sales: 31.2 },
-  { date: '05-04', category: '图例一', sales: 65.2 },
-  { date: '05-05', category: '图例一', sales: 55.2 },
-  { date: '05-06', category: '图例一', sales: 75.2 },
-  { date: '05-07', category: '图例一', sales: 95.2 },
-  { date: '05-08', category: '图例一', sales: 65.2 }
+  { date: '05-01',category:'图例一', sales: 15.2 },
+  { date: '05-02',category:'图例一', sales: 39.2 },
+  { date: '05-03',category:'图例一', sales: 31.2 },
+  { date: '05-04',category:'图例一', sales: 65.2 },
+  { date: '05-05',category:'图例一', sales: 55.2 },
+  { date: '05-06',category:'图例一', sales: 75.2 },
+  { date: '05-07',category:'图例一', sales: 95.2 },
+  { date: '05-08',category:'图例一', sales: 65.2 },
 ]
 
-const { Chart } = qcharts
+const { Chart, Area, Legend, Tooltip, Axis } = qcharts
 
 const chart = new Chart({
   container: '#app'
@@ -27,8 +27,8 @@ chart.source(data, {
 })
 
 const area = new Area()
-  .style('point', { fillColor: 'transparent', strokeColor: 'transparent' })
-  .style('point:hover', { strokeColor: '#fff' })
+.style('point',{fillColor:'transparent',strokeColor:'transparent'})
+.style('point:hover',{strokeColor:'#fff'})
 
 const tooltip = new Tooltip({
   formatter: function(data) {
@@ -39,12 +39,10 @@ const tooltip = new Tooltip({
 const axisBottom = new Axis()
 
 const axisLeft = new Axis({ orient: 'left' })
-  .style('axis', false)
-  .style('scale', false)
+.style('axis',false).style('scale',false)
 
 const legend = new Legend({ align: ['center', 'bottom'] })
-  .style('icon', { borderRadius: 10 })
-  .style('text', { fontSize: 12 })
+.style('icon',{borderRadius:10}).style('text',{fontSize:12})
 
 chart.add([area, tooltip, axisBottom, axisLeft, legend])
 chart.render()

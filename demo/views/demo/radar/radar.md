@@ -12,7 +12,7 @@ const data = [
   { label: '分类六', category: '类别一', value: 62 }
 ]
 
-const { Chart } = qcharts
+const { Chart, Radar, Legend, Tooltip } = qcharts
 
 const chart = new Chart({
   container: '#app'

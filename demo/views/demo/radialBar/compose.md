@@ -10,7 +10,7 @@ const data = [
   }
 ]
 
-const { Chart } = qcharts
+const { Plot, Chart, Tooltip } = qcharts
 
 const plot = new Plot('.block-demo .demo', {})
 
