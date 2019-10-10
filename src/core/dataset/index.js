@@ -1,7 +1,7 @@
 import { clone, groupToMap, isObject, isArray, invariant } from '../../util'
 import { initAttr, attrMixin } from '../mixins/attr'
 
-class Dataset {
+export class Dataset {
   constructor() {
     initAttr(this)
     this.data = null

@@ -467,4 +467,3 @@ function getLinePoints(lines, i, name) {
   })
 }
 
-export default Line

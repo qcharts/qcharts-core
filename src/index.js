@@ -1,26 +1,79 @@
 import * as spritejs from 'spritejs'
 import shapes from '@spritejs/shapes'
 import { getGlobal } from './util'
-import * as core from './core'
-import * as visuals from './visuals'
-import * as plugins from './plugins'
-import * as Theme from './themes'
+// core
+import { h, Chart, BasePlugin, BaseVisual, Global, Dataset } from './core'
+
+// visual
+import {
+  Pie,
+  ArcPie,
+  Area,
+  Line,
+  Radar,
+  Bar,
+  Funnel,
+  Scatter,
+  Gauge,
+  RadialBar
+} from './visuals'
+
+// plugin
+import { Legend, Text, Tooltip, Axis } from './plugins'
 
 spritejs.use(shapes)
 
-core.Global.registerTheme('default', Theme.light)
-core.Global.registerTheme('dark', Theme.dark)
+// 提前设置JSX语法解析函数到全局变量上
+const global = getGlobal()
+global.qcharts = { h }
 
+// version
 const version = require('../package.json').version
 
-export const qcharts = {
+export {
   version,
-  ...core,
-  ...visuals,
-  ...plugins
+  h,
+  Chart,
+  BasePlugin,
+  BaseVisual,
+  Global,
+  Dataset,
+  Pie,
+  ArcPie,
+  Area,
+  Line,
+  Radar,
+  Bar,
+  Funnel,
+  Scatter,
+  Gauge,
+  RadialBar,
+  Legend,
+  Text,
+  Tooltip,
+  Axis
 }
 
-const global = getGlobal()
-global.qcharts = qcharts
-
-export default qcharts
+export default {
+  version,
+  h,
+  Chart,
+  BasePlugin,
+  BaseVisual,
+  Global,
+  Dataset,
+  Pie,
+  ArcPie,
+  Area,
+  Line,
+  Radar,
+  Bar,
+  Funnel,
+  Scatter,
+  Gauge,
+  RadialBar,
+  Legend,
+  Text,
+  Tooltip,
+  Axis
+}

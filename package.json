@@ -1,6 +1,6 @@
 {
-  "name": "@qcharts/core",
-  "version": "0.1.29",
+  "name": "zzl_qcharts",
+  "version": "0.1.47",
   "description": "A visulization library based on spritejs and sprite-extend-shapes",
   "main": "lib/index.js",
   "miniprogram": "miniprogram",
@@ -9,13 +9,12 @@
     "dev:doc": "cross-env DEV_MODE=doc webpack-dev-server --config ./build/webpack.conf.dev.js",
     "dev:demo": "webpack-dev-server --config ./build/webpack.conf.dev.js",
     "build": "npm run build:docs && npm run build:chart && echo 'Build successfully!'",
-    "build:chart": "npm run build:chart:all && npm run build:chart:module && echo 'Build chart successfully!'",
-    "build:chart:all": "rimraf lib && cross-env NODE_ENV=production CHART_TYPE=all webpack --config ./build/webpack.conf.prod.chart.js",
-    "build:chart:module": "rimraf lib/modules && cross-env NODE_ENV=production CHART_TYPE=module webpack --config ./build/webpack.conf.prod.chart.js",
+    "babel": "rimraf lib && babel src --out-dir lib",
+    "build:chart": "rimraf dist && cross-env NODE_ENV=production webpack --config ./build/webpack.conf.prod.chart.js",
     "build:wxapp": "cross-env NODE_ENV=production webpack --config ./build/webpack.conf.prod.chart.wxapp.js",
     "build:chart:rollup": "rollup -c rollup.config.js",
     "build:docs": "rimraf docs && cross-env NODE_ENV=production webpack --config ./build/webpack.conf.prod.docs.js",
-    "prepublishOnly": "npm run build:chart && npm run build:wxapp",
+    "prepublishOnly": "npm run babel && npm run build:chart",
     "test": "nyc ava -v --serial && npm run testReport",
     "testReport": "rm -rf ./coverage && mkdirp ./coverage && nyc report --reporter=html > ./coverage/lcov.info",
     "testOnly": "cross-env NODE_ENV=test ava -v",
@@ -29,18 +28,21 @@
     "@babel/plugin-external-helpers": "^7.2.0",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/plugin-proposal-decorators": "^7.2.3",
+    "@babel/plugin-proposal-dynamic-import": "^7.5.0",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-modules-amd": "^7.5.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.4",
     "@babel/runtime": "^7.2.0",
     "ava": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-import": "^1.11.0",
+    "babel-plugin-import": "^1.12.2",
     "babel-plugin-inline-package-json": "^2.0.0",
     "babel-plugin-webpack-alias-7": "^0.1.1",
     "bootstrap": "^4.3.1",
@@ -94,7 +96,8 @@
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.1.10",
     "webpack-hot-middleware": "^2.24.3",
-    "webpack-merge": "^4.1.5"
+    "webpack-merge": "^4.1.5",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
   "dependencies": {
     "@spritejs/shapes": "^1.1.5"
@@ -103,5 +106,8 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
-  }
+  },
+  "sideEffects": [
+    "spritejs"
+  ]
 }

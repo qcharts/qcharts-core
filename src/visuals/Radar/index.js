@@ -500,4 +500,3 @@ export class Radar extends BaseVisual {
   }
 }
 
-export default Radar

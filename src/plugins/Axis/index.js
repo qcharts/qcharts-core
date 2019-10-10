@@ -5,6 +5,7 @@ import pieLayout from '../../visuals/Pie/layout'
 import { Bar, Scatter, Pie } from '../../visuals/index'
 import { mergeStyle } from '../../util/merge-style'
 // import { convertPercent2Number as transPx } from '../../util/'
+
 export class Axis extends BasePlugin {
   constructor(attrs = {}) {
     super(attrs)
@@ -340,5 +341,3 @@ function getNumberText(str, attrs) {
   }
   return str
 }
-
-export default Axis

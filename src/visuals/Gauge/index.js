@@ -332,4 +332,3 @@ export class Gauge extends BaseVisual {
   }
 }
 
-export default Gauge

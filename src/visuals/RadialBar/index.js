@@ -185,4 +185,3 @@ export class RadialBar extends BaseVisual {
   }
 }
 
-export default RadialBar

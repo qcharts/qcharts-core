@@ -25,4 +25,3 @@ Global.useTheme = theme => {
 
 Global.registerTheme('default', Theme.light)
 Global.registerTheme('dark', Theme.dark)
-Global.useTheme('default')

@@ -205,4 +205,3 @@ export class Funnel extends BaseVisual {
   }
 }
 
-export default Funnel

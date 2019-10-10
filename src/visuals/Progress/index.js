@@ -334,4 +334,3 @@ export class Progress extends BaseVisual {
   }
 }
 
-export default Progress

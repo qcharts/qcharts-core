@@ -1,7 +1,6 @@
 import { Group, Label, Rect } from 'spritejs'
 import { isArray, throttle, isFunction } from '../util'
 import { BasePlugin } from '../core'
-
 // function refixTooltipPosition(x, y, width, height, vw, vh, gap = 20) {
 //   x += gap
 //   y += gap
@@ -225,5 +224,3 @@ export class Tooltip extends BasePlugin {
     }
   }
 }
-
-export default Tooltip
