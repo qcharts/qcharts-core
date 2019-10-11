@@ -1,5 +1,4 @@
 import { isString, isObject } from '../util'
-import * as Theme from '../themes'
 
 export const Global = Object.create(null) // qcharts 全局存储
 
@@ -22,6 +21,3 @@ Global.useTheme = theme => {
     Global.CURRENT_THEME = Object.assign({}, Global.CURRENT_THEME, theme)
   }
 }
-
-Global.registerTheme('default', Theme.light)
-Global.registerTheme('dark', Theme.dark)

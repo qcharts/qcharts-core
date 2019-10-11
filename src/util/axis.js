@@ -1,3 +1,4 @@
+import { Global } from '../core/Global'
 export function axis(attr) {
   // 计算坐标轴刻度
   if (!Array.isArray(attr.dataSet) && !attr.hasOwnProperty('section')) {
@@ -104,13 +105,20 @@ export function axis(attr) {
       axisArray.push((-1 * unit * i) / 10)
     }
   }
+  if (attr.needReverse) {
+    axisArray = axisArray.map(value => {
+      return Global.datasetReverse ? Global.datasetReverse(value) : value
+    })
+  }
   return axisArray
 }
 
 function dataHandle(attr) {
   const stack = attr.stack || false
   const data = attr.dataSet || []
-  const field = attr.field || '__valueGetter__'
+  // const field = attr.field || '__valueGetter__'
+  let field = '__valueGetter__'
+
   const arr = []
 
   if (stack && data.length !== 0 && data[0].length) {
@@ -121,8 +129,9 @@ function dataHandle(attr) {
         if (data[j][i].disabled === true) {
           continue
         }
-        const value =
-          attr && attr.field ? data[j][i][field] : data[j][i][field]()
+        // const value =
+        // attr && attr.field ? data[j][i][field] : data[j][i][field]()
+        const value = data[j][i][field]()
         if (value < 0) {
           sumDown = sumDown + value
         } else {
@@ -138,7 +147,8 @@ function dataHandle(attr) {
         if (data[i][j].disabled === true) {
           continue
         }
-        arr.push(attr && attr.field ? data[i][j][field] : data[i][j][field]())
+        // arr.push(attr && attr.field ? data[i][j][field] : data[i][j][field]())
+        arr.push(data[i][j][field]())
       }
     }
   }

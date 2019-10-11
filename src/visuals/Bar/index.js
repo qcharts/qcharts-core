@@ -216,4 +216,3 @@ export class Bar extends BaseVisual {
     )
   }
 }
-

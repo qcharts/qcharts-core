@@ -175,40 +175,34 @@ export class Radar extends BaseVisual {
 
   // 控制tooltip的显示与隐藏
   createBgGridEl(attr, GridShape) {
-    return (
-      <GridShape
-        {...attr}
-        strokeColor={'transparent'}
-        onMousemove={(evt, el) => {
-          Promise.resolve().then(_ => {
-            const targetSprites = evt.targetSprites
-            if (targetSprites) {
-              const targets = targetSprites.filter(
-                e => e.attr('$elType') === 'section'
-              )
-              const topEls = targets.sort(
-                (a, b) => b.attr('zIndex') - a.attr('zIndex')
-              )
-              if (topEls.length > 0) {
-                this.$areaEl.forEach(e => {
-                  e && e.attr('state', 'normal')
-                })
-                topEls[0].attr('state', 'hover')
-                this.showTooltip(evt, topEls[0].attr())
-              } else {
-                this.$areaEl.forEach(e => {
-                  if (e && e.attr('state') !== 'normal') {
-                    e.attr('state', 'normal')
-                  }
-                })
-                this.hideTooltip()
-                this.chart.setCanvasCursor('default')
-              }
+    return <GridShape
+      {...attr}
+      strokeColor={'transparent'}
+      onMousemove={(evt, el) => {
+        Promise.resolve().then(_ => {
+          const targetSprites = evt.targetSprites
+          if (targetSprites) {
+            const targets = targetSprites.filter(e => e.attr('$elType') === 'section')
+            const topEls = targets.sort((a, b) => b.attr('zIndex') - a.attr('zIndex'))
+            if (topEls.length > 0) {
+              this.$areaEl.forEach(e => {
+                e && e.attr('state', 'normal')
+              })
+              topEls[0].attr('state', 'hover')
+              this.showTooltip(evt, topEls[0].attr())
+            } else {
+              this.$areaEl.forEach(e => {
+                if (e && e.attr('state') !== 'normal') {
+                  e.attr('state', 'normal')
+                }
+              })
+              this.hideTooltip()
+              this.chart.setCanvasCursor('default')
             }
-          })
-        }}
-      />
-    )
+          }
+        })
+      }}
+    />
   }
 
   renderGrid(gridAttrs) {
@@ -225,7 +219,9 @@ export class Radar extends BaseVisual {
       anchor = [0.5, 0.5]
     }
     const grids = gridAttrs.map((attr, i) => {
-      const animation = this.isUpdate ? {} : this._getScaleAnimation(attr.scale)
+      const animation = this.isUpdate
+        ? {}
+        : this._getScaleAnimation(attr.scale)
       const { style, ...other } = this._getStyle('grid', attr, null, i)
       if (style === false) {
         return
@@ -351,12 +347,10 @@ export class Radar extends BaseVisual {
       if (attr.display !== 'none') {
         const elIndex = index * attrs.splitNumber + i
         const preEl = this.$scaleEl[elIndex]
-        let animation = this.isUpdate
-          ? {}
-          : {
-            from: { pos: [0, 0] },
-            to: { pos: point }
-          }
+        let animation = this.isUpdate ? {} : {
+          from: { pos: [0, 0] },
+          to: { pos: point }
+        }
         if (preEl) {
           const { text: preText } = preEl.attr()
           const numText = Number(preText)
@@ -364,7 +358,7 @@ export class Radar extends BaseVisual {
             animation = {
               from: { text: numText },
               to: { text },
-              attrFormatter: attr => {
+              attrFormatter: (attr) => {
                 attr.text = attr.text.toFixed(0)
                 return attr
               },
@@ -387,39 +381,40 @@ export class Radar extends BaseVisual {
   }
 
   renderSection(sectionAttrs) {
-    return sectionAttrs.map((attr, i) => {
-      if (attr.disabled) {
-        this.$areaEl[i] = null
-        return
-      }
-      const { animation } = this._getPolylineAnimation(attr, i)
-      const { style, hoverState, ...other } = this._getStyle(
-        'section',
-        attr,
-        { ...attr.dataOrigin },
-        i
-      )
-      if (style === false) {
-        return
-      }
-      let hoverStyle = hoverState
-      if (!hoverState) {
-        hoverStyle = {}
-        const { lineWidth = 1 } = attr
-        hoverStyle.lineWidth = lineWidth + 1
-      }
-      return (
-        <Polyline
-          ref={el => this.getEl(i, el, 'area')}
-          zIndex={9 + i}
-          animation={this.resolveAnimation(animation)}
-          {...attr}
-          {...style}
-          hoverState={hoverStyle}
-          {...other}
-        />
-      )
-    })
+    return sectionAttrs
+      .map((attr, i) => {
+        if (attr.disabled) {
+          this.$areaEl[i] = null
+          return
+        }
+        const { animation } = this._getPolylineAnimation(attr, i)
+        const { style, hoverState, ...other } = this._getStyle(
+          'section',
+          attr,
+          { ...attr.dataOrigin },
+          i
+        )
+        if (style === false) {
+          return
+        }
+        let hoverStyle = hoverState
+        if (!hoverState) {
+          hoverStyle = {}
+          const { lineWidth = 1 } = attr
+          hoverStyle.lineWidth = lineWidth + 1
+        }
+        return (
+          <Polyline
+            ref={el => this.getEl(i, el, 'area')}
+            zIndex={9 + i}
+            animation={this.resolveAnimation(animation)}
+            {...attr}
+            {...style}
+            hoverState={hoverStyle}
+            {...other}
+          />
+        )
+      })
   }
 
   renderPoints(sectionAttrs) {
@@ -458,10 +453,7 @@ export class Radar extends BaseVisual {
           return
         }
         const hStyle = this.style('point:hover')(attr, attr.dataOrigin, i)
-        const { PointSymbol, normalStyle, hoverStyle } = getSymbolAndStyle(
-          style,
-          hStyle
-        )
+        const { PointSymbol, normalStyle, hoverStyle } = getSymbolAndStyle(style, hStyle)
         return (
           <PointSymbol
             ref={el => this.getEl(index * sectionAttrs.length + i, el, 'point')}
@@ -495,8 +487,7 @@ export class Radar extends BaseVisual {
           {this.renderSection(sectionAttrs)}
           {this.renderPoints(sectionAttrs)}
         </Group>
-      </Group>
+      </Group >
     )
   }
 }
-

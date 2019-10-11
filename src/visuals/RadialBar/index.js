@@ -184,4 +184,3 @@ export class RadialBar extends BaseVisual {
     )
   }
 }
-

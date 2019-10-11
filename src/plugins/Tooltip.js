@@ -1,6 +1,7 @@
 import { Group, Label, Rect } from 'spritejs'
 import { isArray, throttle, isFunction } from '../util'
 import { BasePlugin } from '../core'
+
 // function refixTooltipPosition(x, y, width, height, vw, vh, gap = 20) {
 //   x += gap
 //   y += gap
@@ -214,12 +215,11 @@ export class Tooltip extends BasePlugin {
   updated() {
     const pos = this.state.pos
     if (pos && pos.length) {
-      let width = this.$group['boundingRect'][2]
-      this.$group.attr({ width: width + 0.1 })
-      this.$group.transition(0.2).attr('pos', this.state.pos)
-      setTimeout(_ => {
-        // 触发reflow
-        this.$group.attr({ width: '' })
+      let width = this.$group['boundingRect'][2];
+      this.$group.attr({ width: width + 0.1 });
+      this.$group.transition(0.2).attr('pos', this.state.pos);
+      setTimeout(_ => { // 触发reflow
+        this.$group.attr({ width: '' });
       })
     }
   }

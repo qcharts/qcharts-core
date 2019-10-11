@@ -1,7 +1,8 @@
 import { clone, groupToMap, isObject, isArray, invariant } from '../../util'
 import { initAttr, attrMixin } from '../mixins/attr'
+import { Global } from '../Global'
 
-export class Dataset {
+class Dataset {
   constructor() {
     initAttr(this)
     this.data = null
@@ -107,9 +108,9 @@ export class Dataset {
   }
 
   _executeTransform() {
-    let { row, col, value, text, sort, filter } = this.attr()
+    let { row, col, value, text, sort, filter, layoutScale } = this.attr()
+    const layoutScaleRes = this._handleLayoutScale(layoutScale)
     let data = this.data
-
     if (row === '*') {
       row = '__dataset_row__'
       data.forEach(d => (d.__dataset_row__ = 1))
@@ -146,9 +147,12 @@ export class Dataset {
       // this._defineReactive(d)
       d.dataOrigin = dataOrigin // 保持原始数据
       d.__textGetter__ = () => d[text] || d[col] || d[row] // 获取数据文字标记
-      d.__valueGetter__ = () => d[value] // 获取数据数值
+      d.__valueGetter__ = () =>
+        typeof layoutScaleRes === 'function'
+          ? layoutScaleRes(d[value])
+          : d[value] // 获取数据数值
       d.__valueSetter__ = v => v && (d[value] = v) // 修改数据数值
-
+      d.__originValueGetter__ = () => d[value]
       return d
     }
 
@@ -202,6 +206,40 @@ export class Dataset {
     this.colIndexes = generateIndex(colGroupCondition)
     this.row = groupToMap(rowData, rowGroupCondition)
     this.col = groupToMap(colData, colGroupCondition)
+  }
+
+  _handleLayoutScale(layoutScale) {
+    if (typeof layoutScale === 'string') {
+      switch (layoutScale) {
+        case 'sqrt':
+          Global.datasetReverse = function(value) {
+            return Math.pow(value, 2)
+          }
+          return function(value) {
+            return Math.pow(value, 1 / 2)
+          }
+        case 'sqrt3':
+          Global.datasetReverse = function(value) {
+            return Math.pow(value, 3)
+          }
+          return function(value) {
+            return Math.pow(value, 1 / 3)
+          }
+        case 'log':
+        case 'log10':
+          Global.datasetReverse = function(value) {
+            return Math.pow(10, value)
+          }
+          return function(value) {
+            return Math.log10(value)
+          }
+        default:
+          return function(value) {
+            return value
+          }
+      }
+    }
+    return layoutScale
   }
 
   _selectDataByName(name, type) {

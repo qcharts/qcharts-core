@@ -4,9 +4,7 @@ export class Area extends Line {
     let resObj = super.getDefaultAttrs()
     return Object.assign(resObj, {
       type: 'area', //
-      stack: true // 是否堆叠处理
+      stack: true, // 是否堆叠处理
     })
   }
 }
-
-export default Area

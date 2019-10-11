@@ -331,4 +331,3 @@ export class Gauge extends BaseVisual {
     this.on('resize', () => this.forceUpdate())
   }
 }
-

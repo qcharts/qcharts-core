@@ -204,4 +204,3 @@ export class Funnel extends BaseVisual {
     )
   }
 }
-

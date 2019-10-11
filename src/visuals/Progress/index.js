@@ -1,11 +1,6 @@
 import { Group, Arc, Wave, Label } from 'spritejs'
 import { BaseVisual } from '../../core'
-import {
-  flattern,
-  isArray,
-  requestAnimationFrame,
-  cancelAnimationFrame
-} from '../../util'
+import { flattern, isArray, requestAnimationFrame, cancelAnimationFrame } from '../../util'
 
 export class Progress extends BaseVisual {
   constructor(attrs = {}) {
@@ -333,4 +328,3 @@ export class Progress extends BaseVisual {
     this.on('resize', () => this.forceUpdate())
   }
 }
-

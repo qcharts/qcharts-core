@@ -5,7 +5,6 @@ import pieLayout from '../../visuals/Pie/layout'
 import { Bar, Scatter, Pie } from '../../visuals/index'
 import { mergeStyle } from '../../util/merge-style'
 // import { convertPercent2Number as transPx } from '../../util/'
-
 export class Axis extends BasePlugin {
   constructor(attrs = {}) {
     super(attrs)
@@ -188,15 +187,17 @@ export class Axis extends BasePlugin {
               duration: 200,
               attrFormatter: attr => {
                 if (typeof attr.text === 'number') {
-                  return Object.assign(attr, {
-                    text: formatter(
-                      formatNumber(
-                        attr.text,
-                        scale.labelFrom.text,
-                        scale.labelTo.text
-                      )
+                  let text = formatter(
+                    formatNumber(
+                      attr.text,
+                      scale.labelFrom.text,
+                      scale.labelTo.text
                     )
+                  )
+                  let resAttr = Object.assign(attr, {
+                    text: text
                   })
+                  return resAttr
                 }
                 return attr
               },
@@ -224,9 +225,9 @@ export class Axis extends BasePlugin {
                   <Label
                     {...labelStyle}
                     clipOverflow={false}
-                    text={scale.labelTo.text}
+                    text={formatter(scale.labelTo.text)}
                     animation={this.resolveAnimation(labelAnimation)}
-                  />
+                  ></Label>
                 )}
                 {scaleStyle === false ? null : <Rect {...scaleStyle} />}
                 {coord === 'polar' ||
@@ -293,7 +294,7 @@ export class Axis extends BasePlugin {
                 <Label
                   pos={labelPoint}
                   color={'#67728C'}
-                  text={txt}
+                  text={formatter(txt)}
                   fontSize={12}
                   anchor={anchor}
                 />

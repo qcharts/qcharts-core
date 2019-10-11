@@ -217,7 +217,7 @@ export class Line extends BaseVisual {
         {guideStyle === false ? null : (
           <Rect ref={el => this.ref('guideline', el)} {...guideStyle} />
         )}
-        <Group enableCache={false} />
+        <Group enableCache={false}></Group>
         <Group clipOverflow={false} enableCache={false}>
           {lines.map((line, i) => {
             let color = this.color(i)
@@ -230,7 +230,7 @@ export class Line extends BaseVisual {
             let smybolAttrs = { fillColor: color }
             let { smooth } = this.attr()
             Object.assign(lineAttrs, cusAttrs)
-            return (
+            return cusAttrs === false ? null : (
               <Group
                 size={this.attr('size')}
                 clipOverflow={false}
@@ -339,34 +339,36 @@ export class Line extends BaseVisual {
         i
       )
       Object.assign(areaAttrs, cusAttrs)
-      delete areaAttrs.opacity
-      let polygon = new Polygon()
-      polygon.attr(areaAttrs)
-      let attrs = getAreaPoints(lines, i, { size, smooth, stack }, 'to')
-      patchPoints.start.push(line.points[0].point)
-      patchPoints.end.push(line.points[line.points.length - 1].point)
-      polygon.attr(attrs)
-      group.append(polygon)
-      polygon.on('afterdraw', e => {
-        setTimeout(_ => {
-          removeLine(patchPoints, layer, this.attr(), 0)
-        })
-      })
-      new Tween()
-        .from(getAreaPoints(lines, i, { size, smooth, stack }, 'from'))
-        .to(getAreaPoints(lines, i, { size, smooth, stack }, 'to'))
-        .duration(200)
-        .onUpdate((e, i) => {
-          e.points = e.points.map(pos => {
-            return [Math.round(pos[0]), Math.round(pos[1])]
+      if (cusAttrs !== false) {
+        delete areaAttrs.opacity
+        let polygon = new Polygon()
+        polygon.attr(areaAttrs)
+        let attrs = getAreaPoints(lines, i, { size, smooth, stack }, 'to')
+        patchPoints.start.push(line.points[0].point)
+        patchPoints.end.push(line.points[line.points.length - 1].point)
+        polygon.attr(attrs)
+        group.append(polygon)
+        polygon.on('afterdraw', e => {
+          setTimeout(_ => {
+            removeLine(patchPoints, layer, this.attr(), 0)
           })
-          polygon.attr(e)
-          removeLine(patchPoints, layer, this.attr())
         })
-        .start()
-        .then(_ => {
-          removeLine(patchPoints, layer, this.attr())
-        })
+        new Tween()
+          .from(getAreaPoints(lines, i, { size, smooth, stack }, 'from'))
+          .to(getAreaPoints(lines, i, { size, smooth, stack }, 'to'))
+          .duration(200)
+          .onUpdate((e, i) => {
+            e.points = e.points.map(pos => {
+              return [Math.round(pos[0]), Math.round(pos[1])]
+            })
+            polygon.attr(e)
+            removeLine(patchPoints, layer, this.attr())
+          })
+          .start()
+          .then(_ => {
+            removeLine(patchPoints, layer, this.attr())
+          })
+      }
     })
   }
 }
@@ -466,4 +468,3 @@ function getLinePoints(lines, i, name) {
     return point[name].pos || point.point
   })
 }
-

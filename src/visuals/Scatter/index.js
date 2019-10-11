@@ -297,3 +297,4 @@ export class Scatter extends BaseVisual {
   }
 }
 
+export default Scatter
