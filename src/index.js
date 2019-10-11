@@ -10,6 +10,7 @@ import {
   Area,
   Line,
   Radar,
+  Progress,
   Bar,
   Funnel,
   Scatter,
@@ -50,6 +51,7 @@ const qcharts = {
   Legend,
   Text,
   Tooltip,
+  Progress,
   Axis
 }
 
@@ -81,6 +83,7 @@ export {
   Legend,
   Text,
   Tooltip,
+  Progress,
   Axis
 }
 
