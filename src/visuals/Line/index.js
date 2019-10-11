@@ -217,7 +217,7 @@ export class Line extends BaseVisual {
         {guideStyle === false ? null : (
           <Rect ref={el => this.ref('guideline', el)} {...guideStyle} />
         )}
-        <Group enableCache={false}></Group>
+        <Group enableCache={false} />
         <Group clipOverflow={false} enableCache={false}>
           {lines.map((line, i) => {
             let color = this.color(i)
@@ -352,6 +352,9 @@ export class Line extends BaseVisual {
           setTimeout(_ => {
             removeLine(patchPoints, layer, this.attr(), 0)
           })
+          if (compositeOperation) {
+            layer.context.globalCompositeOperation = 'source-over'
+          }
         })
         new Tween()
           .from(getAreaPoints(lines, i, { size, smooth, stack }, 'from'))

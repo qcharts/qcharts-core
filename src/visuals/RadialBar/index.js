@@ -1,6 +1,6 @@
 import { Group, Arc } from 'spritejs'
 import { BaseVisual } from '../../core'
-import { flattern } from '../../util'
+import { flattern, clone } from '../../util'
 
 export class RadialBar extends BaseVisual {
   constructor(attrs = {}) {
@@ -14,8 +14,6 @@ export class RadialBar extends BaseVisual {
 
   getDefaultAttrs() {
     return {
-      min: 0,
-      max: 2,
       radius: 0.8,
       innerRadius: 0,
       startAngle: Math.PI * -0.5,
@@ -63,7 +61,14 @@ export class RadialBar extends BaseVisual {
 
   transform(data) {
     const { startAngle, endAngle, max, min, lineWidth } = this.attr()
-    const total = max - min
+    let total = 0
+    if (!isNaN(max) && !isNaN(min)) {
+      total = max - min
+    } else {
+      let cloneData = clone(data)
+      cloneData.sort((a, b) => b.__valueGetter__() - a.__valueGetter__())
+      total = cloneData[0].__valueGetter__() * 1.3
+    }
     const angle = endAngle - startAngle
     const innerRadius = this.innerRadius
     const outerRadius = this.maxOuterRadius
