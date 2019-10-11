@@ -20,7 +20,8 @@ export class Legend extends BasePlugin {
       size: ['100%', '100%'],
       orient: 'horizontal', // 布局方式， vertical | horizontal
       align: ['left', 'top'], // 水平方向布局，left | center | right, 垂直方向布局，top | center | bottom
-      formatter: d => d.value || d
+      formatter: d => d.value || d,
+      enableClick: true
     }
   }
 
@@ -268,6 +269,8 @@ export class Legend extends BasePlugin {
 
   changeDataSetData = (name, key = 'disabled', value) => {
     let layoutBy = this.attr('layoutBy')
+    let enableClick = this.attr('enableClick')
+    if (!enableClick) return
     const data = this.dataset._selectDataByName(name, layoutBy)
 
     if (key === 'disabled') {
@@ -297,6 +300,15 @@ export class Legend extends BasePlugin {
     const { x, y } = this.pos
     const size = this.size
 
+    let renderData = this.getData()
+    let colData = []
+    renderData.forEach((arr, i) => {
+      let curArr = []
+      arr.forEach(item => {
+        curArr.push(item.dataOrigin)
+      })
+      colData.push(curArr)
+    })
     this.ensurePaginationSize()
 
     return (
@@ -376,7 +388,7 @@ export class Legend extends BasePlugin {
                 <Label
                   clipOverflow={false}
                   bgcolor={'transparent'}
-                  text={formatter(name, i)}
+                  text={formatter(name, colData[i], i)}
                   {...text}
                   {...this.style('text')({}, name, i)}
                   hoverState={this.style('text:hover')({}, name, i)}

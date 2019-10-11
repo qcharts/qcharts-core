@@ -1,5 +1,6 @@
 import { clone, groupToMap, isObject, isArray, invariant } from '../../util'
 import { initAttr, attrMixin } from '../mixins/attr'
+import { Global } from '../Global'
 
 class Dataset {
   constructor() {
@@ -46,6 +47,12 @@ class Dataset {
       this.dataOrigin = data.dataOrigin
       this.data = clone(data.dataOrigin)
     } else if (isArray(data)) {
+      let { value } = this.attr()
+      for (let i = 0, len = data.length; i < len; i++) {
+        if (isNaN(data[i][value || 'value'])) {
+          invariant(false, `Invalid source data, value must be a number!`)
+        }
+      }
       this.dataOrigin = data
       this.data = clone(data)
     } else {
@@ -62,8 +69,8 @@ class Dataset {
    * @param {*} options
    */
   source(data, options) {
-    this._prepareSource(data)
     this.attr(options)
+    this._prepareSource(data)
     this._executeTransform()
   }
 
@@ -107,9 +114,9 @@ class Dataset {
   }
 
   _executeTransform() {
-    let { row, col, value, text, sort, filter } = this.attr()
+    let { row, col, value, text, sort, filter, layoutScale } = this.attr()
+    const layoutScaleRes = this._handleLayoutScale(layoutScale)
     let data = this.data
-
     if (row === '*') {
       row = '__dataset_row__'
       data.forEach(d => (d.__dataset_row__ = 1))
@@ -146,9 +153,12 @@ class Dataset {
       // this._defineReactive(d)
       d.dataOrigin = dataOrigin // 保持原始数据
       d.__textGetter__ = () => d[text] || d[col] || d[row] // 获取数据文字标记
-      d.__valueGetter__ = () => d[value] // 获取数据数值
+      d.__valueGetter__ = () =>
+        typeof layoutScaleRes === 'function'
+          ? layoutScaleRes(d[value])
+          : d[value] // 获取数据数值
       d.__valueSetter__ = v => v && (d[value] = v) // 修改数据数值
-
+      d.__originValueGetter__ = () => d[value]
       return d
     }
 
@@ -202,6 +212,68 @@ class Dataset {
     this.colIndexes = generateIndex(colGroupCondition)
     this.row = groupToMap(rowData, rowGroupCondition)
     this.col = groupToMap(colData, colGroupCondition)
+  }
+
+  _handleLayoutScale(layoutScale) {
+    if (typeof layoutScale === 'string') {
+      let method = layoutScale.replace(/\d+$/, '')
+      let NUM = 2
+      if (method !== 'sqrt' && method !== 'pow' && method !== 'log') {
+        console.warn('layoutScale type error')
+        return function(value) {
+          return value
+        }
+      }
+
+      let number = layoutScale.replace(/^[a-z]+/, '')
+      if (number) {
+        let isNumber = /^[-+]?\d*$/.test(number)
+        if (!isNumber) {
+          console.warn('layoutScale type error')
+          return function(value) {
+            return value
+          }
+        } else {
+          NUM = Number(number)
+        }
+      }
+
+      switch (method) {
+        case 'sqrt':
+          Global.datasetReverse = function(value) {
+            return Math.pow(value, NUM)
+          }
+          return function(value) {
+            return Math.pow(value, 1 / NUM)
+          }
+        case 'pow':
+          Global.datasetReverse = function(value) {
+            return Math.pow(value, 1 / NUM)
+          }
+          return function(value) {
+            return Math.pow(value, NUM)
+          }
+        case 'log':
+          if (NUM !== 2 && NUM !== 10) {
+            console.warn('layoutScale type error')
+            return function(value) {
+              return value
+            }
+          }
+          Global.datasetReverse = function(value) {
+            return Math.pow(NUM, value)
+          }
+          return function(value) {
+            return Math['log' + NUM](value)
+          }
+        default:
+          console.warn('layoutScale type error')
+          return function(value) {
+            return value
+          }
+      }
+    }
+    return layoutScale
   }
 
   _selectDataByName(name, type) {
