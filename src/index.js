@@ -27,11 +27,38 @@ spritejs.use(shapes)
 Global.registerTheme('default', Theme.light)
 Global.registerTheme('dark', Theme.dark)
 
-// 提前设置JSX语法解析函数到全局变量上
-const global = getGlobal()
-global.qcharts = { h }
-
 const version = require('../package.json').version
+// 开发环境全局挂载，发布环境只挂载JSX解析函数
+const qcharts = {
+  version,
+  h,
+  Chart,
+  BasePlugin,
+  BaseVisual,
+  Global,
+  Dataset,
+  Pie,
+  ArcPie,
+  Area,
+  Line,
+  Radar,
+  Bar,
+  Funnel,
+  Scatter,
+  Gauge,
+  RadialBar,
+  Legend,
+  Text,
+  Tooltip,
+  Axis
+}
+
+const global = getGlobal()
+if (process.env.NODE_ENV === 'development') {
+  global.qcharts = qcharts
+} else {
+  global.qcharts = { h }
+}
 
 export {
   version,
@@ -57,26 +84,4 @@ export {
   Axis
 }
 
-export default {
-  version,
-  h,
-  Chart,
-  BasePlugin,
-  BaseVisual,
-  Global,
-  Dataset,
-  Pie,
-  ArcPie,
-  Area,
-  Line,
-  Radar,
-  Bar,
-  Funnel,
-  Scatter,
-  Gauge,
-  RadialBar,
-  Legend,
-  Text,
-  Tooltip,
-  Axis
-}
+export default qcharts
