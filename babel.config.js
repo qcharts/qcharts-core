@@ -23,7 +23,7 @@ const babelDev = {
   ]
 }
 
-// webpack 打包，输出dist
+// 调试，打包配置
 const chartProd = {
   presets: [
     [
@@ -58,10 +58,8 @@ const chartProd = {
   ]
 }
 
-console.log('\n babel is running \n')
-
 module.exports = function(api) {
-  const setting = api.env(['production']) ? chartProd : babelDev
+  const setting = api.env(['babel']) ? babelDev : chartProd
   return {
     sourceType: 'unambiguous', // 自动推断编译的模块类型(cjs,es6)
     ignore: [/@babel[/\\]runtime/], // 忽略 @babel/runtime
