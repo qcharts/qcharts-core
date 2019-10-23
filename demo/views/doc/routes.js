@@ -6,7 +6,7 @@ export default [
   {
     title: '',
     path: '',
-    redirect: 'api'
+    redirect: 'apiinfo'
   },
   {
     title: 'Chart 图表主体',
@@ -19,22 +19,24 @@ export default [
     component: () => import('./dataset.md')
   },
   {
-    title: 'API',
+    title: 'API简述',
+    path: 'apiinfo',
+    component: () => import('./apiinfo.md')
+  },
+  {
+    title: 'Visual(图形)',
     path: 'api',
     component: generateCommonPage('/doc/api/', apiRoutes),
     children: apiRoutes
   },
 
   {
-    title: 'Plugin',
+    title: 'Plugin(插件)',
     path: 'plugin',
     component: generateCommonPage('/doc/plugin/', pluginsRoutes),
     children: pluginsRoutes
-  },
+  }
 
-
-
-  
   // {
   //   title: '自定义样式',
   //   path: 'style',

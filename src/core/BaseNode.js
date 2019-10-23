@@ -20,6 +20,7 @@ let commonAttrs = {
   animation: true, // 默认开启，可加入配置
   size: ['80%', '80%'],
   pos: ['10%', '10%'],
+  opacity: 1,
   layoutBy: 'row' // 配合 dataset 使用的数据模式，可选值：rows | cols
 }
 
@@ -28,7 +29,6 @@ class BaseNode {
     initAttr(this)
     initEvents(this)
     initLifecycle(this)
-
     this.emit(this.lifecycle.beforeCreate, this)
     const defaultAttrs = this.getDefaultAttrs()
     this.attr(Object.assign({}, commonAttrs, defaultAttrs, attrs))
@@ -197,7 +197,8 @@ class BaseNode {
       boxSizing: 'border-box',
       padding: 0,
       zIndex: 2,
-      clipOverflow: false
+      clipOverflow: false,
+      opacity: this.attr('opacity')
     })
   }
 
@@ -241,6 +242,7 @@ class BaseNode {
     const vnode = this.render(data)
     const patches = diff(this.__vnode__, vnode)
     patch(this.$group, patches, 0, true)
+    this.$group.attr({ opacity: this.attr('opacity') })
     this.__vnode__ = vnode
     this.__willUpdate__ = false
     this.updated()

@@ -1,4 +1,4 @@
-import { Group, Label, Rect, Polyline, Circle } from 'spritejs'
+import { Group, Label, Polyline, Circle } from 'spritejs'
 import { BasePlugin } from '../../core'
 import { layout } from './layout'
 import pieLayout from '../../visuals/Pie/layout'
@@ -209,34 +209,39 @@ export class Axis extends BasePlugin {
             ) {
               labelAnimation = {}
             }
-            return (
-              <Group
-                size={[1, 1]}
-                pos={scale.from.pos}
-                clipOverflow={false}
-                animation={this.resolveAnimation({
-                  from: scale.from,
-                  to: scale.to,
-                  duration: 200,
-                  useTween: true
-                })}
-              >
-                {labelStyle === false ? null : (
-                  <Label
-                    {...labelStyle}
-                    clipOverflow={false}
-                    text={formatter(scale.labelTo.text)}
-                    animation={this.resolveAnimation(labelAnimation)}
-                  ></Label>
-                )}
-                {scaleStyle === false ? null : <Rect {...scaleStyle} />}
-                {coord === 'polar' ||
-                gridStyle === false ||
-                (scale.offset === 0 && !axisGap) ? null : (
-                    <Polyline {...gridStyle} />
+            if (
+              this.attr('orient') === 'left' ||
+              this.attr('orient') === 'right'
+            ) {
+              return (
+                <Group
+                  size={[1, 1]}
+                  pos={scale.from.pos}
+                  clipOverflow={false}
+                  animation={this.resolveAnimation({
+                    from: scale.from,
+                    to: scale.to,
+                    duration: 200,
+                    useTween: true
+                  })}
+                >
+                  {labelStyle === false ? null : (
+                    <Label
+                      {...labelStyle}
+                      clipOverflow={false}
+                      text={formatter(scale.labelTo.text)}
+                      animation={this.resolveAnimation(labelAnimation)}
+                    ></Label>
                   )}
-              </Group>
-            )
+                  {scaleStyle === false ? null : <Polyline {...scaleStyle} />}
+                  {coord === 'polar' ||
+                  gridStyle === false ||
+                  (scale.offset === 0 && !axisGap) ? null : (
+                      <Polyline {...gridStyle} />
+                    )}
+                </Group>
+              )
+            }
           })}
         </Group>
         <Group size={size}>
@@ -303,7 +308,7 @@ export class Axis extends BasePlugin {
           })}
         </Group>
         {axisStyle === false ? null : (
-          <Rect {...axisStyle} pos={renderData.originalPoint} />
+          <Polyline {...axisStyle} pos={renderData.originalPoint} />
         )}
       </Group>
     )

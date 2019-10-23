@@ -58,16 +58,16 @@ function now() {
   return typeof performance !== 'undefined' ? performance.now() : Date.now()
 }
 
-let requestAnimationFrame = global.requestAnimationFrame;
-let cancelAnimationFrame = global.cancelAnimationFrame;
+let requestAnimationFrame = global.requestAnimationFrame
+let cancelAnimationFrame = global.cancelAnimationFrame
 if (!requestAnimationFrame) {
-  const startTime = now();
-  requestAnimationFrame = (fn) => {
+  const startTime = now()
+  requestAnimationFrame = fn => {
     return setTimeout(() => {
       fn(now() - startTime)
     }, 16)
   }
-  cancelAnimationFrame = (id) => {
+  cancelAnimationFrame = id => {
     return clearTimeout(id)
   }
 }

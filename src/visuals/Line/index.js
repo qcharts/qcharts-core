@@ -1,4 +1,4 @@
-import { Group, Polyline, Rect, Polygon, Label } from 'spritejs'
+import { Group, Polyline, Polygon, Label } from 'spritejs'
 import { BaseVisual } from '../../core'
 import { layout } from './layout'
 import { mergeStyle } from '../../util/merge-style'
@@ -11,7 +11,7 @@ export class Line extends BaseVisual {
     this.$refs = Object.create(null) // 独立的一些元素
     this.$symbols = [] // symbols
     this.$lines = [] // lines
-    this.__guideLineIndex = -1
+    this.__guidelineIndex = -1
   }
   get name() {
     return 'Line'
@@ -108,7 +108,7 @@ export class Line extends BaseVisual {
         tarIndex = i
       }
     }
-    if ($guideline && tarIndex !== this.__guideLineIndex) {
+    if ($guideline && tarIndex !== this.__guidelineIndex) {
       $guideline.attr({ opacity: 1, x: tarX })
       this.$symbols.forEach(line => {
         line.forEach((symbol, j) => {
@@ -139,7 +139,7 @@ export class Line extends BaseVisual {
         })
       }
       this.dataset.hoverData({ ...evt, data: hoverData })
-      this.__guideLineIndex = tarIndex
+      this.__guidelineIndex = tarIndex
     }
   }
   bgLeave(evt, el) {
@@ -152,7 +152,7 @@ export class Line extends BaseVisual {
         })
       })
       this.dataset.hoverData()
-      this.__guideLineIndex = -1
+      this.__guidelineIndex = -1
     }
   }
   setSymbol(i, j, el) {
@@ -203,21 +203,20 @@ export class Line extends BaseVisual {
     )
   }
   render(lines = []) {
-    let guideLineAttrs = {
-      size: [1, this.attr('size')[1]],
-      fillColor: '#ccc',
-      strokeColor: 'transparent',
+    let guidelineAttrs = {
+      points: [[0, 0], [0, this.attr('size')[1]]],
+      strokeColor: '#ccc',
       opacity: 0
     }
-    let guideStyle = mergeStyle(this.style('guideline'), [guideLineAttrs])
+    let guideStyle = mergeStyle(this.style('guideline'), [guidelineAttrs])
     lines = lines.filter(line => line.points && line.points.length)
     this.renderLines = lines
     return (
       <Group zIndex={100} enableCache={false}>
         {guideStyle === false ? null : (
-          <Rect ref={el => this.ref('guideline', el)} {...guideStyle} />
+          <Polyline ref={el => this.ref('guideline', el)} {...guideStyle} />
         )}
-        <Group enableCache={false} />
+        <Group enableCache={false}></Group>
         <Group clipOverflow={false} enableCache={false}>
           {lines.map((line, i) => {
             let color = this.color(i)
