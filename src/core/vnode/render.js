@@ -2,7 +2,7 @@ import { invariant } from '../../util'
 import { delegateEvent, resolveStyle, animate, applyRef } from './nodeHelper'
 
 export function createElement(vnode) {
-  if (!vnode && !vnode.tagName) {
+  if (!vnode) {
     return
   }
 

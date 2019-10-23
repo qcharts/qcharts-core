@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'block-demo':isFullscreen,'block-demo--fixed':!isFullscreen}" ref="block">
+  <div :class="['block-demo', isFullscreen ? 'block-demo--fixed' : '']" ref="block">
     <div class="preview" ref="preview">
       <div class="demo" ref="demo"></div>
     </div>
