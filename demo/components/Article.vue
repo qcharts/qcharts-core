@@ -249,12 +249,6 @@ export default {
             color: rgba(0, 107, 255, 1);
             line-height: 20px;
           }
-          td:nth-child(3) {
-            font-size: 14px;
-            font-weight: 400;
-            color: rgba(248, 78, 68, 1);
-            line-height: 20px;
-          }
         }
       }
     }
