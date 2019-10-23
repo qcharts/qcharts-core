@@ -1,5 +1,5 @@
 import * as spritejs from 'spritejs'
-import shapes from '@spritejs/shapes'
+import shapes from '@spritejs/shapes/dist/sprite-extend-shapes'
 import { getGlobal } from './util'
 // core
 import { h, Chart, BasePlugin, BaseVisual, Global, Dataset } from './core'
