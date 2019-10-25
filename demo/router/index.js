@@ -5,6 +5,7 @@ import Article from '../components/Article.vue'
 import docs from '../views/doc/routes.js'
 import demos from '../views/demo/routes.js'
 import plugins from '../views/plugin/routes.js'
+import examples from '../views/examples/routes'
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
       path: '/plugin',
       component: withArticleContainer('plugin', plugins),
       children: plugins
+    },
+    {
+      path: '/examples',
+      component: () => import('../views/examples/index.vue'),
+      children: examples
     }
   ]
 })
