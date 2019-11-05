@@ -209,39 +209,34 @@ export class Axis extends BasePlugin {
             ) {
               labelAnimation = {}
             }
-            if (
-              this.attr('orient') === 'left' ||
-              this.attr('orient') === 'right'
-            ) {
-              return (
-                <Group
-                  size={[1, 1]}
-                  pos={scale.from.pos}
-                  clipOverflow={false}
-                  animation={this.resolveAnimation({
-                    from: scale.from,
-                    to: scale.to,
-                    duration: 200,
-                    useTween: true
-                  })}
-                >
-                  {labelStyle === false ? null : (
-                    <Label
-                      {...labelStyle}
-                      clipOverflow={false}
-                      text={formatter(scale.labelTo.text)}
-                      animation={this.resolveAnimation(labelAnimation)}
-                    ></Label>
+            return (
+              <Group
+                size={[1, 1]}
+                pos={scale.from.pos}
+                clipOverflow={false}
+                animation={this.resolveAnimation({
+                  from: scale.from,
+                  to: scale.to,
+                  duration: 200,
+                  useTween: true
+                })}
+              >
+                {labelStyle === false ? null : (
+                  <Label
+                    {...labelStyle}
+                    clipOverflow={false}
+                    text={formatter(scale.labelTo.text)}
+                    animation={this.resolveAnimation(labelAnimation)}
+                  ></Label>
+                )}
+                {scaleStyle === false ? null : <Polyline {...scaleStyle} />}
+                {coord === 'polar' ||
+                gridStyle === false ||
+                (scale.offset === 0 && !axisGap) ? null : (
+                    <Polyline {...gridStyle} />
                   )}
-                  {scaleStyle === false ? null : <Polyline {...scaleStyle} />}
-                  {coord === 'polar' ||
-                  gridStyle === false ||
-                  (scale.offset === 0 && !axisGap) ? null : (
-                      <Polyline {...gridStyle} />
-                    )}
-                </Group>
-              )
-            }
+              </Group>
+            )
           })}
         </Group>
         <Group size={size}>
