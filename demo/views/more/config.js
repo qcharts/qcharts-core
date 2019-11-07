@@ -7,8 +7,18 @@
  */
 export default [
   {
-    img: 'https://p4.ssl.qhimg.com/d/inn/717a6a22789a/base-radar.png',
-    title: '雷达图点形状修改',
-    path: 'radar-pointStyle'
+    img: 'https://p2.ssl.qhimg.com/d/inn/e48ee7ed2877/multipleXAxis.png',
+    title: '双X轴折线图',
+    path: 'line-multipleXAxis'
+  },
+  {
+    img: 'https://p3.ssl.qhimg.com/d/inn/6b7ac4e8c324/multipleYAxis.png',
+    title: '双Y轴折线图',
+    path: 'line-multipleYAxis'
+  },
+  {
+    img: 'https://p5.ssl.qhimg.com/d/inn/e48ee7ed2877/mixLineAndBar.png',
+    title: '图表组合',
+    path: 'line-mixLineAndBar'
   }
 ]
