@@ -8,6 +8,7 @@ export default function barLayout() {
     const stack = dataInfo.stack
     const groupGap = dataInfo.groupGap
     let barWidth = dataInfo.barWidth
+    const splitNumber = dataInfo.splitNumber
     // 输出
     const barData = []
     const groupData = []
@@ -15,7 +16,7 @@ export default function barLayout() {
     const bgPillarAttr = { opacity: 0.00001, bgcolor: '#000' }
 
     // const valueAxis = getAxis(stack, data)
-    const valueAxis = axis({ dataSet: data, stack })
+    const valueAxis = axis({ dataSet: data, stack, splitNumber })
     if (!valueAxis || !valueAxis.length) {
       return { barData, groupData }
     }
@@ -70,23 +71,23 @@ export default function barLayout() {
               : [barWidth - 1, barHeight],
             pos: transpose
               ? [
-                tableSize.value * (1 - POSITIVE_RATIO),
-                gap / 2 +
+                  tableSize.value * (1 - POSITIVE_RATIO),
+                  gap / 2 +
                     (barWidth + groupGap) * (j - flag) +
                     (barWidth * GROUP_BAR_NUM +
                       groupGap * (GROUP_BAR_NUM - 1) +
                       gap) *
                       i
-              ]
+                ]
               : [
-                gap / 2 +
+                  gap / 2 +
                     (barWidth + groupGap) * (j - flag) +
                     (barWidth * GROUP_BAR_NUM +
                       groupGap * (GROUP_BAR_NUM - 1) +
                       gap) *
                       i,
-                tableSize.value * POSITIVE_RATIO
-              ],
+                  tableSize.value * POSITIVE_RATIO
+                ],
 
             labelAttrs: {
               opacity: !data[j][i].disabled ? 1 : 0,
@@ -94,25 +95,25 @@ export default function barLayout() {
               anchor: [transpose && value < 0 ? 1 : 0, 0.5],
               pos: transpose
                 ? [
-                  tableSize.value * (1 - POSITIVE_RATIO),
-                  gap / 2 +
+                    tableSize.value * (1 - POSITIVE_RATIO),
+                    gap / 2 +
                       (barWidth + groupGap) * (j - flag) +
                       (barWidth * GROUP_BAR_NUM +
                         groupGap * (GROUP_BAR_NUM - 1) +
                         gap) *
                         i +
                       barWidth * 0.5
-                ]
+                  ]
                 : [
-                  gap / 2 +
+                    gap / 2 +
                       (barWidth + groupGap) * (j - flag) +
                       (barWidth * GROUP_BAR_NUM +
                         groupGap * (GROUP_BAR_NUM - 1) +
                         gap) *
                         i +
                       barWidth * 0.5,
-                  tableSize.value * POSITIVE_RATIO
-                ],
+                    tableSize.value * POSITIVE_RATIO
+                  ],
               rotate: transpose ? 0 : value < 0 ? 90 : 270
             },
             ...data[j][i]
@@ -130,28 +131,28 @@ export default function barLayout() {
           // title: data[0][i]['_x'],
           pos: transpose
             ? [
-              0,
-              (gap +
+                0,
+                (gap +
                   barWidth * GROUP_BAR_NUM +
                   groupGap * (GROUP_BAR_NUM - 1)) *
                   i
-            ]
+              ]
             : [
-              (gap +
+                (gap +
                   barWidth * GROUP_BAR_NUM +
                   groupGap * (GROUP_BAR_NUM - 1)) *
                   i,
-              0
-            ],
+                0
+              ],
           size: transpose
             ? [
-              tableSize.value,
-              barWidth * GROUP_BAR_NUM + groupGap * (GROUP_BAR_NUM - 1) + gap
-            ]
+                tableSize.value,
+                barWidth * GROUP_BAR_NUM + groupGap * (GROUP_BAR_NUM - 1) + gap
+              ]
             : [
-              barWidth * GROUP_BAR_NUM + groupGap * (GROUP_BAR_NUM - 1) + gap,
-              tableSize.value
-            ],
+                barWidth * GROUP_BAR_NUM + groupGap * (GROUP_BAR_NUM - 1) + gap,
+                tableSize.value
+              ],
           ...bgPillarAttr
         })
         groupData.push(gpData)

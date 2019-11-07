@@ -6,7 +6,7 @@ import { axis } from '../../util/axis'
 
 let layoutKeys = ['_x', '_y'] // 表示x,y轴数据
 export function layout(obj) {
-  const { size, stack, data, axisGap, fields } = obj;
+  const { size, stack, data, axisGap, fields, splitNumber } = obj
   data.forEach(lines => {
     lines.forEach(point => {
       point._x = point.__textGetter__()
@@ -30,7 +30,7 @@ export function layout(obj) {
 
   let baseValues = {} // 如果stack为true
   arrObject.forEach(line => {
-    let currentLine = layoutLine(line, arrObject, stack)
+    let currentLine = layoutLine(line, arrObject, stack, splitNumber)
     currentLine.data = line
     if (line.disabled === true) {
       currentLine.disabled = line.disabled
@@ -40,7 +40,7 @@ export function layout(obj) {
   })
   return resArr
 
-  function layoutLine(oData, arrObject, stack) {
+  function layoutLine(oData, arrObject, stack, splitNumber) {
     let res = Object.create(null)
     let data = oData.filter(item => item.disabled !== true) // 过滤disabled的数据
     layoutKeys.forEach(key => {
@@ -64,8 +64,10 @@ export function layout(obj) {
         type = 'value'
       }
       if (type === 'value') {
-        arrObject = arrObject.map(item => item.filter(item => item[fields[type]] !== undefined))
-        scales = axis({ dataSet: arrObject, stack })
+        arrObject = arrObject.map(item =>
+          item.filter(item => item[fields[type]] !== undefined)
+        )
+        scales = axis({ dataSet: arrObject, stack, splitNumber })
         if (stack === true) {
           // 如果为堆叠，处理对应key叠加
           data.forEach((item, ind) => {
@@ -112,7 +114,7 @@ export function layout(obj) {
     const { _x: objX, _y: ObjY } = res
     res.points = []
     objX.data.forEach((item, index) => {
-      let tarY = ObjY.data[index].offset;
+      let tarY = ObjY.data[index].offset
       if (!isNaN(tarY)) {
         res.points.push({
           point: [objX.data[index].offset, tarY]

@@ -21,7 +21,8 @@ export class Line extends BaseVisual {
       type: 'line', // type 为line 或area
       stack: false, // 是否堆叠处理
       smooth: false,
-      axisGap: false // 是否到两端
+      axisGap: false, // 是否到两端
+      splitNumber: 0
     }
   }
 
@@ -385,8 +386,8 @@ function removeLine(patchPoints, layer, attrs) {
   layer.context.clearRect(endX * d - 1, endY * d, d + 1, size[1] * d)
 }
 function getLines(data, attrs, fields) {
-  const { pos, size, stack, axisGap } = attrs
-  return layout({ pos, size, stack, axisGap, data, fields })
+  const { pos, size, stack, axisGap, splitNumber } = attrs
+  return layout({ pos, size, stack, axisGap, data, fields, splitNumber })
 }
 function updateLineAttr(line, newObj, oldObj) {
   line.from = oldObj

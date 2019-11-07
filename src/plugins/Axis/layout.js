@@ -1,7 +1,17 @@
 import { scaleLinear } from '../../util/q-scale'
 import { axis } from '../../util/axis'
 function layout(obj) {
-  let { size, orient, axisGap, data, type, stack, field, range } = obj
+  let {
+    size,
+    orient,
+    axisGap,
+    data,
+    type,
+    stack,
+    field,
+    range,
+    splitNumber
+  } = obj
   let gap = axisGap
   let scales = []
   if (field !== undefined) {
@@ -26,7 +36,8 @@ function layout(obj) {
         stack,
         field,
         section: range,
-        needReverse: true
+        needReverse: true,
+        splitNumber
       })
     }
   }

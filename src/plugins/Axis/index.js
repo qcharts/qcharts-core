@@ -24,6 +24,7 @@ export class Axis extends BasePlugin {
       range: undefined, // 刻度范围
       coord: 'cartesian2d', // [cartesian2d,polar]
       coordPos: ['50%', '50%'],
+      splitNumber: 0,
       formatter: function(str, data) {
         // 格式化坐标轴文字显示
         return str
@@ -159,8 +160,8 @@ export class Axis extends BasePlugin {
         .endAngle(endAngle)
         .padAngle(padAngle)
         .value(d => +d[0].__valueGetter__())(
-          this.getData().filter(d => !d[0].disabled)
-        )
+        this.getData().filter(d => !d[0].disabled)
+      )
     }
     return (
       <Group pos={pos}>
@@ -233,8 +234,8 @@ export class Axis extends BasePlugin {
                 {coord === 'polar' ||
                 gridStyle === false ||
                 (scale.offset === 0 && !axisGap) ? null : (
-                    <Polyline {...gridStyle} />
-                  )}
+                  <Polyline {...gridStyle} />
+                )}
               </Group>
             )
           })}
@@ -249,13 +250,13 @@ export class Axis extends BasePlugin {
             return coord !== 'polar' ||
               gridStyle === false ||
               (scale.offset === 0 && !axisGap) ? null : (
-                <Circle
-                  pos={coordPos}
-                  radius={scale.offset}
-                  {...gridStyle}
-                  anchor={[0.5]}
-                />
-              )
+              <Circle
+                pos={coordPos}
+                radius={scale.offset}
+                {...gridStyle}
+                anchor={[0.5]}
+              />
+            )
           })}
         </Group>
         <Group clipOverflow={false}>

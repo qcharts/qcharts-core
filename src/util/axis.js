@@ -33,6 +33,10 @@ export function axis(attr) {
     mixNum = 3
     maxNum = 5
   }
+  if (attr.splitNumber) {
+    mixNum = attr.splitNumber
+    maxNum = mixNum + 1
+  }
   let getMax = false
   const len = maxValue.toString().length // 最大值位数
   let max =

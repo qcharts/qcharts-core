@@ -22,7 +22,7 @@ chart.source(data, {
   value: 'value',
   text: 'label'
 })
-const bar = new Bar({}).style('pillar', { fillColor: '#47A1FF' })
+const bar = new Bar().style('pillar', { fillColor: '#47A1FF' })
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
 })
