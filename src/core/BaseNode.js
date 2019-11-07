@@ -92,6 +92,7 @@ class BaseNode {
       }
 
       this._colors = i
+      return this
     } else {
       // 当前组件需要取配色
       if (this._colors && !this._colors.length) {
