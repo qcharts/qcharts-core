@@ -3,7 +3,6 @@ const routes = []
 const contexts = require.context('.', true, /\.md$/)
 
 contexts.keys().forEach(key => {
-  console.log(key)
   const dirName = key.substring(key.indexOf('/') + 1, key.lastIndexOf('/'))
   const fileName = key.substring(key.lastIndexOf('/') + 1, key.lastIndexOf('.'))
   if (fileName && fileName !== '') {
