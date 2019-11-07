@@ -49,7 +49,10 @@ class Dataset {
     } else if (isArray(data)) {
       let { value } = this.attr()
       for (let i = 0, len = data.length; i < len; i++) {
-        if (isNaN(data[i][value || 'value'])) {
+        if (
+          typeof data[i][value || 'value'] !== 'undefined' &&
+          isNaN(data[i][value || 'value'])
+        ) {
           invariant(false, `Invalid source data, value must be a number!`)
         }
       }
