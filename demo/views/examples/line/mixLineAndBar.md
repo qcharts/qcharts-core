@@ -31,7 +31,7 @@ const data = [
   { date: '12月', catgory: '气温', val: 6.6 }
 ]
 
-const { Chart, Line, Bar, Legend, Tooltip, Axis } = qcharts
+const { Chart, Line, Bar, Legend, Axis } = qcharts
 
 const chart = new Chart({
   container: '#app'
@@ -46,10 +46,10 @@ chart.source(data, {
 const ds = chart.dataset
 
 const d1 = ds.selectRows('降水量')
-const line = new Line().source(d1)
-line
+const line = new Line({ axisGap: true })
+  .source(d1)
+  .color(['#59CB74'])
   .style('point', { strokeColor: '#fff' })
-  .style('line', { strokeColor: '#59CB74' })
 
 const axisLeft = new Axis({
   orient: 'left',
@@ -81,7 +81,7 @@ const legend = new Legend({ align: ['center', 'bottom'] })
   .style('icon', { borderRadius: 10 })
   .style('text', { fontSize: 12 })
 
-chart.add([line, bar, axisBottom, axisLeft, axisRight, legend])
+chart.add([bar, line, axisBottom, axisLeft, axisRight, legend])
 chart.render()
 ```
 

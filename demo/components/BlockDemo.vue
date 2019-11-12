@@ -6,10 +6,10 @@
     <div v-show="showEditor" class="editor" ref="editor">
       <div class="bock-demo__ctrl">
         <!-- <button>复制</button> -->
-        <span title="运行" @click="syncCode" class="icon"><img src="./play.svg" alt="运行"></span>
-        <span v-if="!isFullscreen" title="全屏" @click="fullscreen" class="icon"><img src="./full-screen.svg" alt="全屏"></span>
-        <span v-if="isFullscreen" title="取消全屏" @click="fullscreen" class="icon"><img src="./recovery.svg" alt="取消全屏"></span>
-        <span @click="copyCode" class="icon"><img src="./code-copy.svg" alt="复制代码"></span>
+        <span title="运行" @click="syncCode" class="icon"><img src="./play.svg" alt="运行" /></span>
+        <span v-if="!isFullscreen" title="全屏" @click="fullscreen" class="icon"><img src="./full-screen.svg" alt="全屏" /></span>
+        <span v-if="isFullscreen" title="取消全屏" @click="fullscreen" class="icon"><img src="./recovery.svg" alt="取消全屏" /></span>
+        <span @click="copyCode" class="icon"><img src="./code-copy.svg" alt="复制代码" /></span>
       </div>
       <div class="bock-demo__code">
         <textarea ref="textarea"></textarea>
@@ -111,7 +111,7 @@ export default {
       let qchartsSrc =
         process.env.NODE_ENV === 'development'
           ? location.origin + '/qcharts.js'
-          : 'https://unpkg.com/@qcharts/core@0.1/lib/index.js'
+          : 'https://unpkg.com/@qcharts/core@0.2/dist/index.js'
       const spritejsSrc =
         process.env.NODE_ENV === 'development'
           ? 'https://unpkg.com/spritejs/dist/spritejs.js'

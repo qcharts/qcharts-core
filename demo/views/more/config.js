@@ -17,8 +17,28 @@ export default [
     path: 'line-multipleYAxis'
   },
   {
+    img: 'https://p2.ssl.qhimg.com/t01d660089a40290d6a.png',
+    title: '折线结束点',
+    path: 'line-endPoint'
+  },
+  {
     img: 'https://p5.ssl.qhimg.com/d/inn/e48ee7ed2877/mixLineAndBar.png',
     title: '图表组合',
     path: 'line-mixLineAndBar'
+  },
+  {
+    img: 'https://p0.ssl.qhimg.com/t01abca5ece564da66a.png',
+    title: '隐藏坐标轴',
+    path: 'bar-noAxis'
+  },
+  {
+    img: 'https://p1.ssl.qhimg.com/t01a84f61bbda1ef444.png',
+    title: '柱状图颜色渐变',
+    path: 'bar-gradualBar'
+  },
+  {
+    img: 'https://p1.ssl.qhimg.com/t0153188b21ef99f471.png',
+    title: '无坐标散点图',
+    path: 'scatter-common'
   }
 ]
