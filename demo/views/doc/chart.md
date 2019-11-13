@@ -30,3 +30,21 @@ chart.render()
 ```
 
 在 `qcharts` 中将传统的图表类型（如：`pie` 和 `line`）区分为 `visual`，意为一种可视类型。可以在一个 `chart` 传入多个 `visual` 实例。
+
+## 数据更新
+
+在 `qcharts` 如果数据存在更新，可以直接更新数据，如下：
+
+```javascript
+chart.source(newData, {
+  row: 'year',
+  value: 'sales',
+  text: 'product'
+})
+```
+
+如果更新的数据中，对应的字段名称都没有改变，直接
+
+```javascript
+chart.source(newData)
+```
