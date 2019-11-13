@@ -1,5 +1,5 @@
 export function install({ Sprite, utils, registerNodeType }, options) {
-  const { attr, setDeprecation, findColor, parseColorString } = utils
+  const { setDeprecation, findColor } = utils
 
   class RectSprite extends Sprite {
     constructor(attrs) {
