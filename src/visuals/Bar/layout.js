@@ -7,6 +7,7 @@ export default function barLayout() {
     const transpose = dataInfo.transpose
     const stack = dataInfo.stack
     const groupGap = dataInfo.groupGap
+    const stackGap = dataInfo.stackGap
     let barWidth = dataInfo.barWidth
     const splitNumber = dataInfo.splitNumber
     // 输出
@@ -166,11 +167,15 @@ export default function barLayout() {
         let gpData = { rects: [] }
         // 计算单根柱子
         for (let j = 0, lenj = data.length; j < lenj; j++) {
+          let stackGapTemp = stackGap
           if (data[j][i].disabled !== true) {
             data[j][i].disabled = false
           }
           value = data[j][i].__valueGetter__()
           let barHeight = BAR_HEIGHT_FACTOR * Math.abs(value)
+          if (barHeight === 0) {
+            stackGapTemp = 0
+          }
           let posY =
             value < 0
               ? tableSize.value * POSITIVE_RATIO + heightSumDown
@@ -188,7 +193,9 @@ export default function barLayout() {
               transpose && value < 0 ? 1 : 0,
               transpose || value < 0 ? 0 : 1
             ],
-            size: transpose ? [barHeight, barWidth] : [barWidth, barHeight],
+            size: transpose
+              ? [barHeight - stackGapTemp, barWidth]
+              : [barWidth, barHeight - stackGapTemp],
             pos: transpose
               ? [posX, gap / 2 + (barWidth + gap) * i]
               : [gap / 2 + (barWidth + gap) * i, posY],

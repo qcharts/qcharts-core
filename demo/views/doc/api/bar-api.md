@@ -14,6 +14,7 @@ attrs 包含若干布局属性，将这些属性放入 Object 对象传入组件
 | size          | Array   | ['80%','80%']          | 组件大小，可设置百分比或者像素                                                      |
 | splitNumber   | Number  | 0                      | 坐标轴的分割段数，用来计算柱子的最大高度，在设置坐标轴的 splitNumber 属性时同步加上 |
 | stack         | Boolean | false                  | 是否设置为堆叠图，二维数据无法堆叠                                                  |
+| stackGap      | Number  | 0                      | 堆叠图中柱子间距                                                                    |
 | transpose     | Boolean | false                  | 是否设置为条形图                                                                    |
 
 ### style 属性

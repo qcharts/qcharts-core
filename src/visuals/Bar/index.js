@@ -19,7 +19,8 @@ export class Bar extends BaseVisual {
       barWidth: 0,
       mouseDisabled: false,
       barGap: 0,
-      splitNumber: 0
+      splitNumber: 0,
+      stackGap: 0
     }
   }
 
@@ -41,7 +42,8 @@ export class Bar extends BaseVisual {
       stack: this.attr('stack'),
       transpose: this.attr('transpose'),
       groupGap: this.attr('barGap'),
-      splitNumber: this.attr('splitNumber')
+      splitNumber: this.attr('splitNumber'),
+      stackGap: this.attr('stackGap')
     }
     const result = layout()(dataInfoObj)
     result.barData.forEach((bar, i) => {
