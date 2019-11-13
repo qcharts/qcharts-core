@@ -12,7 +12,7 @@ export default [
     path: 'line-multipleXAxis'
   },
   {
-    img: 'https://p3.ssl.qhimg.com/d/inn/6b7ac4e8c324/multipleYAxis.png',
+    img: 'https://p0.ssl.qhimg.com/t0144009aa56754cd60.png',
     title: '双Y轴折线图',
     path: 'line-multipleYAxis'
   },
