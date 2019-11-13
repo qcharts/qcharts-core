@@ -10,7 +10,8 @@ function layout(obj) {
     stack,
     field,
     range,
-    splitNumber
+    splitNumber,
+    pos
   } = obj
   let gap = axisGap
   let scales = []
@@ -66,6 +67,13 @@ function layout(obj) {
     points: [],
     lineDash: [3, 4],
     translate: [0.5, 0.5]
+  }
+  let nameAttrs = {
+    color: '#67728C',
+    fontSize: 14,
+    width: 2 * pos[0],
+    padding: [4, 4],
+    textAlign: 'center'
   }
 
   let sLength = scales.length - 1
@@ -130,21 +138,27 @@ function layout(obj) {
     labelAttrs.anchor = [1, 0.5]
     scaleAttrs.points[1] = [-4, 0]
     gridAttrs.points = [[0, 0], [size[0], 0]]
+    nameAttrs.pos = [-pos[0], -nameAttrs.fontSize * 2]
   } else if (orient === 'right') {
     originalPoint = [size[0], 0]
     axisAttrs.points = [[0, 0], [0, size[1]]]
     labelAttrs.anchor = [0, 0.5]
     scaleAttrs.points = [[0, 0], [4, 0]]
     gridAttrs.points = [[-size[0], 0], [0, 0]]
+    nameAttrs.pos = [size[0] - pos[0], -nameAttrs.fontSize * 2]
   } else if (orient === 'top') {
     labelAttrs.anchor = [0.5, 1]
     scaleAttrs.points[1] = [0, -4]
     gridAttrs.points = [[0, 0], [0, size[1]]]
+    nameAttrs.pos = [size[0], -nameAttrs.fontSize]
+    nameAttrs.textAlign = 'left'
   } else {
     originalPoint = [0, size[1]]
     labelAttrs.anchor = [0.5, 0]
     scaleAttrs.points[1] = [0, 4]
     gridAttrs.points = [[0, -size[1]], [0, 0]]
+    nameAttrs.pos = [size[0], size[1] - nameAttrs.fontSize]
+    nameAttrs.textAlign = 'left'
   }
   return {
     scales,
@@ -153,6 +167,7 @@ function layout(obj) {
     gridAttrs,
     labelAttrs,
     scaleAttrs,
+    nameAttrs,
     orient
   }
 }

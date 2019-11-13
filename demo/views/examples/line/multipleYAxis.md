@@ -56,12 +56,14 @@ const line = new Line({
 const axisLeft = new Axis({
   orient: 'left',
   splitNumber: 5,
+  name: '降水量（毫升）',
   formatter: val => {
     return `${val} ml`
   }
 })
   .style('axis', false)
   .style('scale', false)
+  .style('name', { color: '#f00', translate: [-10, -10] })
   .source(d1)
 
 const d2 = ds.selectRows('气温')
@@ -75,12 +77,14 @@ line2.color(['#59CB74'])
 const axisRight = new Axis({
   splitNumber: 5,
   orient: 'right',
+  name: '温度（摄氏度）',
   formatter: val => {
     return `${val} °C`
   }
 })
   .style('axis', false)
   .style('scale', false)
+  .style('name', { fontSize: 12, translate: [10, 0] })
   .source(d2)
 
 const axisBottom = new Axis().style('scale', true)

@@ -25,6 +25,7 @@ export class Axis extends BasePlugin {
       coord: 'cartesian2d', // [cartesian2d,polar]
       coordPos: ['50%', '50%'],
       splitNumber: 0,
+      name: '', // 坐标轴名字
       formatter: function(str, data) {
         // 格式化坐标轴文字显示
         return str
@@ -127,6 +128,13 @@ export class Axis extends BasePlugin {
       this.attr({ axisGap: true })
     }
   }
+  nameStyle(el, attrs) {
+    let { pos } = el.attr()
+    let { pos: oPos } = attrs
+    if (pos && oPos && (pos[0] !== oPos[0] || pos[1] !== oPos[1])) {
+      el.reflow()
+    }
+  }
   mergeAttr($target, arr) {
     if ($target) {
       arr.forEach(name => {
@@ -150,6 +158,10 @@ export class Axis extends BasePlugin {
   }
   render(renderData = {}) {
     let axisStyle = this.mergeTheme('axis', [renderData.axisAttrs])
+    let axisName = this.attr('name')
+    axisName = String(axisName)
+    let nameStyle = this.mergeTheme('name', [renderData.nameAttrs])
+    nameStyle.text = axisName
     let rings = []
     const { axisGap, formatter, pos, coord, size, coordPos } = this.attr()
     let $target = this.attr('target')
@@ -305,6 +317,9 @@ export class Axis extends BasePlugin {
         </Group>
         {axisStyle === false ? null : (
           <Polyline {...axisStyle} pos={renderData.originalPoint} />
+        )}
+        {nameStyle === false ? null : (
+          <Label ref={el => this.nameStyle(el, nameStyle)} {...nameStyle} />
         )}
       </Group>
     )
