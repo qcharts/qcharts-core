@@ -1,4 +1,4 @@
-import { Group, Sprite, Rect } from 'spritejs'
+import { Group, Sprite, RectSprite } from 'spritejs'
 import { clone } from '../../util'
 import { BaseVisual } from '../../core'
 import layout from './layout'
@@ -183,7 +183,7 @@ export class Bar extends BaseVisual {
             const { from, to } = this.fromTos[i]
             return (
               <Group enableCache={false} clipOverflow={false}>
-                <Rect
+                <RectSprite
                   {...pillar}
                   {...from}
                   animation={this.resolveAnimation({
