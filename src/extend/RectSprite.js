@@ -1,22 +1,34 @@
 export function install({ Sprite, utils, registerNodeType }, options) {
-  const { setDeprecation, findColor } = utils
+  const { attr, setDeprecation, findColor, parseColorString } = utils
 
+  class RectSpriteAttr extends Sprite.Attr {
+    constructor(subject) {
+      super(subject)
+      this.setDefault({
+        fillColor: 'transparent',
+        lineWidth: 0,
+        strokeColor: 'transparent'
+      })
+    }
+    @attr
+    set fillColor(val) {
+      val = parseColorString(val)
+      this.set('fillColor', val)
+    }
+    @attr
+    set lineWidth(val) {
+      this.set('lineWidth', val)
+    }
+
+    @attr
+    set strokeColor(val) {
+      val = parseColorString(val)
+      this.set('strokeColor', val)
+    }
+  }
   class RectSprite extends Sprite {
-    constructor(attrs) {
-      super(attrs)
-      console.log(attrs)
-    }
-    attr(name, val) {
-      let arr = ['strokeColor']
-      if (arr.indexOf(name) !== -1) {
-        console.log(name, val)
-        if (typeof name === 'object') {
-        } else {
-        }
-      }
-      let res = super.attr(name, val)
-      return res
-    }
+    static Attr = RectSpriteAttr
+
     get contentSize() {
       let [width, height] = this.attr('size')
       return [width, height]
@@ -26,7 +38,7 @@ export function install({ Sprite, utils, registerNodeType }, options) {
       const [width, height] = this.contentSize
       drawingContext.beginPath()
       drawingContext.rect(0, 0, width, height)
-      // console.log('abc', this.attr('strokeColor'))
+
       drawingContext.strokeStyle = findColor(
         drawingContext,
         this,

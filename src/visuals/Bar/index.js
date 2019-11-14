@@ -56,8 +56,8 @@ export class Bar extends BaseVisual {
       bar.index = i
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
-      bar.strokeColor = bar.fillColor
-      bar.color = bar.fillColor
+      // bar.strokeColor = bar.fillColor
+      // bar.color = bar.fillColor
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
