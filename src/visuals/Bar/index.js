@@ -1,4 +1,4 @@
-import { Group, Sprite, Rect } from 'spritejs'
+import { Group, Sprite, RectSprite } from 'spritejs'
 import { clone } from '../../util'
 import { BaseVisual } from '../../core'
 import layout from './layout'
@@ -56,8 +56,8 @@ export class Bar extends BaseVisual {
       bar.index = i
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
-      bar.strokeColor = bar.fillColor
-      bar.color = bar.fillColor
+      // bar.strokeColor = bar.fillColor
+      // bar.color = bar.fillColor
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
@@ -183,7 +183,7 @@ export class Bar extends BaseVisual {
             const { from, to } = this.fromTos[i]
             return (
               <Group enableCache={false} clipOverflow={false}>
-                <Rect
+                <RectSprite
                   {...pillar}
                   {...from}
                   animation={this.resolveAnimation({
