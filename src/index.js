@@ -1,5 +1,6 @@
 import * as spritejs from 'spritejs'
 import shapes from '@spritejs/shapes/dist/sprite-extend-shapes'
+import * as RectSprite from './extend/RectSprite.js'
 import { getGlobal } from './util'
 // core
 import { h, Chart, BasePlugin, BaseVisual, Global, Dataset } from './core'
@@ -23,7 +24,7 @@ import { Legend, Text, Tooltip, Axis } from './plugins'
 import * as Theme from './themes'
 
 spritejs.use(shapes)
-
+spritejs.use(RectSprite)
 // 注册样式
 Global.registerTheme('default', Theme.light)
 Global.registerTheme('dark', Theme.dark)
