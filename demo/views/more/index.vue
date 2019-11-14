@@ -14,13 +14,13 @@
 <script>
 import examplesList from './config'
 export default {
-  data () {
+  data() {
     return {
       list: examplesList
     }
   },
   methods: {
-    calcPath (path) {
+    calcPath(path) {
       return `./#/examples/${path}`
     }
   }
@@ -55,6 +55,7 @@ export default {
         border-bottom: 1px solid #eee;
       }
       img {
+        width: 340px;
         height: 280px;
         display: block;
       }

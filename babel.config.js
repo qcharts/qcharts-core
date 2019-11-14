@@ -36,7 +36,6 @@ const chartProd = {
     ]
   ],
   plugins: [
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
     '@babel/plugin-proposal-class-properties',
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-export-default-from',

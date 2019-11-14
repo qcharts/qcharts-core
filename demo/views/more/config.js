@@ -40,5 +40,15 @@ export default [
     img: 'https://p1.ssl.qhimg.com/t0153188b21ef99f471.png',
     title: '无坐标散点图',
     path: 'scatter-common'
+  },
+  {
+    img: 'http://p2.qhimg.com/t01670ed67013eafe8b.png',
+    title: '间距堆叠条形图',
+    path: 'bar-gapStackBar'
+  },
+  {
+    img: 'http://p9.qhimg.com/t0173ea1c4135741bf9.png',
+    title: '纹理条形图',
+    path: 'bar-textureBar'
   }
 ]
