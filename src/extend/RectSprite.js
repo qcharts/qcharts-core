@@ -28,11 +28,6 @@ export function install({ Sprite, utils, registerNodeType }, options) {
   }
   class RectSprite extends Sprite {
     static Attr = RectSpriteAttr
-
-    get contentSize() {
-      let [width, height] = this.attr('size')
-      return [width, height]
-    }
     render(t, drawingContext) {
       super.render(t, drawingContext)
       const [width, height] = this.contentSize
