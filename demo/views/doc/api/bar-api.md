@@ -16,6 +16,7 @@ attrs 包含若干布局属性，将这些属性放入 Object 对象传入组件
 | stack         | Boolean | false                  | 是否设置为堆叠图，二维数据无法堆叠                                                  |
 | stackGap      | Number  | 0                      | 堆叠图中柱子间距                                                                    |
 | transpose     | Boolean | false                  | 是否设置为条形图                                                                    |
+| textures      | Array   |                        | 设置纹理，参考 spritejs 中纹理设置方式                                              |
 
 ### style 属性
 

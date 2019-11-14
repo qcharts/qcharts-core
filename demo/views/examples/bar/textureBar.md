@@ -31,11 +31,17 @@ bar
   .style('pillar', (attrs, data, i) => {
     if (i === 0) {
       return {
-        textures: [{ src: texture1 }]
+        textures: [
+          { src: texture1 },
+          { src: texture1, rect: [445, 0, 450, 40] }
+        ]
       }
     } else {
       return {
-        textures: [{ src: texture2 }]
+        textures: [
+          { src: texture2 },
+          { src: texture2, rect: [445, 0, 450, 40] }
+        ]
       }
     }
   })
