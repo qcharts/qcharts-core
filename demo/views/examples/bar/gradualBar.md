@@ -27,7 +27,7 @@ const bar = new Bar({ barWidth: 12 })
     let size = attrs.size
     if (i === 0) {
       return {
-        bgcolor: {
+        fillColor: {
           vector: [0, 0, size[0], size[1]],
           colors: [
             { color: '#007BF1', offset: 0 },
@@ -37,7 +37,7 @@ const bar = new Bar({ barWidth: 12 })
       }
     } else if (i === 1) {
       return {
-        bgcolor: {
+        fillColor: {
           vector: [0, 0, size[0], size[1]],
           colors: [
             { color: '#BC9621', offset: 0 },
@@ -47,7 +47,7 @@ const bar = new Bar({ barWidth: 12 })
       }
     } else if (i === 2) {
       return {
-        bgcolor: {
+        fillColor: {
           vector: [0, 0, size[0], size[1]],
           colors: [
             { color: '#E44E00', offset: 0 },
@@ -57,7 +57,7 @@ const bar = new Bar({ barWidth: 12 })
       }
     } else if (i === 3) {
       return {
-        bgcolor: {
+        fillColor: {
           vector: [0, 0, size[0], size[1]],
           colors: [
             { color: '#F10000', offset: 0 },
