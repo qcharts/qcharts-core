@@ -1,4 +1,5 @@
 export function install({ Sprite, utils, registerNodeType }) {
+  const { findColor } = utils
   class RectSprite extends Sprite {
     constructor(subject) {
       super(subject)
@@ -13,7 +14,7 @@ export function install({ Sprite, utils, registerNodeType }) {
       drawingContext.beginPath()
       drawingContext.rect(0, 0, width, height)
       drawingContext.strokeStyle = this.attr('strokeColor')
-      drawingContext.fillStyle = this.attr('fillColor')
+      drawingContext.fillStyle = findColor(drawingContext, this, 'fillColor')
       drawingContext.lineWidth = this.attr('lineWidth')
       drawingContext.fill()
       drawingContext.stroke()
