@@ -82,14 +82,6 @@ export default {
   Gauge: {
     colors: ['#6CD3FF', '#47A1FF', '#5982F6']
   },
-
-  Title: {
-    padding: [10, 10],
-    color: '#333',
-    font: '14px "楷体"',
-    textAlign: 'center'
-  },
-
   Line: {
     colors: [
       '#47A1FF',
