@@ -1,5 +1,5 @@
 import * as spritejs from 'spritejs'
-import shapes from '@spritejs/shapes/dist/sprite-extend-shapes'
+import shapes from '@spritejs/shapes'
 import * as RectSprite from './extend/RectSprite.js'
 import { getGlobal } from './util'
 // core
