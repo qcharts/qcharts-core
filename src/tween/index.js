@@ -1,4 +1,4 @@
-import Easing from './easing'
-import Tween from './tween'
+import Easing from './easing1'
+import Tween from './tween1'
 
 export { Tween, Easing }
