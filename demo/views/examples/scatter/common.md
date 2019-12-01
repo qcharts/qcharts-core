@@ -70,6 +70,7 @@ const scatter = new Scatter({
   areaField: 'z',
   labelField: 'name',
   areaRange: [20, 45],
+  showGuideLine: true,
   layoutWay: {
     x: { min: 0, max: 80 },
     y: { min: 0, max: 25 }
@@ -112,7 +113,17 @@ scatter
     return { color, fontSize }
   })
 
-chart.add([scatter])
+const axisBottom = new Axis()
+
+const axisLeft = new Axis({ orient: 'left' })
+
+const tooltip = new Tooltip({
+  formatter: data => {
+    return `${data.name} x：${data.x} y：${data.y} `
+  }
+})
+
+chart.add([scatter, axisBottom, axisLeft, tooltip])
 
 chart.render()
 ```

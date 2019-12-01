@@ -1,4 +1,3 @@
-import { axis } from '../../util'
 import { scaleLinear } from '../../util/q-scale'
 import { isNumber, isString } from '../../util/is'
 
@@ -21,7 +20,7 @@ const getBigRange = data => {
   return [n * 10, m * 10]
 }
 
-const updateSectionVal = (section, newSection) => {
+const updateDomainVal = (section, newSection) => {
   const { min, max } = newSection
   if (isNumber(min)) {
     section[0] = min
@@ -42,44 +41,29 @@ export default function layout(data, dataAttr, size, layoutWay) {
   // 如果X轴是文本框，则进行均分
   const maxLen = getDataRange(data.map(d => d.length))[1]
   let xDomain = [0, maxLen - 1]
-  let xSection = [0, maxLen - 1]
   const xIsTextData = allData.some(d => isString(d.__textGetter__()))
   if (!xIsTextData) {
-    xSection = getBigRange(allData.map(d => d.__textGetter__()))
-    const xScales = axis({
-      dataSet: data,
-      stack: false,
-      field: textField,
-      section: xSection
-    })
-    xDomain = getDataRange(xScales)
+    xDomain = getBigRange(allData.map(d => d.__textGetter__()))
   }
 
   const yIsTextData = allData.some(d => isString(d.__valueGetter__()))
   if (yIsTextData) {
-    throw new Error("Scatter's value category data should be Number!")
+    throw new Error("Scatter's value category data type should be Number!")
   }
-  let ySection = getBigRange(allData.map(d => d.__valueGetter__()))
-  const yScales = axis({
-    dataSet: data,
-    stack: false,
-    field: valueField,
-    section: ySection
-  })
-  const yDomain = getDataRange(yScales)
+  let yDomain = getBigRange(allData.map(d => d.__valueGetter__()))
 
   if (layoutWay) {
     if (layoutWay[textField]) {
-      updateSectionVal(xSection, layoutWay[textField])
+      updateDomainVal(xDomain, layoutWay[textField])
     }
-    if (layoutWay[valueField]) {
-      updateSectionVal(ySection, layoutWay[valueField])
+    if (layoutWay[valueField] && !yIsTextData) {
+      updateDomainVal(yDomain, layoutWay[valueField])
     }
   }
 
   const newLayoutWay = {}
-  newLayoutWay[textField] = { min: xSection[0], max: xSection[1] }
-  newLayoutWay[valueField] = { min: ySection[0], max: ySection[1] }
+  newLayoutWay[textField] = { min: xDomain[0], max: xDomain[1] }
+  newLayoutWay[valueField] = { min: yDomain[0], max: yDomain[1] }
 
   const xLinear = scaleLinear()
     .domain(xDomain)
@@ -96,7 +80,6 @@ export default function layout(data, dataAttr, size, layoutWay) {
       return {
         pos,
         radius: 4,
-        anchor: [1, 1],
         dataOrigin: d.dataOrigin,
         disabled: d.disabled
       }

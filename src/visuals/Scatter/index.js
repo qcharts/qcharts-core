@@ -19,7 +19,7 @@ export class Scatter extends BaseVisual {
       labelField: null,
       areaField: null,
       areaRange: null,
-      showguideline: false,
+      showGuideLine: false,
       layoutWay: null
     }
   }
@@ -80,8 +80,8 @@ export class Scatter extends BaseVisual {
       data: { color: attr.fillColor, ...attr.dataOrigin },
       ...evt
     })
-    const { showguideline } = this.attr()
-    if (showguideline) {
+    const { showGuideLine } = this.attr()
+    if (showGuideLine) {
       const { x, y } = evt
       const { size } = this.attr()
       const [offsetX, offsetY] = this.$group.pointToOffset(x, y).map(Math.round)
@@ -93,8 +93,14 @@ export class Scatter extends BaseVisual {
         el.attr(style)
         const points =
           index === 0
-            ? [[0, offsetY], [size[0], offsetY]]
-            : [[offsetX, 0], [offsetX, size[1]]]
+            ? [
+              [0, offsetY],
+              [size[0], offsetY]
+            ]
+            : [
+              [offsetX, 0],
+              [offsetX, size[1]]
+            ]
         el.attr('points', points)
       })
     }
@@ -102,9 +108,14 @@ export class Scatter extends BaseVisual {
 
   hideTooltip() {
     this.dataset.hoverData(null)
-    const { showguideline } = this.attr()
-    if (showguideline) {
-      this.$guidelineEl.forEach(el => el.attr('points', [[0, 0], [0, 0]]))
+    const { showGuideLine } = this.attr()
+    if (showGuideLine) {
+      this.$guidelineEl.forEach(el =>
+        el.attr('points', [
+          [0, 0],
+          [0, 0]
+        ])
+      )
     }
   }
 
@@ -184,10 +195,13 @@ export class Scatter extends BaseVisual {
     }
   }
 
-  renderguideline() {
+  renderGuideline() {
     const guildLine = []
     const attr = {
-      points: [[0, 0], [0, 0]],
+      points: [
+        [0, 0],
+        [0, 0]
+      ],
       strokeColor: '#ddd',
       lineWidth: 1
     }
@@ -291,7 +305,7 @@ export class Scatter extends BaseVisual {
     return (
       <Group size={size} padding={padding} zIndex={100} clipOverflow={false}>
         {this.renderScatter(data)}
-        {this.renderguideline()}
+        {this.renderGuideline()}
       </Group>
     )
   }
