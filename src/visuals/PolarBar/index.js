@@ -2,7 +2,7 @@ import { Group, Ring } from 'spritejs'
 import { clone } from '../../util'
 import { BaseVisual } from '../../core'
 import layout from './layout'
-import { withText } from './text'
+// import { withText } from './text'
 
 export class PolarBar extends BaseVisual {
   constructor(attrs = {}) {
@@ -39,7 +39,7 @@ export class PolarBar extends BaseVisual {
     return [x, y]
   }
   get maxOuterRadius() {
-    const { startAngle, endAngle, radius, size } = this.attr()
+    const { radius, size } = this.attr()
     const [width, height] = size
 
     // if (endAngle - startAngle === Math.PI / 2) {

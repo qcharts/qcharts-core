@@ -30,7 +30,7 @@ export default function barLayout() {
     const stack = dataInfo.stack
     const groupGap = dataInfo.groupGap
     const stackGap = dataInfo.stackGap
-    let barWidth = dataInfo.barWidth
+    // let barWidth = dataInfo.barWidth
     const splitNumber = dataInfo.splitNumber
     const radius = dataInfo.radius
     const padAngle = dataInfo.padAngle
@@ -49,11 +49,11 @@ export default function barLayout() {
     const tableSize = Math.min(barSize[0], barSize[1])
     const axisValueMax = Math.max.apply(this, valueAxis)
     const axisValueMin = Math.min.apply(this, valueAxis)
-    const POSITIVE_RATIO = axisValueMax / (axisValueMax - axisValueMin) // 正负柱子高度比例
+    // const POSITIVE_RATIO = axisValueMax / (axisValueMax - axisValueMin) // 正负柱子高度比例
     const GROUP_BAR_NUM = computerLegend(data) // 图例显示个数
 
     const GROUP_NUM = data[0].length
-    let gap = 0
+    // let gap = 0
     // 柱子宽度，根据数据绘制类型计算，是否分组，是否旋转
 
     const BAR_HEIGHT_FACTOR =
@@ -110,51 +110,16 @@ export default function barLayout() {
         let gpData = { rects: [] }
         // 计算单根柱子
         for (let j = 0, lenj = data.length; j < lenj; j++) {
-          let stackGapTemp = stackGap
+          // let stackGapTemp = stackGap
           if (data[j][i].disabled !== true) {
             data[j][i].disabled = false
           }
           value = data[j][i].__valueGetter__()
           let barHeight = BAR_HEIGHT_FACTOR * Math.abs(value)
-          if (barHeight === 0) {
-            stackGapTemp = 0
-          }
-          let posY =
-            value < 0
-              ? tableSize.value * POSITIVE_RATIO + heightSumDown
-              : tableSize.value * POSITIVE_RATIO - heightSumUp
-          let posX =
-            value < 0
-              ? tableSize.value * (1 - POSITIVE_RATIO) - heightSumDown
-              : tableSize.value * (1 - POSITIVE_RATIO) + heightSumUp
-          let posLabelY =
-            value < 0
-              ? tableSize.value * POSITIVE_RATIO + heightSumDown + barHeight
-              : tableSize.value * POSITIVE_RATIO - heightSumUp
-          let rect = {
-            anchor: [
-              transpose && value < 0 ? 1 : 0,
-              transpose || value < 0 ? 0 : 1
-            ],
-            size: transpose
-              ? [barHeight - stackGapTemp, barWidth]
-              : [barWidth, barHeight - stackGapTemp],
-            pos: transpose
-              ? [posX, gap / 2 + (barWidth + gap) * i]
-              : [gap / 2 + (barWidth + gap) * i, posY],
-            index: j,
-            labelAttrs: {
-              opacity: !data[j][i].disabled ? 1 : 0,
-              text: value,
-              anchor: transpose ? (value < 0 ? [1, 0.5] : [0, 0.5]) : [0.5, 1],
-              pos: transpose
-                ? [posX, +(gap + barWidth) / 2 + (barWidth + gap) * i]
-                : [(gap + barWidth) / 2 + (barWidth + gap) * i, posLabelY]
-            },
-            ...data[j][i]
-          }
+
+          let rect = {}
           if (rect.disabled) {
-            rect.size = transpose ? [0, rect.size[1]] : [rect.size[0], 0]
+            rect.size = [rect.size[0], 0]
           } else {
             value < 0
               ? (heightSumDown = heightSumDown + barHeight)
@@ -164,15 +129,7 @@ export default function barLayout() {
           barData.push(rect)
         }
         // 柱子整体属性
-        gpData = Object.assign(gpData, {
-          pos: transpose
-            ? [0, (gap + barWidth) * i]
-            : [(gap + barWidth) * i, 0],
-          size: transpose
-            ? [tableSize.value, barWidth + gap]
-            : [barWidth + gap, tableSize.value],
-          ...bgPillarAttr
-        })
+        gpData = Object.assign(gpData, {})
         groupData.push(gpData)
       }
     }
