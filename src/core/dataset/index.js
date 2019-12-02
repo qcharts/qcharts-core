@@ -310,7 +310,9 @@ class Dataset {
     return names
       .sort((a, b) => indexMap[a] - indexMap[b])
       .reduce((a, c) => {
-        a.push(this._selectDataByName(c, type))
+        if (typeof this._selectDataByName(c, type) !== 'undefined') {
+          a.push(this._selectDataByName(c, type))
+        }
         return a
       }, [])
   }

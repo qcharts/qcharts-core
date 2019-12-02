@@ -205,7 +205,10 @@ export class Line extends BaseVisual {
   }
   render(lines = []) {
     let guidelineAttrs = {
-      points: [[0, 0], [0, this.attr('size')[1]]],
+      points: [
+        [0, 0],
+        [0, this.attr('size')[1]]
+      ],
       strokeColor: '#ccc',
       opacity: 0
     }
@@ -238,33 +241,36 @@ export class Line extends BaseVisual {
                 onMouseleave={this.bgLeave.bind(this)}
                 enableCache={false}
               >
-                <Polyline
-                  ref={el => this.$lines.push(el)}
-                  {...lineAttrs}
-                  hoverState={this.style('line:hover')(
-                    lineAttrs,
-                    line.data.map(item => item.dataOrigin),
-                    i
-                  )}
-                  onMouseenter={(_, el) => el.attr('state', 'hover')}
-                  smooth={smooth}
-                  onMouseleave={(evt, el) => {
-                    el.attr('state', 'normal')
-                  }}
-                  actions={[
-                    {
-                      both: ['normal', 'hover'],
-                      action: { duration: 100 },
-                      reversable: false
-                    }
-                  ]}
-                  animation={this.resolveAnimation({
-                    from: line.from,
-                    to: line.to,
-                    duration: 200,
-                    useTween: true
-                  })}
-                />
+                {line.points.length <= 1 ? null : (
+                  <Polyline
+                    ref={el => this.$lines.push(el)}
+                    {...lineAttrs}
+                    hoverState={this.style('line:hover')(
+                      lineAttrs,
+                      line.data.map(item => item.dataOrigin),
+                      i
+                    )}
+                    onMouseenter={(_, el) => el.attr('state', 'hover')}
+                    smooth={smooth}
+                    onMouseleave={(evt, el) => {
+                      el.attr('state', 'normal')
+                    }}
+                    actions={[
+                      {
+                        both: ['normal', 'hover'],
+                        action: { duration: 100 },
+                        reversable: false
+                      }
+                    ]}
+                    animation={this.resolveAnimation({
+                      from: line.from,
+                      to: line.to,
+                      duration: 200,
+                      useTween: true
+                    })}
+                  />
+                )}
+                {console.log(line.points)}
                 {line.points.map((item, j) => {
                   line.data[j].color = color
                   return this._getSymbol(
@@ -467,7 +473,8 @@ function getLinePoints(lines, i, name) {
   if (line.disabled === true) {
     return getLinePoints(lines, i - 1, name)
   }
-  return line.points.map(point => {
+  let points = line.points.map(point => {
     return point[name].pos || point.point
   })
+  return points
 }
