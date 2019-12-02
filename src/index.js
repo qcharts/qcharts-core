@@ -16,7 +16,8 @@ import {
   Funnel,
   Scatter,
   Gauge,
-  RadialBar
+  RadialBar,
+  PolarBar
 } from './visuals'
 // plugin
 import { Legend, Text, Tooltip, Axis } from './plugins'
@@ -49,6 +50,7 @@ const qcharts = {
   Scatter,
   Gauge,
   RadialBar,
+  PolarBar,
   Legend,
   Text,
   Tooltip,
