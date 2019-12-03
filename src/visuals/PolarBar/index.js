@@ -131,14 +131,35 @@ export class PolarBar extends BaseVisual {
           endAngle: 0
         }
       }
-      return {
-        from: {
-          startAngle: prev.startAngle,
-          endAngle: prev.startAngle
-        },
-        to: {
-          startAngle: nextPillar.startAngle,
-          endAngle: nextPillar.endAngle
+      if (this.attr('stack')) {
+        return {
+          from: {
+            innerRadius: prev.disabled
+              ? nextPillar.innerRadius
+              : prev.innerRadius,
+            outerRadius: prev.disabled
+              ? nextPillar.innerRadius
+              : prev.outerRadius
+          },
+          to: {
+            innerRadius: nextPillar.disabled
+              ? prev.innerRadius
+              : nextPillar.innerRadius,
+            outerRadius: nextPillar.disabled
+              ? prev.innerRadius
+              : nextPillar.outerRadius
+          }
+        }
+      } else {
+        return {
+          from: {
+            startAngle: prev.startAngle,
+            endAngle: prev.endAngle
+          },
+          to: {
+            startAngle: nextPillar.startAngle,
+            endAngle: nextPillar.endAngle
+          }
         }
       }
     })
@@ -203,14 +224,11 @@ export class PolarBar extends BaseVisual {
               <Group enableCache={false} clipOverflow={false}>
                 <Ring
                   {...pillar}
-                  {...from}
                   animation={this.resolveAnimation({
                     from,
                     to,
-                    duration: 300,
-                    delay: 0,
-
-                    useTween: true
+                    duration: 500,
+                    delay: 0
                   })}
                   hoverState={this.style('pillar:hover')(
                     pillar,

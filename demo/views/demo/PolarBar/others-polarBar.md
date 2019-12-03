@@ -97,7 +97,6 @@ const bar = new PolarBar({
   radius: 0.9,
   groupPadAngle: Math.PI * 0.2
 })
-bar.color(['#61A0A8', '#C23531', '#2F4554'])
 const tooltip = new Tooltip({
   formatter: d => `${d.product}: ${d.sales}`
 })

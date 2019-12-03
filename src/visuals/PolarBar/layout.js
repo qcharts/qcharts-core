@@ -55,7 +55,6 @@ export default function barLayout() {
     const BAR_MAX_HEIGHT = 0.5 * radius * tableSize
     const BAR_HEIGHT_FACTOR = BAR_MAX_HEIGHT / (axisValueMax - axisValueMin)
     if (!stack) {
-      // debugger
       // 分组柱状图
       for (let i = 0, len = GROUP_NUM; i < len; i++) {
         let flag = 0 // 计算当前柱子前面有几根被隐藏
@@ -79,7 +78,6 @@ export default function barLayout() {
             innerRadius: innerRadius,
             outerRadius: innerRadius + barHeight,
             startAngle: startAngle,
-            // bgcolor: 'rgba(200,200,200,0.5)',
             endAngle: startAngle + barAngle,
             ...data[j][i]
           }
@@ -114,7 +112,6 @@ export default function barLayout() {
         let groupAngle = (Math.PI * 2 - GROUP_NUM * groupGap) / GROUP_NUM
         // 计算单根柱子
         for (let j = 0, lenj = data.length; j < lenj; j++) {
-          // let stackGapTemp = stackGap
           if (data[j][i].disabled !== true) {
             data[j][i].disabled = false
           }
@@ -123,24 +120,18 @@ export default function barLayout() {
           let barHeight = BAR_HEIGHT_FACTOR * value
           let innerRadius =
             value < 0
-              ? BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) -
-                heightSumDown -
-                Math.PI * 0.5
-              : BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) +
-                heightSumUp -
-                Math.PI * 0.5
+              ? BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) - heightSumDown
+              : BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) + heightSumUp
           innerRadius = innerRadius + barInnerRadius * tableSize * 0.5
           let rect = {
             innerRadius: innerRadius,
             outerRadius: innerRadius + barHeight - stackGap,
             startAngle: startAngle,
-            // bgcolor: 'rgba(200,200,200,0.5)',
             endAngle: startAngle + groupAngle,
             ...data[j][i]
           }
+
           if (rect.disabled) {
-            rect.endAngle = rect.startAngle
-            rect.outerRadius = rect.innerRadius
             rect.opacity = 0
           } else {
             rect.opacity = 1
