@@ -31,8 +31,10 @@ const bar = new Bar({
 bar.style('pillar', { fillColor: '#47A1FF' })
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
+}).style('icon', { fillColor: '#47A1FF' })
+const legend = new Legend({ align: ['center', 'bottom'] }).style('text', {
+  text: '图例一'
 })
-const legend = new Legend({ align: ['center', 'bottom'] }).style('text', { text: '图例一' })
 const axisBottom = new Axis().style('scale', false).style('grid', true)
 const axisLeft = new Axis({
   orient: 'left'

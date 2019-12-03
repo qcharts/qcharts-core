@@ -25,7 +25,7 @@ chart.source(data, {
 const bar = new Bar().style('pillar', { fillColor: '#47A1FF' })
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
-})
+}).style('icon', { fillColor: '#47A1FF' })
 const legend = new Legend({ align: ['center', 'bottom'] }).style('text', {
   text: '图例一'
 })

@@ -54,10 +54,10 @@ export class Bar extends BaseVisual {
           ? clone(data[i % dataLength][Math.floor(i / dataLength)].dataOrigin)
           : clone(data[Math.floor(i / dataLength)][i % dataLength].dataOrigin)
       bar.index = i
+      bar.color = bar.fillColor
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
       // bar.strokeColor = bar.fillColor
-      // bar.color = bar.fillColor
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
