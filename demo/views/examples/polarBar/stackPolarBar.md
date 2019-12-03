@@ -67,7 +67,6 @@ chart.source(data, {
   text: 'product'
 })
 const colors = ['#FF0000', '#F28F0F', '#FFFF00', '#00FF00', '#4D6F6F']
-// const colors = ['#FF0000', '#0000FF', '#00FF00', '#FFFF00', '#FFFFFF']
 const bar = new PolarBar({
   stack: true,
   radius: 0.7,
