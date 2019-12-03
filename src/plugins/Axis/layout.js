@@ -1,6 +1,6 @@
 import { scaleLinear } from '../../util/q-scale'
 import { axis } from '../../util/axis'
-function layout(obj) {
+function layout (obj) {
   let {
     size,
     orient,
@@ -10,6 +10,7 @@ function layout(obj) {
     stack,
     field,
     range,
+    coord,
     splitNumber,
     originalPoint: oPoint,
     pos
@@ -90,9 +91,7 @@ function layout(obj) {
   if (gap === true) {
     sLength = scales.length
   }
-  let scaleF = scaleLinear()
-    .domain([0, sLength])
-    .range([0, lengthPx])
+  let scaleF = scaleLinear().domain([0, sLength]).range([0, lengthPx])
   scales = scales.map((text, i) => {
     let pos = []
     let offset = 0
@@ -136,14 +135,22 @@ function layout(obj) {
       originalPoint
     }
   })
-
+  let radius = Math.min.apply(this, size) / 2;
   if (orient === 'left') {
-    axisAttrs.points = [
-      [0, 0],
-      [0, size[1]]
-    ]
-    labelAttrs.anchor = [1, 0.5]
+    if (coord === 'polar') {
+      axisAttrs.points = [
+        [0, 0],
+        [0, radius]
+      ]
+    } else {
+      axisAttrs.points = [
+        [0, 0],
+        [0, size[1]]
+      ]
+
+    }
     scaleAttrs.points[1] = [-4, 0]
+    labelAttrs.anchor = [1, 0.5]
     gridAttrs.points = [
       [0, 0],
       [size[0], 0]
@@ -185,6 +192,7 @@ function layout(obj) {
     nameAttrs.pos = [size[0], size[1] - nameAttrs.fontSize]
     nameAttrs.textAlign = 'left'
   }
+
   return {
     scales,
     originalPoint: oPoint || originalPoint,

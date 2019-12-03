@@ -25,6 +25,7 @@ const chart = new Chart({
 
 const pie = new Pie({
   radius: 2.4,
+  opacity: 0.3,
   //pos: [0, 0]
   //size: ['80%', '100%'],
   rose: true

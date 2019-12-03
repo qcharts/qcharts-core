@@ -10,7 +10,7 @@ module.exports = {
   },
   globals: {
     getApp: true,
-    wx: true,
+    wx: true
   },
   extends: ['standard', 'plugin:react/recommended'],
   plugins: ['react'],
@@ -39,7 +39,7 @@ module.exports = {
     'block-spacing': 2,
     'array-bracket-spacing': [2, 'never'],
     //空行最多不能超过100行
-    'no-multiple-empty-lines': [0, { max: 100 }],
+    'no-multiple-empty-lines': [0, { max: 800 }],
     //关闭禁止混用tab和空格
     'no-mixed-spaces-and-tabs': [0],
     'space-before-function-paren': 0,

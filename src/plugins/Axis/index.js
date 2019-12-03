@@ -13,7 +13,7 @@ export class Axis extends BasePlugin {
     this.renderData = []
   }
 
-  getDefaultAttrs() {
+  getDefaultAttrs () {
     const dObj = {
       orient: 'bottom', // ['top','left','right','bottom']
       axisGap: undefined, // 绘制图形是否从0位置开始
@@ -29,7 +29,7 @@ export class Axis extends BasePlugin {
       originalPoint: '', // 坐标的中心位置
       splitNumber: 0,
       name: '', // 坐标轴名字
-      formatter: function(str, data) {
+      formatter: function (str, data) {
         // 格式化坐标轴文字显示
         return str
       }
@@ -40,13 +40,13 @@ export class Axis extends BasePlugin {
     return dObj
   }
 
-  beforeRender() {
+  beforeRender () {
     super.beforeRender()
     const data = this.getData()
-    console.log(data)
     this.prepareAttrs(this.chart.dataset.attr())
 
     this.renderData = layout({ ...this.attr(), data })
+    console.log(this.renderData)
     this.renderData.scales.forEach(scale => {
       scale.from = scale.to = { pos: scale.pos }
       scale.labelFrom = scale.labelTo = {
@@ -56,7 +56,7 @@ export class Axis extends BasePlugin {
     return this.renderData
   }
 
-  beforeUpdate() {
+  beforeUpdate () {
     super.beforeRender()
     const data = this.getData()
     this.prepareAttrs(this.chart.dataset.attr())
@@ -78,7 +78,7 @@ export class Axis extends BasePlugin {
     })
     return this.renderData
   }
-  prepareAttrs(fields) {
+  prepareAttrs (fields) {
     // 处理默认属性，部分属性会默认从对应visula继承过来
     let { target: $target, orient, axisGap } = this.attr()
     let optionAttrs = this.optionAttrs
@@ -135,14 +135,14 @@ export class Axis extends BasePlugin {
       this.attr({ axisGap: true })
     }
   }
-  nameStyle(el, attrs) {
+  nameStyle (el, attrs) {
     let { pos } = el.attr()
     let { pos: oPos } = attrs
     if (pos && oPos && (pos[0] !== oPos[0] || pos[1] !== oPos[1])) {
       el.reflow()
     }
   }
-  mergeAttr($target, arr) {
+  mergeAttr ($target, arr) {
     if ($target) {
       arr.forEach(name => {
         let tarVal = $target.attr(name)
@@ -159,11 +159,11 @@ export class Axis extends BasePlugin {
       })
     }
   }
-  mergeTheme(name, args) {
+  mergeTheme (name, args) {
     let themes = this.chart.resolveTheme('Axis')[this.attr('orient')]
     return mergeStyle(this.style(name), args, themes[name])
   }
-  render(renderData = {}) {
+  render (renderData = {}) {
     let axisStyle = this.mergeTheme('axis', [renderData.axisAttrs])
     let axisName = this.attr('name')
     axisName = String(axisName)
@@ -249,10 +249,11 @@ export class Axis extends BasePlugin {
                     animation={this.resolveAnimation(labelAnimation)}
                   ></Label>
                 )}
+                {console.log(scaleStyle)}
                 {scaleStyle === false ? null : <Polyline {...scaleStyle} />}
                 {coord === 'polar' ||
-                gridStyle === false ||
-                (scale.offset === 0 && !axisGap) ? null : (
+                  gridStyle === false ||
+                  (scale.offset === 0 && !axisGap) ? null : (
                     <Polyline {...gridStyle} />
                   )}
               </Group>
@@ -332,7 +333,7 @@ export class Axis extends BasePlugin {
     )
   }
 }
-function transPx(point, size) {
+function transPx (point, size) {
   if (point && point.length) {
     return point.map((num, i) => {
       let ind = String(num).indexOf('%')
@@ -344,7 +345,7 @@ function transPx(point, size) {
   }
   return [0, 0]
 }
-function formatNumber(str, fromStr, toStr) {
+function formatNumber (str, fromStr, toStr) {
   if (
     typeof str === 'number' &&
     typeof fromStr === 'number' &&
@@ -355,14 +356,14 @@ function formatNumber(str, fromStr, toStr) {
   }
   return toStr
 }
-function getDigit(num) {
+function getDigit (num) {
   let arrNum = String(num).split('.')
   if (arrNum.length > 1) {
     return arrNum[1].length
   }
   return 0
 }
-function getNumberText(str, attrs) {
+function getNumberText (str, attrs) {
   if (!isNaN(str) && attrs.type === 'value') {
     return Number(str)
   }
