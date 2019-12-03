@@ -88,6 +88,7 @@ export class PolarBar extends BaseVisual {
       bar.strokeColor = '#FFF'
       bar.lineWidth = 1
       bar.color = bar.fillColor
+      // debugger
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
     })
