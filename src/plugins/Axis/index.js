@@ -23,13 +23,16 @@ export class Axis extends BasePlugin {
       field: undefined,
       range: undefined, // 刻度范围
       coord: 'cartesian2d', // [cartesian2d,polar]
-      coordPos: ['50%', '50%'],
+      originalPoint: '',
       splitNumber: 0,
       name: '', // 坐标轴名字
       formatter: function(str, data) {
         // 格式化坐标轴文字显示
         return str
       }
+    }
+    if (dObj.coord === 'polar') {
+      dObj.originalPoint = ['50%', '50%']
     }
     return dObj
   }
@@ -163,7 +166,7 @@ export class Axis extends BasePlugin {
     let nameStyle = this.mergeTheme('name', [renderData.nameAttrs])
     nameStyle.text = axisName
     let rings = []
-    const { axisGap, formatter, pos, coord, size, coordPos } = this.attr()
+    const { axisGap, formatter, pos, coord, size, originalPoint } = this.attr()
     let $target = this.attr('target')
     if ($target instanceof Pie && coord === 'polar') {
       const { startAngle, endAngle, padAngle } = $target.attr()
@@ -172,8 +175,8 @@ export class Axis extends BasePlugin {
         .endAngle(endAngle)
         .padAngle(padAngle)
         .value(d => +d[0].__valueGetter__())(
-          this.getData().filter(d => !d[0].disabled)
-        )
+        this.getData().filter(d => !d[0].disabled)
+      )
     }
     return (
       <Group pos={pos}>
@@ -246,8 +249,8 @@ export class Axis extends BasePlugin {
                 {coord === 'polar' ||
                 gridStyle === false ||
                 (scale.offset === 0 && !axisGap) ? null : (
-                    <Polyline {...gridStyle} />
-                  )}
+                  <Polyline {...gridStyle} />
+                )}
               </Group>
             )
           })}
@@ -262,13 +265,13 @@ export class Axis extends BasePlugin {
             return coord !== 'polar' ||
               gridStyle === false ||
               (scale.offset === 0 && !axisGap) ? null : (
-                <Circle
-                  pos={coordPos}
-                  radius={scale.offset}
-                  {...gridStyle}
-                  anchor={[0.5]}
-                />
-              )
+              <Circle
+                pos={originalPoint}
+                radius={scale.offset}
+                {...gridStyle}
+                anchor={[0.5]}
+              />
+            )
           })}
         </Group>
         <Group clipOverflow={false}>
@@ -288,7 +291,7 @@ export class Axis extends BasePlugin {
             let ang = Math.abs(((angle / Math.PI) * 180) % 90) // 角度转换为[0-90];
             let k = Math.abs(45 - Math.abs(ang - 45)) / 45 // 相关数据转化为[0-1]
             let labelDis = maxRadius * (1.01 + k / 18) // 18为影响因子 1.01为基准距离
-            let pos = transPx(coordPos, size)
+            let pos = transPx(originalPoint, size)
             let newPoint = [
               pos[0] + maxRadius * Math.cos(angle),
               pos[1] + maxRadius * Math.sin(angle)
@@ -326,13 +329,16 @@ export class Axis extends BasePlugin {
   }
 }
 function transPx(point, size) {
-  return point.map((num, i) => {
-    let ind = String(num).indexOf('%')
-    if (ind !== -1) {
-      return (size[i] * num.substr(0, ind)) / 100
-    }
-    return num
-  })
+  if (point && point.length) {
+    return point.map((num, i) => {
+      let ind = String(num).indexOf('%')
+      if (ind !== -1) {
+        return (size[i] * num.substr(0, ind)) / 100
+      }
+      return num
+    })
+  }
+  return [0, 0]
 }
 function formatNumber(str, fromStr, toStr) {
   if (

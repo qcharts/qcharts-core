@@ -11,6 +11,7 @@ function layout(obj) {
     field,
     range,
     splitNumber,
+    originalPoint: oPoint,
     pos
   } = obj
   let gap = axisGap
@@ -49,7 +50,10 @@ function layout(obj) {
 
   let originalPoint = [0, 0]
   let axisAttrs = {
-    points: [[0, 0], [size[0], 0]],
+    points: [
+      [0, 0],
+      [size[0], 0]
+    ],
     strokeColor: '#bfbfbf'
   }
   let labelAttrs = {
@@ -134,35 +138,56 @@ function layout(obj) {
   })
 
   if (orient === 'left') {
-    axisAttrs.points = [[0, 0], [0, size[1]]]
+    axisAttrs.points = [
+      [0, 0],
+      [0, size[1]]
+    ]
     labelAttrs.anchor = [1, 0.5]
     scaleAttrs.points[1] = [-4, 0]
-    gridAttrs.points = [[0, 0], [size[0], 0]]
+    gridAttrs.points = [
+      [0, 0],
+      [size[0], 0]
+    ]
     nameAttrs.pos = [-pos[0], -nameAttrs.fontSize * 2]
   } else if (orient === 'right') {
     originalPoint = [size[0], 0]
-    axisAttrs.points = [[0, 0], [0, size[1]]]
+    axisAttrs.points = [
+      [0, 0],
+      [0, size[1]]
+    ]
     labelAttrs.anchor = [0, 0.5]
-    scaleAttrs.points = [[0, 0], [4, 0]]
-    gridAttrs.points = [[-size[0], 0], [0, 0]]
+    scaleAttrs.points = [
+      [0, 0],
+      [4, 0]
+    ]
+    gridAttrs.points = [
+      [-size[0], 0],
+      [0, 0]
+    ]
     nameAttrs.pos = [size[0] - pos[0], -nameAttrs.fontSize * 2]
   } else if (orient === 'top') {
     labelAttrs.anchor = [0.5, 1]
     scaleAttrs.points[1] = [0, -4]
-    gridAttrs.points = [[0, 0], [0, size[1]]]
+    gridAttrs.points = [
+      [0, 0],
+      [0, size[1]]
+    ]
     nameAttrs.pos = [size[0], -nameAttrs.fontSize]
     nameAttrs.textAlign = 'left'
   } else {
     originalPoint = [0, size[1]]
     labelAttrs.anchor = [0.5, 0]
     scaleAttrs.points[1] = [0, 4]
-    gridAttrs.points = [[0, -size[1]], [0, 0]]
+    gridAttrs.points = [
+      [0, -size[1]],
+      [0, 0]
+    ]
     nameAttrs.pos = [size[0], size[1] - nameAttrs.fontSize]
     nameAttrs.textAlign = 'left'
   }
   return {
     scales,
-    originalPoint,
+    originalPoint: oPoint || originalPoint,
     axisAttrs,
     gridAttrs,
     labelAttrs,

@@ -12,7 +12,7 @@ const data = [
   { month: 'Jun', city: 'London', value: 15.2 }
 ]
 
-const { Chart, Axis, Line } = qcharts
+const { Chart, Axis, Line, Pie } = qcharts
 
 const chart = new Chart({
   container: '#app',
@@ -23,7 +23,14 @@ const chart = new Chart({
   text: 'month'
 })
 
-const line = new Line().style('point', { color: '#fff' })
+const pie = new Pie({
+  radius: 2.4,
+  //pos: [0, 0]
+  //size: ['80%', '100%'],
+  rose: true
+})
+pie.style('guideline', true)
+pie.style('guideText', { fontSize: '12px' })
 
 let xAxis = new Axis({
   formatter: str => {
@@ -32,7 +39,7 @@ let xAxis = new Axis({
 })
 let yAxis = new Axis({ orient: 'left' })
 
-chart.add([line, xAxis, yAxis])
+chart.add([pie, xAxis, yAxis])
 chart.render()
 ```
 
