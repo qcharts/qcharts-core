@@ -115,7 +115,7 @@ export function layout(obj) {
     res.points = []
     objX.data.forEach((item, index) => {
       let tarY = ObjY.data[index].offset
-      if (!isNaN(tarY)) {
+      if (!isNaN(tarY) && item.item._y !== undefined) {
         res.points.push({
           point: [objX.data[index].offset, tarY]
         })

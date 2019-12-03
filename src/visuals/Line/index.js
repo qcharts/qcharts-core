@@ -270,7 +270,6 @@ export class Line extends BaseVisual {
                     })}
                   />
                 )}
-                {console.log(line.points)}
                 {line.points.map((item, j) => {
                   line.data[j].color = color
                   return this._getSymbol(

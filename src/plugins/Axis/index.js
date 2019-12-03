@@ -23,7 +23,10 @@ export class Axis extends BasePlugin {
       field: undefined,
       range: undefined, // 刻度范围
       coord: 'cartesian2d', // [cartesian2d,polar]
-      originalPoint: '',
+      startAngle: 0, // 当coord === polar时，startAngle与endAngle启用
+      endAngle: Math.PI * 2,
+      radius: 0,
+      originalPoint: '', // 坐标的中心位置
       splitNumber: 0,
       name: '', // 坐标轴名字
       formatter: function(str, data) {
@@ -40,7 +43,9 @@ export class Axis extends BasePlugin {
   beforeRender() {
     super.beforeRender()
     const data = this.getData()
+    console.log(data)
     this.prepareAttrs(this.chart.dataset.attr())
+
     this.renderData = layout({ ...this.attr(), data })
     this.renderData.scales.forEach(scale => {
       scale.from = scale.to = { pos: scale.pos }
@@ -121,7 +126,6 @@ export class Axis extends BasePlugin {
     if (optionAttrs.type !== undefined) {
       this.attr({ type: optionAttrs.type })
     }
-
     if (
       axisGap === undefined &&
       $target instanceof Bar &&
@@ -175,8 +179,8 @@ export class Axis extends BasePlugin {
         .endAngle(endAngle)
         .padAngle(padAngle)
         .value(d => +d[0].__valueGetter__())(
-        this.getData().filter(d => !d[0].disabled)
-      )
+          this.getData().filter(d => !d[0].disabled)
+        )
     }
     return (
       <Group pos={pos}>
@@ -249,8 +253,8 @@ export class Axis extends BasePlugin {
                 {coord === 'polar' ||
                 gridStyle === false ||
                 (scale.offset === 0 && !axisGap) ? null : (
-                  <Polyline {...gridStyle} />
-                )}
+                    <Polyline {...gridStyle} />
+                  )}
               </Group>
             )
           })}
@@ -265,13 +269,13 @@ export class Axis extends BasePlugin {
             return coord !== 'polar' ||
               gridStyle === false ||
               (scale.offset === 0 && !axisGap) ? null : (
-              <Circle
-                pos={originalPoint}
-                radius={scale.offset}
-                {...gridStyle}
-                anchor={[0.5]}
-              />
-            )
+                <Circle
+                  pos={originalPoint}
+                  radius={scale.offset}
+                  {...gridStyle}
+                  anchor={[0.5]}
+                />
+              )
           })}
         </Group>
         <Group clipOverflow={false}>

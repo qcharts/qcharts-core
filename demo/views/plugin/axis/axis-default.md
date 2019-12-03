@@ -37,7 +37,11 @@ let xAxis = new Axis({
     return str + '-' + 1
   }
 })
-let yAxis = new Axis({ orient: 'left' })
+let yAxis = new Axis({
+  orient: 'left',
+  originalPoint: ['50%', '50%'],
+  coord: 'polar'
+})
 
 chart.add([pie, xAxis, yAxis])
 chart.render()
