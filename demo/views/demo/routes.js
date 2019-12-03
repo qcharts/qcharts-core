@@ -3,6 +3,7 @@ import generateCommonPage from '../../utils/generateCommonPage'
 import PieRoutes from './Pie/routes'
 import ProgressRoutes from './Progress/routes'
 import BarRoutes from './Bar/routes'
+import PolarBarRoutes from './PolarBar/routes'
 import ColumnRoutes from './Column/routes'
 import RadialBarRoutes from './radialBar/routes'
 import LineRoutes from './line/routes'
@@ -92,6 +93,13 @@ export default [
     path: 'radialBar',
     component: generateCommonPage('/demo/radialBar/', RadialBarRoutes),
     children: RadialBarRoutes
+  },
+
+  {
+    title: '极坐标柱状图',
+    path: 'polarBarBar',
+    component: generateCommonPage('/demo/polarBar/', PolarBarRoutes),
+    children: PolarBarRoutes
   }
 
   // {

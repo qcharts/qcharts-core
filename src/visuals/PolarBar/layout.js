@@ -25,14 +25,13 @@ export default function barLayout() {
   function bar(dataInfo) {
     // 输入
     const data = dataInfo.data
-    console.log(data)
     const barSize = dataInfo.barSize
     const stack = dataInfo.stack
     const groupGap = dataInfo.groupGap
     const stackGap = dataInfo.stackGap
-    // let barWidth = dataInfo.barWidth
     const splitNumber = dataInfo.splitNumber
     const radius = dataInfo.radius
+    const barInnerRadius = dataInfo.innerRadius
     const padAngle = dataInfo.padAngle
     // 输出
     const barData = []
@@ -49,54 +48,58 @@ export default function barLayout() {
     const tableSize = Math.min(barSize[0], barSize[1])
     const axisValueMax = Math.max.apply(this, valueAxis)
     const axisValueMin = Math.min.apply(this, valueAxis)
-    // const POSITIVE_RATIO = axisValueMax / (axisValueMax - axisValueMin) // 正负柱子高度比例
+    const POSITIVE_RATIO = axisValueMax / (axisValueMax - axisValueMin) // 正负柱子高度比例
     const GROUP_BAR_NUM = computerLegend(data) // 图例显示个数
 
     const GROUP_NUM = data[0].length
-    // let gap = 0
-    // 柱子宽度，根据数据绘制类型计算，是否分组，是否旋转
-
-    const BAR_HEIGHT_FACTOR =
-      (0.5 * radius * tableSize) / (axisValueMax - axisValueMin)
+    const BAR_MAX_HEIGHT = 0.5 * radius * tableSize
+    const BAR_HEIGHT_FACTOR = BAR_MAX_HEIGHT / (axisValueMax - axisValueMin)
     if (!stack) {
-      debugger
+      // debugger
       // 分组柱状图
       for (let i = 0, len = GROUP_NUM; i < len; i++) {
         let flag = 0 // 计算当前柱子前面有几根被隐藏
         let value = 0
         let gpData = { rects: [] }
-        let groupWidth = (Math.PI * 2 - GROUP_NUM * groupGap) / GROUP_NUM
+        let groupAngle = (Math.PI * 2 - GROUP_NUM * groupGap) / GROUP_NUM
         // 计算单根柱子
         for (let j = 0, lenj = data.length; j < lenj; j++) {
           if (data[j][i].disabled !== true) {
             data[j][i].disabled = false
           }
-          let barWidth = groupWidth / GROUP_BAR_NUM
-          let startAngle = (groupWidth + groupGap) * i + barWidth * (j - flag)
+          let barAngle = groupAngle / GROUP_BAR_NUM
+          let startAngle =
+            (groupAngle + groupGap) * i + barAngle * (j - flag) - Math.PI * 0.5
           value = data[j][i].__valueGetter__()
-          let barHeight = BAR_HEIGHT_FACTOR * Math.abs(value)
+          let barHeight = BAR_HEIGHT_FACTOR * value
+          let innerRadius =
+            BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) +
+            barInnerRadius * tableSize * 0.5
           let rect = {
-            innerRadius: 0,
-            outerRadius: barHeight - stackGap,
+            innerRadius: innerRadius,
+            outerRadius: innerRadius + barHeight,
             startAngle: startAngle,
             // bgcolor: 'rgba(200,200,200,0.5)',
-            endAngle: startAngle + barWidth
+            endAngle: startAngle + barAngle,
+            ...data[j][i]
           }
           if (rect.disabled) {
             rect.endAngle = rect.startAngle
             rect.radius = 0
+            rect.opacity = 0
             flag++
           } else {
+            rect.opacity = 1
             gpData.rects.push(rect)
           }
           barData.push(rect)
         }
         // 柱子整体属性
         gpData = Object.assign(gpData, {
-          innerRadius: 0,
-          outerRadius: (radius * tableSize) / 2,
-          startAngle: (groupGap + groupWidth) * i,
-          endAngle: (groupGap + groupWidth) * i + groupWidth,
+          innerRadius: barInnerRadius * 0.5 * tableSize,
+          outerRadius: (barInnerRadius + radius) * 0.5 * tableSize,
+          startAngle: (groupGap + groupAngle) * i - Math.PI * 0.5,
+          endAngle: (groupGap + groupAngle) * i + groupAngle - Math.PI * 0.5,
           ...bgPillarAttr
         })
         groupData.push(gpData)
@@ -108,28 +111,54 @@ export default function barLayout() {
         let heightSumDown = 0
         let value = 0
         let gpData = { rects: [] }
+        let groupAngle = (Math.PI * 2 - GROUP_NUM * groupGap) / GROUP_NUM
         // 计算单根柱子
         for (let j = 0, lenj = data.length; j < lenj; j++) {
           // let stackGapTemp = stackGap
           if (data[j][i].disabled !== true) {
             data[j][i].disabled = false
           }
+          let startAngle = (groupAngle + groupGap) * i - Math.PI * 0.5
           value = data[j][i].__valueGetter__()
-          let barHeight = BAR_HEIGHT_FACTOR * Math.abs(value)
-
-          let rect = {}
-          if (rect.disabled) {
-            rect.size = [rect.size[0], 0]
-          } else {
+          let barHeight = BAR_HEIGHT_FACTOR * value
+          let innerRadius =
             value < 0
-              ? (heightSumDown = heightSumDown + barHeight)
+              ? BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) -
+                heightSumDown -
+                Math.PI * 0.5
+              : BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) +
+                heightSumUp -
+                Math.PI * 0.5
+          innerRadius = innerRadius + barInnerRadius * tableSize * 0.5
+          let rect = {
+            innerRadius: innerRadius,
+            outerRadius: innerRadius + barHeight - stackGap,
+            startAngle: startAngle,
+            // bgcolor: 'rgba(200,200,200,0.5)',
+            endAngle: startAngle + groupAngle,
+            ...data[j][i]
+          }
+          if (rect.disabled) {
+            rect.endAngle = rect.startAngle
+            rect.outerRadius = rect.innerRadius
+            rect.opacity = 0
+          } else {
+            rect.opacity = 1
+            value < 0
+              ? (heightSumDown = heightSumDown - barHeight)
               : (heightSumUp = heightSumUp + barHeight)
             gpData.rects.push(rect)
           }
           barData.push(rect)
         }
         // 柱子整体属性
-        gpData = Object.assign(gpData, {})
+        gpData = Object.assign(gpData, {
+          innerRadius: barInnerRadius * 0.5 * tableSize,
+          outerRadius: (barInnerRadius + radius) * 0.5 * tableSize,
+          startAngle: (groupGap + groupAngle) * i - Math.PI * 0.5,
+          endAngle: (groupGap + groupAngle) * i + groupAngle - Math.PI * 0.5,
+          ...bgPillarAttr
+        })
         groupData.push(gpData)
       }
     }

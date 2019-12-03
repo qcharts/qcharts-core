@@ -13,17 +13,15 @@ export class PolarBar extends BaseVisual {
 
   getDefaultAttrs() {
     return {
-      groupGap: Math.PI / 4,
-      radius: 0.8,
+      groupPadAngle: 0,
+      radius: 1,
       innerRadius: 0,
       startAngle: Math.PI * -0.5,
       endAngle: Math.PI * 1.5,
-      padAngle: Math.PI / 180,
+      padAngle: 0,
       type: 'PolarBar',
       stack: false,
-      barWidth: 0,
       mouseDisabled: false,
-      barGap: 0,
       splitNumber: 0,
       stackGap: 0
     }
@@ -68,32 +66,30 @@ export class PolarBar extends BaseVisual {
     // const innerRadius = this.innerRadius
     const dataInfoObj = {
       radius: this.attr('radius'),
+      innerRadius: this.attr('innerRadius'),
       data: data,
       barSize: this.attr('size'),
-      barWidth: this.attr('barWidth'),
       stack: this.attr('stack'),
-      groupGap: this.attr('barGap'),
+      groupGap: this.attr('groupPadAngle'),
       splitNumber: this.attr('splitNumber'),
       stackGap: this.attr('stackGap'),
       padAngle: this.attr('padAngle')
     }
     const result = layout()(dataInfoObj)
-    // let outerRadiuses = result.barData.map(() => maxOuterRadius)
     result.barData.forEach((bar, i) => {
       bar.fillColor = bar.fillColor || this.color(i % dataLength)
       bar.maxRadius = maxOuterRadius
-      // bar.outerRadius = outerRadiuses[i]
-      // bar.innerRadius = innerRadius
       bar.pos = pos
       bar.dataOrigin =
         data.length > 1
           ? clone(data[i % dataLength][Math.floor(i / dataLength)].dataOrigin)
           : clone(data[Math.floor(i / dataLength)][i % dataLength].dataOrigin)
       bar.index = i
+      bar.strokeColor = '#FFF'
+      bar.lineWidth = 1
+      bar.color = bar.fillColor
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
-      bar.strokeColor = bar.fillColor
-      // bar.color = bar.fillColor
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
@@ -141,8 +137,8 @@ export class PolarBar extends BaseVisual {
           endAngle: prev.startAngle
         },
         to: {
-          startAngle: prev.startAngle,
-          endAngle: prev.endAngle
+          startAngle: nextPillar.startAngle,
+          endAngle: nextPillar.endAngle
         }
       }
     })
@@ -160,13 +156,8 @@ export class PolarBar extends BaseVisual {
   }
   render(data) {
     return (
-      <Group
-        bgcolor={'rgba(100,100,100,0.2)'}
-        zIndex={100}
-        enableCache={false}
-        clipOverflow={false}
-      >
-        <Group>
+      <Group zIndex={100} enableCache={false} clipOverflow={false}>
+        <Group clipOverflow={false}>
           {data.groupData.map((pillar, i) => {
             const normalState = this.style('backgroundPillar')(
               pillar,
@@ -181,7 +172,7 @@ export class PolarBar extends BaseVisual {
                 {...pillar}
                 {...normalState}
                 hoverState={Object.assign(
-                  { opacity: 0.05 },
+                  {},
                   this.style('backgroundpillar:hover')(
                     pillar,
                     pillar.dataOrigin,
