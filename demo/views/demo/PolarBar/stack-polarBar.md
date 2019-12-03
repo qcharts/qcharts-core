@@ -1,4 +1,4 @@
-## Basic Column Chart 基础柱状图
+## Stack PolarBar Chart 基础柱状图
 
 :::demo
 
@@ -12,7 +12,7 @@ const data = [
   {
     product: '05-08',
     year: '图例二',
-    sales: 10
+    sales: 15
   },
   {
     product: '05-08',
@@ -27,7 +27,7 @@ const data = [
   {
     product: '05-09',
     year: '图例二',
-    sales: 10
+    sales: 17
   },
   {
     product: '05-09',
@@ -38,7 +38,7 @@ const data = [
   {
     product: '05-10',
     year: '图例一',
-    sales: 17.57867
+    sales: 17.57
   },
   {
     product: '05-10',
@@ -48,13 +48,13 @@ const data = [
   {
     product: '05-10',
     year: '图例三',
-    sales: 37.5432
+    sales: 37.54
   },
 
   {
     product: '05-11',
     year: '图例一',
-    sales: 80
+    sales: 41
   },
   {
     product: '05-11',
@@ -64,13 +64,13 @@ const data = [
   {
     product: '05-11',
     year: '图例三',
-    sales: 3
+    sales: 21
   },
 
   {
     product: '05-12',
     year: '图例一',
-    sales: 5
+    sales: 14
   },
   {
     product: '05-12',
@@ -86,7 +86,7 @@ const data = [
   {
     product: '05-13',
     year: '图例一',
-    sales: 10
+    sales: 44
   },
   {
     product: '05-13',
@@ -96,7 +96,23 @@ const data = [
   {
     product: '05-13',
     year: '图例三',
-    sales: 40
+    sales: 10
+  },
+
+  {
+    product: '05-14',
+    year: '图例一',
+    sales: 25
+  },
+  {
+    product: '05-14',
+    year: '图例二',
+    sales: 25
+  },
+  {
+    product: '05-14',
+    year: '图例三',
+    sales: 10
   }
 ]
 const { Chart, PolarBar, Tooltip, Axis, Legend } = qcharts
@@ -110,10 +126,7 @@ chart.source(data, {
 })
 const bar = new PolarBar({
   stack: true,
-  innerRadius: 0.1,
-  radius: 0.8,
-  padAngle: Math.PI * 0.01,
-  groupPadAngle: Math.PI * 0.02
+  radius: 0.8
 }).style('pillar', {
   strokeColor: '#FFF',
   lineWidth: 1

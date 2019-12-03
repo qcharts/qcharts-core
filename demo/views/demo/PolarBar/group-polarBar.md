@@ -1,4 +1,4 @@
-## Basic Column Chart 基础柱状图
+## Group PolarBar Chart 基础柱状图
 
 :::demo
 
@@ -7,96 +7,80 @@ const data = [
   {
     product: '05-08',
     year: '图例一',
-    sales: 30
+    sales: 3000
   },
   {
     product: '05-08',
     year: '图例二',
-    sales: 10
+    sales: 1000
   },
   {
     product: '05-08',
     year: '图例三',
-    sales: 20
+    sales: 2000
   },
   {
     product: '05-09',
     year: '图例一',
-    sales: 30
+    sales: 3000
   },
   {
     product: '05-09',
     year: '图例二',
-    sales: 10
+    sales: 1000
   },
   {
     product: '05-09',
     year: '图例三',
-    sales: 20
+    sales: 2000
   },
 
   {
     product: '05-10',
     year: '图例一',
-    sales: 17.57867
+    sales: 1700
   },
   {
     product: '05-10',
     year: '图例二',
-    sales: 24
+    sales: 2400
   },
   {
     product: '05-10',
     year: '图例三',
-    sales: 37.5432
+    sales: 3700
   },
 
   {
     product: '05-11',
     year: '图例一',
-    sales: 80
+    sales: 4200
   },
   {
     product: '05-11',
     year: '图例二',
-    sales: 28
+    sales: 2800
   },
   {
     product: '05-11',
     year: '图例三',
-    sales: 3
+    sales: 3100
   },
 
   {
     product: '05-12',
     year: '图例一',
-    sales: 5
+    sales: 5100
   },
   {
     product: '05-12',
     year: '图例二',
-    sales: 25
+    sales: 2500
   },
   {
     product: '05-12',
     year: '图例三',
-    sales: 35
-  },
-
-  {
-    product: '05-13',
-    year: '图例一',
-    sales: 10
-  },
-  {
-    product: '05-13',
-    year: '图例二',
-    sales: 25
-  },
-  {
-    product: '05-13',
-    year: '图例三',
-    sales: 40
+    sales: 350
   }
 ]
 const { Chart, PolarBar, Tooltip, Axis, Legend } = qcharts
@@ -109,14 +93,9 @@ chart.source(data, {
   text: 'product'
 })
 const bar = new PolarBar({
-  stack: true,
-  innerRadius: 0.1,
-  radius: 0.8,
-  padAngle: Math.PI * 0.01,
-  groupPadAngle: Math.PI * 0.02
-}).style('pillar', {
-  strokeColor: '#FFF',
-  lineWidth: 1
+  innerRadius: 0.3,
+  radius: 0.7,
+  groupPadAngle: Math.PI * 0.2
 })
 const tooltip = new Tooltip({
   formatter: d => `${d.product}: ${d.sales}`
