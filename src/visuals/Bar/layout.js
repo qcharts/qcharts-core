@@ -3,7 +3,6 @@ export default function barLayout() {
   function bar(dataInfo) {
     // 输入
     const data = dataInfo.data
-    console.log(data)
     const barSize = dataInfo.barSize
     const transpose = dataInfo.transpose
     const stack = dataInfo.stack
