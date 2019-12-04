@@ -52,7 +52,7 @@ export default [
     path: 'bar-textureBar'
   },
   {
-    img: 'http://p9.qhimg.com/t0173ea1c4135741bf9.png',
+    img: 'https://p3.ssl.qhimg.com/t01c8a13929da684bfb.png',
     title: '自定义颜色极坐标柱状图',
     path: 'polarBar-stackPolarBar'
   }
