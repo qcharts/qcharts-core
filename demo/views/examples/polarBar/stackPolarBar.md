@@ -66,18 +66,18 @@ chart.source(data, {
   value: 'sales',
   text: 'product'
 })
-const colors = ['#FF0000', '#F28F0F', '#FFFF00', '#00FF00', '#4D6F6F']
+const colors = ['#FF0000', '#F28F0F', '#FFFF00', '#00FF00', '#44256F']
 const bar = new PolarBar({
   stack: true,
   radius: 0.7,
   innerRadius: 0.2
 }).style('pillar', (attr, data, i) => {
   if (i % 2 !== 0) {
-    return { strokeColor: '#000', lineWidth: 1, fillColor: '#141718' }
+    return { strokeColor: '#fff', lineWidth: 1, fillColor: '#226464' }
   } else {
     return {
-      strokeColor: '#000',
-      lineWidth: 2,
+      strokeColor: '#fff',
+      lineWidth: 1,
       fillColor: colors[Math.floor(i / 2)]
     }
   }
