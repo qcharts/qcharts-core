@@ -147,7 +147,6 @@ function layout (obj) {
         [0, 0],
         [0, size[1]]
       ]
-
     }
     scaleAttrs.points[1] = [-4, 0]
     labelAttrs.anchor = [1, 0.5]
