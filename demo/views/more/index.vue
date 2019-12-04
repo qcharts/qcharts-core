@@ -14,13 +14,13 @@
 <script>
 import examplesList from './config'
 export default {
-  data() {
+  data () {
     return {
       list: examplesList
     }
   },
   methods: {
-    calcPath(path) {
+    calcPath (path) {
       return `./#/examples/${path}`
     }
   }
@@ -29,12 +29,13 @@ export default {
 
 <style lang="scss" scoped>
 .more-content {
-  padding: 20px;
   background-color: #f8fafe;
   height: 100%;
   ul {
     overflow: hidden;
-    padding-bottom: 10px;
+    padding: 20px;
+    background-color: #f8fafe;
+    margin-bottom: 0;
   }
   li {
     float: left;
