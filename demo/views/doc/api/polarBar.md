@@ -6,16 +6,16 @@ PolarBar Chart, 极坐标柱状图。
 
 attrs 包含若干布局属性，将这些属性放入 Object 对象传入组件
 
-| 属性名        | 类型    | 默认值 | 描述                                                                                |
-| ------------- | ------- | ------ | ----------------------------------------------------------------------------------- |
-| innerRadius   | Number  | `0`    | 内半径比例                                                                          |
-| mouseDisabled | Boolean | false  | 组件鼠标是否禁用                                                                    |
-| radius        | Number  | `1`    | 外半径比例                                                                          |
-| groupPadAngle | Number  | `0`    | 两组扇形之间间距                                                                    |
-| splitNumber   | Number  | 0      | 坐标轴的分割段数，用来计算柱子的最大高度，在设置坐标轴的 splitNumber 属性时同步加上 |
-| stack         | Boolean | false  | 是否设置为堆叠图，二维数据无法堆叠                                                  |
-| stackGap      | Number  | 0      | 堆叠图中柱子间距                                                                    |
-| padAngle      | Number  | `0`    | 扇形之间间距                                                                        |
+| 属性名        | 类型    | 默认值  | 描述                                                                                |
+| ------------- | ------- | ------- | ----------------------------------------------------------------------------------- |
+| innerRadius   | Number  | `0`     | 内半径比例                                                                          |
+| mouseDisabled | Boolean | `false` | 组件鼠标是否禁用                                                                    |
+| radius        | Number  | `1`     | 外半径比例                                                                          |
+| groupPadAngle | Number  | `0`     | 两组扇形之间间距                                                                    |
+| splitNumber   | Number  | `0`     | 坐标轴的分割段数，用来计算柱子的最大高度，在设置坐标轴的 splitNumber 属性时同步加上 |
+| stack         | Boolean | `false` | 是否设置为堆叠图，二维数据无法堆叠                                                  |
+| stackGap      | Number  | `0`     | 堆叠图中柱子间距                                                                    |
+| padAngle      | Number  | `0`     | 扇形之间间距                                                                        |
 
 ### style 属性
 
