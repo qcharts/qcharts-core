@@ -56,5 +56,11 @@ export default [
     title: 'RadialBar(玉块图)',
     path: 'radialBar',
     component: () => import('./RadialBar.md')
+  },
+
+  {
+    title: 'PolarBar(极坐标柱状图)',
+    path: 'polarBar',
+    component: () => import('./polarBar.md')
   }
 ]
