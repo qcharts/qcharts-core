@@ -1,10 +1,10 @@
-import { Group, Sprite, RectSprite } from 'spritejs'
+import { Group, Ring } from 'spritejs'
 import { clone } from '../../util'
 import { BaseVisual } from '../../core'
 import layout from './layout'
-import { withText } from './text'
+// import { withText } from './text'
 
-export class Bar extends BaseVisual {
+export class PolarBar extends BaseVisual {
   constructor(attrs = {}) {
     super(attrs)
     this.$pillars = []
@@ -13,12 +13,15 @@ export class Bar extends BaseVisual {
 
   getDefaultAttrs() {
     return {
-      type: 'Bar',
+      groupPadAngle: 0,
+      radius: 1,
+      innerRadius: 0,
+      startAngle: Math.PI * -0.5,
+      endAngle: Math.PI * 1.5,
+      padAngle: 0,
+      type: 'PolarBar',
       stack: false,
-      transpose: false,
-      barWidth: 0,
       mouseDisabled: false,
-      barGap: 0,
       splitNumber: 0,
       stackGap: 0
     }
@@ -26,6 +29,29 @@ export class Bar extends BaseVisual {
 
   get name() {
     return this.attr('type')
+  }
+  get center() {
+    const { size } = this.attr()
+    const [width, height] = size
+    let [x, y] = [width / 2, height / 2]
+    return [x, y]
+  }
+  get maxOuterRadius() {
+    const { radius, size } = this.attr()
+    const [width, height] = size
+
+    // if (endAngle - startAngle === Math.PI / 2) {
+    //   return Math.min(width, height) * radius
+    // } else {
+    return (Math.min(width, height) / 2) * radius
+    // }
+  }
+  get pos() {
+    const { size } = this.attr()
+    const [width, height] = size
+    const maxRadius = this.maxOuterRadius
+    let [x, y] = [width / 2 - maxRadius, height / 2 - maxRadius]
+    return [x, y]
   }
   transform(data) {
     if (!data || data.length === 0) {
@@ -35,32 +61,41 @@ export class Bar extends BaseVisual {
     this.legendArr = Array.from({ length: data.length }, () => {
       return 1
     })
+    const pos = this.pos
+    const maxOuterRadius = this.maxOuterRadius
+    // const innerRadius = this.innerRadius
     const dataInfoObj = {
+      radius: this.attr('radius'),
+      innerRadius: this.attr('innerRadius'),
       data: data,
       barSize: this.attr('size'),
-      barWidth: this.attr('barWidth'),
       stack: this.attr('stack'),
-      transpose: this.attr('transpose'),
-      groupGap: this.attr('barGap'),
+      groupGap: this.attr('groupPadAngle'),
       splitNumber: this.attr('splitNumber'),
-      stackGap: this.attr('stackGap')
+      stackGap: this.attr('stackGap'),
+      padAngle: this.attr('padAngle')
     }
     const result = layout()(dataInfoObj)
     result.barData.forEach((bar, i) => {
       bar.fillColor = bar.fillColor || this.color(i % dataLength)
-
+      bar.maxRadius = maxOuterRadius
+      bar.pos = pos
       bar.dataOrigin =
         data.length > 1
           ? clone(data[i % dataLength][Math.floor(i / dataLength)].dataOrigin)
           : clone(data[Math.floor(i / dataLength)][i % dataLength].dataOrigin)
       bar.index = i
+      bar.strokeColor = '#FFF'
+      bar.lineWidth = 1
       bar.color = bar.fillColor
+      // debugger
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
-      // bar.strokeColor = bar.fillColor
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
+      bar.pos = pos
+      bar.maxRadius = maxOuterRadius
     })
     return result
   }
@@ -74,12 +109,10 @@ export class Bar extends BaseVisual {
     this.fromTos = this.pillars.map((pillar, i) => {
       return {
         from: {
-          size: this.attr('transpose')
-            ? [0, pillar.size[1]]
-            : [pillar.size[0], 0]
+          endAngle: pillar.startAngle
         },
         to: {
-          size: pillar.size
+          endAngle: pillar.endAngle
         }
       }
     })
@@ -95,32 +128,39 @@ export class Bar extends BaseVisual {
       let prev = pillars[i] ? pillars[i] : newRenderData.barData[i - 1]
       if (!prev) {
         prev = {
-          size: [0, 0],
-          pos: nextPillar.pos,
-          labelAttrs: null
+          startAngle: 0,
+          endAngle: 0
         }
       }
-      return {
-        from: {
-          size: prev.disable
-            ? this.attr('transpose')
-              ? [0, prev.size[1]]
-              : [prev.size[0], 0]
-            : prev.size,
-          pos: prev.pos
-        },
-        to: {
-          size: nextPillar.size,
-          pos: nextPillar.pos
-        },
-        textFrom: {
-          pos:
-            prev.labelAttrs && prev.labelAttrs.pos
-              ? prev.labelAttrs.pos
-              : nextPillar.labelAttrs.pos
-        },
-        textTo: {
-          pos: nextPillar.labelAttrs.pos
+      if (this.attr('stack')) {
+        return {
+          from: {
+            innerRadius: prev.disabled
+              ? nextPillar.innerRadius
+              : prev.innerRadius,
+            outerRadius: prev.disabled
+              ? nextPillar.innerRadius
+              : prev.outerRadius
+          },
+          to: {
+            innerRadius: nextPillar.disabled
+              ? prev.innerRadius
+              : nextPillar.innerRadius,
+            outerRadius: nextPillar.disabled
+              ? prev.innerRadius
+              : nextPillar.outerRadius
+          }
+        }
+      } else {
+        return {
+          from: {
+            startAngle: prev.startAngle,
+            endAngle: prev.endAngle
+          },
+          to: {
+            startAngle: nextPillar.startAngle,
+            endAngle: nextPillar.endAngle
+          }
         }
       }
     })
@@ -139,7 +179,7 @@ export class Bar extends BaseVisual {
   render(data) {
     return (
       <Group zIndex={100} enableCache={false} clipOverflow={false}>
-        <Group>
+        <Group clipOverflow={false}>
           {data.groupData.map((pillar, i) => {
             const normalState = this.style('backgroundPillar')(
               pillar,
@@ -150,11 +190,11 @@ export class Bar extends BaseVisual {
               return
             }
             return (
-              <Sprite
+              <Ring
                 {...pillar}
                 {...normalState}
                 hoverState={Object.assign(
-                  { opacity: 0.05 },
+                  {},
                   this.style('backgroundpillar:hover')(
                     pillar,
                     pillar.dataOrigin,
@@ -183,23 +223,13 @@ export class Bar extends BaseVisual {
             const { from, to } = this.fromTos[i]
             return (
               <Group enableCache={false} clipOverflow={false}>
-                <RectSprite
+                <Ring
                   {...pillar}
-                  {...from}
                   animation={this.resolveAnimation({
                     from,
                     to,
-                    duration: 300,
-                    delay: 0,
-                    attrFormatter: attr => {
-                      return Object.assign(attr, {
-                        size: [
-                          Math.round(attr.size[0]),
-                          Math.round(attr.size[1])
-                        ]
-                      })
-                    },
-                    useTween: true
+                    duration: 500,
+                    delay: 0
                   })}
                   hoverState={this.style('pillar:hover')(
                     pillar,
@@ -213,7 +243,6 @@ export class Bar extends BaseVisual {
                     !this.attr('mouseDisabled') && el.attr('state', 'normal')
                   }}
                 />
-                {withText(this, pillar)}
               </Group>
             )
           })}
