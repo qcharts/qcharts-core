@@ -23,7 +23,8 @@ export class PolarBar extends BaseVisual {
       stack: false,
       mouseDisabled: false,
       splitNumber: 0,
-      stackGap: 0
+      stackGap: 0,
+      translateOnClick: true
     }
   }
 
@@ -168,6 +169,59 @@ export class PolarBar extends BaseVisual {
     return newRenderData
   }
 
+  getRing = (ring, i, el) => {
+    if (!el) {
+      return
+    }
+    this.$pillars[i] = el
+
+    if (el.isTranslatedByInitiativeClick) {
+      // 主动点击导致扇形移动，将不会自动移回
+      return
+    }
+
+    if (ring.selected && ring.endAngle > ring.startAngle) {
+      if (!el.parentNode) {
+        el.on('append', () => this.toggleTranslate(ring, null, el))
+      } else {
+        const isTranslated = el.isTranslated
+
+        if (isTranslated) {
+          el.isTranslated = false
+        }
+
+        this.toggleTranslate(ring, null, el)
+      }
+    } else if (!ring.selected && el.isTranslated) {
+      this.toggleTranslate(ring, null, el)
+    }
+  }
+
+  toggleTranslate = (attrs, evt, el) => {
+    let isTranslated = el.isTranslated
+    const offset = Math.max(20, attrs.maxRadius * 0.1)
+    const { startAngle, endAngle } = attrs
+    const angle = (startAngle + endAngle) / 2
+    const translate = [offset * Math.cos(angle), offset * Math.sin(angle)]
+
+    // let target = el.parentNode
+    let target = el
+
+    // if (target.attr('name') === 'pieRoot') {
+    //   target = el
+    // }
+
+    if (isTranslated) {
+      target.transition(0.3).attr('translate', [0, 0])
+
+      el.isTranslated = false
+    } else {
+      target.transition(0.3).attr('translate', translate)
+
+      el.isTranslated = true
+    }
+  }
+
   showTooltip(evt, data) {
     evt.data = data
     this.dataset.hoverData({ ...evt, data: data })
@@ -177,6 +231,7 @@ export class PolarBar extends BaseVisual {
     this.dataset.hoverData(null)
   }
   render(data) {
+    const translateOnClick = this.attr('translateOnClick')
     return (
       <Group zIndex={100} enableCache={false} clipOverflow={false}>
         <Group clipOverflow={false}>
@@ -224,6 +279,7 @@ export class PolarBar extends BaseVisual {
             return (
               <Group enableCache={false} clipOverflow={false}>
                 <Ring
+                  ref={el => this.getRing(pillar, i, el)}
                   {...pillar}
                   animation={this.resolveAnimation({
                     from,
@@ -241,6 +297,13 @@ export class PolarBar extends BaseVisual {
                   }
                   onMouseleave={(evt, el) => {
                     !this.attr('mouseDisabled') && el.attr('state', 'normal')
+                  }}
+                  onClick={(evt, el) => {
+                    evt.stopDispatch()
+                    if (!this.attr('stack') && translateOnClick) {
+                      el.isTranslatedByInitiativeClick = true // 主动点击
+                      this.toggleTranslate(pillar, evt, el)
+                    }
                   }}
                 />
               </Group>
