@@ -6,7 +6,8 @@
 const data = [
   {
     year: '2016',
-    sales: 17
+    sales: 17,
+    selected: true
   },
   {
     year: '2017',
@@ -49,6 +50,7 @@ const pie = new Pie({
     return `${str} %`
   }
 })
+pie.style('sector', { lineWidth: 1, strokeColor: '#fff' })
 pie.style('numText', (rings, center) => {
   return {
     pos: [center[0], center[1]],
@@ -70,6 +72,7 @@ chart.render()
 setInterval(changeData, 3000)
 //数据被选中动画模拟，轮流设置数据的selected属性，同时移除上一个数据的selected属性
 function changeData() {
+  counter++
   let last =
     (counter % length) - 1 < 0 ? data.length - 1 : (counter % length) - 1
   delete data[last].selected
@@ -80,7 +83,6 @@ function changeData() {
     row: 'year',
     value: 'sales'
   })
-  counter++
 }
 ```
 
