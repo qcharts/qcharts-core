@@ -69,6 +69,7 @@ export default function pieLayout() {
 
       arcs[i] = Object.assign({}, data[i], {
         index: i,
+        id: i,
         startAngle: sa,
         endAngle: ea,
         proportion
