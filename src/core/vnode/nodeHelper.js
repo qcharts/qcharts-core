@@ -18,6 +18,7 @@ export function animate(el, attrs) {
   }
   const {
     from,
+    middle,
     to,
     delay,
     duration,
@@ -35,8 +36,15 @@ export function animate(el, attrs) {
 
   const setAnimation = () => {
     if (!useTween) {
-      el.animate([from, to], {
+      let keys = null
+      if (middle) {
+        keys = [from, middle, to]
+      } else {
+        keys = [from, to]
+      }
+      el.animate(keys, {
         easing: 'ease-in-out',
+        fill: 'both',
         ...animation
       }).finished.then(() => {
         delete to.offset
@@ -107,8 +115,8 @@ export function resolveStyle(el, attrs) {
 
     Object.keys(inputState).forEach(key => {
       if (!(key in originAttrs)) {
-        console.warn(`Set invalid attribute '${key}' to ${el.nodeName}.`);
-        normal[key] = inputState[key];
+        console.warn(`Set invalid attribute '${key}' to ${el.nodeName}.`)
+        normal[key] = inputState[key]
       } else {
         normal[key] = originAttrs[key]
       }

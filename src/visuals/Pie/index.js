@@ -1,4 +1,4 @@
-import { Group, Ring } from 'spritejs'
+import { Group, Ring, Label } from 'spritejs'
 import { BaseVisual } from '../../core'
 import layout from './layout'
 import { withGuide } from './guide'
@@ -25,7 +25,11 @@ export class Pie extends BaseVisual {
       endAngle: Math.PI * 1.5,
       padAngle: 0,
       rose: false,
-      translateOnClick: true
+      translateOnClick: true,
+      radiusOffset: 10,
+      formatter: function(str) {
+        return str
+      }
     }
   }
 
@@ -43,6 +47,22 @@ export class Pie extends BaseVisual {
   get innerRadius() {
     let { radius, innerRadius } = this.attr()
     return innerRadius <= 0 ? 0 : (this.maxOuterRadius / radius) * innerRadius
+  }
+
+  get animateDuration() {
+    let { animation } = this.attr()
+    if (animation && animation.duration) {
+      return animation.duration
+    }
+    return 500
+  }
+
+  get animateByTranslate() {
+    let { animation } = this.attr()
+    if (animation && animation.animateByTranslate === false) {
+      return false
+    }
+    return true
   }
 
   get center() {
@@ -79,6 +99,7 @@ export class Pie extends BaseVisual {
       .endAngle(endAngle)
       .padAngle(padAngle)
       .value(d => (rose ? 1 : +d.__valueGetter__()))(data)) // 如果是rose等分圆形
+
     const pos = this.pos
     const maxOuterRadius = this.maxOuterRadius
     const innerRadius = this.innerRadius
@@ -141,9 +162,7 @@ export class Pie extends BaseVisual {
     super.beforeRender()
     const nestData = this.getData()
     const data = flattern(nestData)
-    // console.log(data)
     const rings = (this.rings = this.transform(data, nestData))
-    // console.log(rings)
     this.fromTos = rings.map((ring, i) => {
       return {
         from: {
@@ -156,6 +175,7 @@ export class Pie extends BaseVisual {
         }
       }
     })
+
     return rings
   }
 
@@ -163,19 +183,16 @@ export class Pie extends BaseVisual {
     super.beforeUpdate()
     const nestData = this.getData()
     const data = flattern(nestData)
-
     const rings = this.rings
     const nextRings = this.transform(data, nestData)
     this.fromTos = nextRings.map((nextRing, i) => {
       let prev = rings[i] ? rings[i] : nextRings[i - 1]
-
       if (!prev) {
         prev = {
           startAngle: this.attr('startAngle'),
           endAngle: this.attr('startAngle')
         }
       }
-
       return {
         from: {
           startAngle: prev.disabled ? prev.endAngle : prev.startAngle,
@@ -187,7 +204,6 @@ export class Pie extends BaseVisual {
         }
       }
     })
-
     this.rings = nextRings
     return nextRings
   }
@@ -196,54 +212,108 @@ export class Pie extends BaseVisual {
     if (!el) {
       return
     }
-
     this.$rings[i] = el
-
     if (el.isTranslatedByInitiativeClick) {
       // 主动点击导致扇形移动，将不会自动移回
       return
     }
-
     if (ring.selected && ring.endAngle > ring.startAngle) {
       if (!el.parentNode) {
-        el.on('append', () => this.toggleTranslate(ring, null, el))
+        el.on('append', () => this.clickToggle(ring, el))
       } else {
         const isTranslated = el.isTranslated
 
         if (isTranslated) {
           el.isTranslated = false
         }
-
-        this.toggleTranslate(ring, null, el)
+        this.clickToggle(ring, el)
       }
     } else if (!ring.selected && el.isTranslated) {
+      this.clickToggle(ring, el)
+    }
+  }
+
+  clickToggle(ring, el) {
+    if (this.animateByTranslate) {
       this.toggleTranslate(ring, null, el)
+    } else {
+      this.toggleAnimate(ring, null, el)
     }
   }
 
   toggleTranslate = (attrs, evt, el) => {
     let isTranslated = el.isTranslated
-    const offset = Math.max(20, attrs.maxRadius * 0.1)
+    const offset = Math.max(10, attrs.maxRadius * 0.1)
     const { startAngle, endAngle } = attrs
     const angle = (startAngle + endAngle) / 2
     const translate = [offset * Math.cos(angle), offset * Math.sin(angle)]
-
     let target = el.parentNode
-
     if (target.attr('name') === 'pieRoot') {
       target = el
     }
-
     if (isTranslated) {
-      target.transition(0.3).attr('translate', [0, 0])
+      target.transition(this.animateDuration * 0.001).attr('translate', [0, 0])
       el.isTranslated = false
     } else {
-      target.transition(0.3).attr('translate', translate)
+      target
+        .transition(this.animateDuration * 0.001)
+        .attr('translate', translate)
       el.isTranslated = true
+      for (let i = 0, len = this.$rings.length; i < len; i++) {
+        if (
+          el.id !== this.$rings[i].id &&
+          this.$rings[i].isTranslated === true
+        ) {
+          if (this.$rings[i].parentNode.attr('name') === 'pieRoot') {
+            this.$rings[i]
+              .transition(this.animateDuration * 0.001)
+              .attr('translate', [0, 0])
+          } else {
+            this.$rings[i].parentNode
+              .transition(this.animateDuration * 0.001)
+              .attr('translate', [0, 0])
+          }
+          this.$rings[i].isTranslated = false
+        }
+      }
     }
   }
+  toggleAnimate = (attrs, evt, el) => {
+    let isTranslated = el.isTranslated
+    const offset = Math.max(this.attr('radiusOffset'), attrs.maxRadius * 0.1)
+    let target = el.parentNode
+    if (target.attr('name') === 'pieRoot') {
+      target = el
+    }
+    if (isTranslated) {
+      el.transition(this.animateDuration * 0.001).attr({
+        innerRadius: this.innerRadius,
+        outerRadius: this.maxOuterRadius
+      })
+      el.isTranslated = false
+    } else {
+      el.transition(this.animateDuration * 0.001).attr({
+        innerRadius: this.innerRadius + offset,
+        outerRadius: this.maxOuterRadius + offset
+      })
 
+      el.isTranslated = true
+      for (let i = 0, len = this.$rings.length; i < len; i++) {
+        if (
+          el.id !== this.$rings[i].id &&
+          this.$rings[i].isTranslated === true
+        ) {
+          this.$rings[i].transition(this.animateDuration * 0.001).attr({
+            innerRadius: this.innerRadius,
+            outerRadius: this.maxOuterRadius
+          })
+          this.$rings[i].isTranslated = false
+        }
+      }
+    }
+  }
   render(rings = []) {
+    const { formatter } = this.attr()
     const translateOnClick = this.attr('translateOnClick')
     const needChildren =
       this.isStyleExist('guideline') ||
@@ -259,13 +329,14 @@ export class Pie extends BaseVisual {
             from,
             to,
             duration: 300,
+
             delay: 0
           })}
           actions={[
             {
               both: ['normal', 'hover'],
               action: {
-                duration: 300
+                duration: this.animateDuration
               }
             }
           ]}
@@ -276,12 +347,10 @@ export class Pie extends BaseVisual {
           )}
           onMouseenter={(evt, el) => {
             evt.stopDispatch()
-
             el.attr('state', 'hover')
           }}
           onMousemove={(evt, el) => {
             evt.stopDispatch()
-
             this.chart.setCanvasCursor('pointer')
             this.dataset.hoverData({
               data: {
@@ -302,13 +371,62 @@ export class Pie extends BaseVisual {
             evt.stopDispatch()
             if (translateOnClick) {
               el.isTranslatedByInitiativeClick = true // 主动点击
-              this.toggleTranslate(ring, evt, el)
+              this.clickToggle(ring, el)
             }
           }}
         />
       )
     }
-
+    const rendingLabel = (self, rings) => {
+      let animateTextStyle = this.style('numText')(rings, self.center)
+      let rotateTextStyle = this.style('rotateText')(rings, self.center)
+      if (!animateTextStyle && !rotateTextStyle) {
+        return
+      }
+      let lastText = ''
+      if (animateTextStyle) {
+        lastText = self.lastText || { text: animateTextStyle.text }
+        self.lastText = { text: animateTextStyle.text }
+      }
+      return (
+        <Group clipOverflow={false} enableCache={false}>
+          {animateTextStyle ? (
+            <Label
+              {...animateTextStyle}
+              text={formatter(lastText.text)}
+              animation={self.resolveAnimation({
+                from: lastText,
+                to: self.lastText,
+                duration: this.animateDuration,
+                delay: 0,
+                useTween: true,
+                attrFormatter: attr => {
+                  if (typeof attr.text === 'number') {
+                    let text = formatter(Math.round(attr.text))
+                    return { text: text }
+                  } else {
+                    return { text: formatter(attr.text) }
+                  }
+                }
+              })}
+            />
+          ) : null}
+          {rotateTextStyle ? (
+            <Label
+              {...rotateTextStyle}
+              animation={self.resolveAnimation({
+                from: { scale: [1, 1] },
+                middle: { scale: [0, 1] },
+                to: { opacity: 1, scale: [1, 1] },
+                duration: this.animateDuration,
+                delay: 0,
+                useTween: false
+              })}
+            />
+          ) : null}
+        </Group>
+      )
+    }
     return (
       <Group zIndex={100} enableCache={false} name="pieRoot">
         {rings.map((ring, i) => {
@@ -323,6 +441,7 @@ export class Pie extends BaseVisual {
             renderRing(ring, i, from, to)
           )
         })}
+        {rendingLabel(this, rings)}
       </Group>
     )
   }

@@ -194,8 +194,8 @@ export class Tooltip extends BasePlugin {
             >
               <Rect
                 {...icon}
-                {...(this.style('icon')() || {})}
                 bgcolor={d.color}
+                {...(this.style('icon')(d, d.dataOrigin, d.index) || {})}
               />
               <Label
                 enableCache={false}

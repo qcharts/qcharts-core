@@ -23,22 +23,22 @@ export default [
     component: () => import('./dounght.md')
   },
 
-  {
-    title: '南丁格尔玫瑰图',
-    path: 'rose',
-    component: () => import('./rose.md')
-  },
+  // {
+  //   title: '南丁格尔玫瑰图',
+  //   path: 'rose',
+  //   component: () => import('./rose.md')
+  // },
 
   {
     title: '弧饼图',
     path: 'arcPie',
     component: () => import('./arcPie.md')
-  },
-  {
-    title: '其他',
-    path: 'other',
-    component: () => import('./rose_layoutScale.md')
   }
+  // {
+  //   title: '其他',
+  //   path: 'other',
+  //   component: () => import('./rose_layoutScale.md')
+  // }
 
   // {
   //   title: '图表组合',

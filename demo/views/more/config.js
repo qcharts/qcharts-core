@@ -55,5 +55,15 @@ export default [
     img: 'https://p2.ssl.qhimg.com/t016f1be9b3f280bb41.png',
     title: '自定义颜色极坐标柱状图',
     path: 'polarBar-stackPolarBar'
+  },
+  {
+    img: 'https://p5.ssl.qhimg.com/t0111906506d1b724d5.png',
+    title: '负值堆叠柱状图',
+    path: 'bar-negativeStackBar'
+  },
+  {
+    img: 'https://p1.ssl.qhimg.com/t01252fdd9637490a10.png',
+    title: '动态文字环图',
+    path: 'pie-donut'
   }
 ]
