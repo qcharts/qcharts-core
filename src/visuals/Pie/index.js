@@ -383,20 +383,28 @@ export class Pie extends BaseVisual {
       if (!animateTextStyle && !rotateTextStyle) {
         return
       }
-      let lastText = ''
+      let lastAnimateText = ''
+      let lastRotateText = ''
       if (animateTextStyle) {
-        lastText = self.lastText || { text: animateTextStyle.text }
-        self.lastText = { text: animateTextStyle.text }
+        lastAnimateText = self.lastAnimateText || {
+          text: animateTextStyle.text
+        }
+        self.lastAnimateText = { text: animateTextStyle.text }
+      }
+      // debugger
+      if (rotateTextStyle) {
+        lastRotateText = self.lastRotateText || { text: rotateTextStyle.text }
+        self.lastRotateText = { text: rotateTextStyle.text }
       }
       return (
         <Group clipOverflow={false} enableCache={false}>
           {animateTextStyle ? (
             <Label
               {...animateTextStyle}
-              text={formatter(lastText.text)}
+              text={formatter(lastAnimateText.text)}
               animation={self.resolveAnimation({
-                from: lastText,
-                to: self.lastText,
+                from: lastAnimateText,
+                to: self.lastAnimateText,
                 duration: this.animateDuration,
                 delay: 0,
                 useTween: true,
@@ -414,10 +422,11 @@ export class Pie extends BaseVisual {
           {rotateTextStyle ? (
             <Label
               {...rotateTextStyle}
+              text={lastRotateText.text}
               animation={self.resolveAnimation({
-                from: { scale: [1, 1] },
-                middle: { scale: [0, 1] },
-                to: { opacity: 1, scale: [1, 1] },
+                from: { text: lastRotateText.text, last: [1, 1] },
+                middle: { text: self.lastRotateText.text, scale: [0, 1] },
+                to: { text: self.lastRotateText.text, scale: [1, 1] },
                 duration: this.animateDuration,
                 delay: 0,
                 useTween: false
