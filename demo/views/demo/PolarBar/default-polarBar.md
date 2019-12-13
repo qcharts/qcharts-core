@@ -26,6 +26,7 @@ const bar = new PolarBar({
   innerRadius: 0.1,
   radius: 0.8
 })
+bar.style('pillar', { lineWidth: 1, strokeColor: '#FFF' })
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
 })

@@ -80,18 +80,33 @@ export class PolarBar extends BaseVisual {
     result.barData.forEach((bar, i) => {
       bar.fillColor = bar.fillColor || this.color(i % dataLength)
       bar.maxRadius = maxOuterRadius
+      bar.lineWidth = 0
       bar.pos = pos
       bar.dataOrigin =
         data.length > 1
           ? clone(data[i % dataLength][Math.floor(i / dataLength)].dataOrigin)
           : clone(data[Math.floor(i / dataLength)][i % dataLength].dataOrigin)
       bar.index = i
-      bar.strokeColor = '#FFF'
-      bar.lineWidth = 1
       bar.color = bar.fillColor
-      // debugger
       const normalState = this.style('pillar')(bar, bar.dataOrigin, bar.index)
       Object.assign(bar, normalState)
+      if (bar.disabled) {
+        bar.lineWidth = 0
+      }
+      if (bar.lineWidth && bar.lineWidth >= 1) {
+        // 避免只展示一个扇形时出现边框
+        const { startAngle, endAngle } = bar
+        const angle = (startAngle + endAngle) % (Math.PI * 1)
+        let groupBarNumber = result.barData.length / result.groupData.length
+        if (
+          angle <= 0 &&
+          result.barData.filter(ring => !ring.disabled).length /
+            groupBarNumber <=
+            1
+        ) {
+          bar.lineWidth = 0
+        }
+      }
     })
     result.groupData.forEach((bar, i) => {
       bar.index = i
