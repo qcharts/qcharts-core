@@ -23,11 +23,12 @@ export default [
     component: () => import('./dounght.md')
   },
 
-  // {
-  //   title: '南丁格尔玫瑰图',
-  //   path: 'rose',
-  //   component: () => import('./rose.md')
-  // },
+  {
+    title: '南丁格尔玫瑰图',
+    path: 'rose',
+    hidden: true,
+    component: () => import('./rose.md')
+  },
 
   {
     title: '弧饼图',
