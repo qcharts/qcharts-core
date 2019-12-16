@@ -182,7 +182,7 @@ export class Chart extends BaseNode {
       `The chart is rendered! Do not invoke chart.render many a time!`
     )
     this.emit(this.lifecycle.beforeRender, this)
-    void this.children.map(this[_renderChild].bind(this))
+    this.children.map(this[_renderChild].bind(this))
     this.emit(this.lifecycle.rendered, this)
     this.__isRendered__ = true
   }
@@ -191,7 +191,8 @@ export class Chart extends BaseNode {
     this.attr('size', this.$group.attr('size'))
     this.attr('pos', this.$group.attr('pos'))
     this.emit(this.lifecycle.beforeUpdate, this)
-    void this.children.map(child => child.update())
+    this.children.map(child => child.update())
+
     this.emit(this.lifecycle.updated, this)
   }
 
