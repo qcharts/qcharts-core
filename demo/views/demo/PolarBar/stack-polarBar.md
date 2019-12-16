@@ -126,7 +126,8 @@ chart.source(data, {
 })
 const bar = new PolarBar({
   stack: true,
-  radius: 0.8
+  radius: 0.8,
+  groupPadAngle: Math.PI * 0.1
 }).style('pillar', {
   strokeColor: '#FFF',
   lineWidth: 1

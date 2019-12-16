@@ -97,7 +97,7 @@ export default [
 
   {
     title: '极坐标柱状图',
-    path: 'polarBarBar',
+    path: 'polarBar',
     component: generateCommonPage('/demo/polarBar/', PolarBarRoutes),
     children: PolarBarRoutes
   }
