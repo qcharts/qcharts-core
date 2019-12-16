@@ -378,8 +378,8 @@ export class Pie extends BaseVisual {
       )
     }
     const rendingLabel = (self, rings) => {
-      let animateTextStyle = this.style('numText')(rings, self.center)
-      let rotateTextStyle = this.style('rotateText')(rings, self.center)
+      let animateTextStyle = this.style('title')(rings, self.center)
+      let rotateTextStyle = this.style('subTitle')(rings, self.center)
       if (!animateTextStyle && !rotateTextStyle) {
         return
       }

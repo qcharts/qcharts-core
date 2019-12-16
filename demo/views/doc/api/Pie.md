@@ -36,6 +36,8 @@ pie.style('text', { color: '#fff' }
 | guideline:hover | 线       | 鼠标经过时指导线样式     |
 | guideText       | 文本     | 指导文字样式             |
 | guideText:hover | 文本     | 鼠标经过时指导文字样式   |
+| title           | 文本     | 标题，若有数字则附带动画 |
+| subtitle        | 文本     | 标题，附带旋转动画       |
 
 #### 弧饼图
 
