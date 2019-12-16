@@ -51,14 +51,14 @@ const pie = new Pie({
   }
 })
 pie.style('sector', { lineWidth: 1, strokeColor: '#fff' })
-pie.style('numText', (rings, center) => {
+pie.style('title', (rings, center) => {
   return {
     pos: [center[0], center[1]],
     text: rings[counter % length].sales,
     anchor: [0.5, 0.5]
   }
 })
-pie.style('rotateText', (rings, center) => {
+pie.style('subtitle', (rings, center) => {
   return {
     fontSize: 20,
     text: rings[counter % length].year + '年: ' + rings[counter % length].sales,
