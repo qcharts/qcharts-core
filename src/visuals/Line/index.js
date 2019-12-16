@@ -213,7 +213,6 @@ export class Line extends BaseVisual {
       opacity: 0
     }
     let guideStyle = mergeStyle(this.style('guideline'), [guidelineAttrs])
-    lines = lines.filter(line => line.points && line.points.length)
     this.renderLines = lines
     return (
       <Group zIndex={100} enableCache={false}>
@@ -224,6 +223,10 @@ export class Line extends BaseVisual {
         <Group clipOverflow={false} enableCache={false}>
           {lines.map((line, i) => {
             let color = this.color(i)
+            let currentRender = false
+            if (line.points && line.points.length) {
+              currentRender = true
+            }
             let lineAttrs = { strokeColor: color, lineWidth: 2 }
             let cusAttrs = this.style('line')(
               lineAttrs,
@@ -233,7 +236,7 @@ export class Line extends BaseVisual {
             let smybolAttrs = { fillColor: color }
             let { smooth } = this.attr()
             Object.assign(lineAttrs, cusAttrs)
-            return cusAttrs === false ? null : (
+            return cusAttrs === false || !currentRender ? null : (
               <Group
                 size={this.attr('size')}
                 clipOverflow={false}
@@ -333,6 +336,9 @@ export class Line extends BaseVisual {
     layer.append(group)
     this.renderLines.forEach((line, i) => {
       let color = this.color(i)
+      if (!line.points || !line.points.length) {
+        return
+      }
       let areaAttrs = {
         fillColor: color,
         lineWidth: 0,
