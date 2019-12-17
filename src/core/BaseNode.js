@@ -55,17 +55,12 @@ class BaseNode {
    */
   resolveAnimation(animation) {
     const _animation = this.attr('animation')
-
-    if (!_animation) {
-      return { ...animation, duration: 0 } // 关掉动画
+    if (_animation === false && !animation) {
+      return { ...animation, duration: 0 }
+    } else if (isObject(_animation)) {
+      return Object.assign({}, _animation, animation)
     } else {
-      if (isObject(_animation)) {
-        return Object.assign(animation, _animation)
-      } else if (_animation === true) {
-        return animation
-      } else {
-        return _animation
-      }
+      return animation
     }
   }
 

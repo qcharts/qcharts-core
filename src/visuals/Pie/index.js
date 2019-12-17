@@ -54,7 +54,7 @@ export class Pie extends BaseVisual {
     if (animation && animation.duration) {
       return animation.duration
     }
-    return 500
+    return 300
   }
 
   get animateByTranslate() {
@@ -249,7 +249,8 @@ export class Pie extends BaseVisual {
     let duration =
       attrs.animation && attrs.animation.duration
         ? attrs.animation.duration * 0.001
-        : 0.3
+        : this.animateDuration * 0.001
+    let globalAnimation = this.attr('animation')
     let isTranslated = el.isTranslated
     const offset = Math.max(10, attrs.maxRadius * 0.1)
     const { startAngle, endAngle } = attrs
@@ -265,7 +266,13 @@ export class Pie extends BaseVisual {
     } else {
       target
         .transition(duration)
-        .attr('translate', attrs.animation === false ? [0, 0] : translate)
+        .attr(
+          'translate',
+          attrs.animation === false ||
+            (!attrs.animation && globalAnimation === false)
+            ? [0, 0]
+            : translate
+        )
       el.isTranslated = true
       for (let i = 0, len = this.$rings.length; i < len; i++) {
         if (
@@ -288,9 +295,15 @@ export class Pie extends BaseVisual {
     let duration =
       attrs.animation && attrs.animation.duration
         ? attrs.animation.duration * 0.001
-        : 0.3
+        : this.animateDuration * 0.001
     let isTranslated = el.isTranslated
-    const offset = Math.max(this.attr('radiusOffset'), attrs.maxRadius * 0.1)
+    let globalAnimation = this.attr('animation')
+    const offset =
+      attrs.animation === false ||
+      (!attrs.animation && globalAnimation === false)
+        ? 0
+        : Math.max(this.attr('radiusOffset'), attrs.maxRadius * 0.1)
+
     let target = el.parentNode
     if (target.attr('name') === 'pieRoot') {
       target = el
@@ -388,6 +401,13 @@ export class Pie extends BaseVisual {
       )
     }
     const rendingLabel = (self, rings) => {
+      let globalDuration = 300
+      if (this.attr('animation') === false) {
+        globalDuration = 0
+      } else if (this.attr('animation') && this.attr('animation').duration) {
+        globalDuration = this.attr('animation').duration
+      }
+
       let animationTextStyleDuration = 300
       let rotateTextStyleDuration = 300
       let animateTextStyle = this.style('title')(rings)
@@ -398,20 +418,28 @@ export class Pie extends BaseVisual {
       let lastAnimateText = ''
       let lastRotateText = ''
       if (animateTextStyle) {
-        animationTextStyleDuration =
-          animateTextStyle.animation && animateTextStyle.animation.duration
+        if (animateTextStyle.animation) {
+          animationTextStyleDuration = animateTextStyle.animation.duration
             ? animateTextStyle.animation.duration
             : 300
+        } else {
+          animationTextStyleDuration = globalDuration
+        }
+
         lastAnimateText = self.lastAnimateText || {
           text: animateTextStyle.text
         }
         self.lastAnimateText = { text: animateTextStyle.text }
       }
       if (rotateTextStyle) {
-        rotateTextStyleDuration =
-          rotateTextStyle.animation && rotateTextStyle.animation.duration
+        if (rotateTextStyle.animation) {
+          rotateTextStyleDuration = rotateTextStyle.animation.duration
             ? rotateTextStyle.animation.duration
             : 300
+        } else {
+          rotateTextStyleDuration = globalDuration
+        }
+
         lastRotateText = self.lastRotateText || { text: rotateTextStyle.text }
         self.lastRotateText = { text: rotateTextStyle.text }
       }
