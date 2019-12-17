@@ -61,8 +61,10 @@ class BaseNode {
     } else {
       if (isObject(_animation)) {
         return Object.assign(animation, _animation)
-      } else {
+      } else if (_animation === true) {
         return animation
+      } else {
+        return _animation
       }
     }
   }
