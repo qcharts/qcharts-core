@@ -47,7 +47,7 @@ const pie = new Pie({
   }
 })
 pie.style('sector', {
-  animation: { duration: 800, type: 1 },
+  animation: { duration: 800, type: 'slide' },
   lineWidth: 1,
   strokeColor: '#fff'
 })
