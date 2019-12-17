@@ -42,19 +42,20 @@ chart.source(data, {
 const pie = new Pie({
   innerRadius: 0.4,
   radius: 0.5,
+  animation: { duration: 1000 },
   formatter: function(str) {
     return `${str} %`
   }
 })
 pie.style('sector', {
-  animation: { duration: 800, type: 'slide' },
+  animation: { type: 'slide' },
   lineWidth: 1,
   strokeColor: '#fff'
 })
 pie.style('title', rings => {
   let center = rings[0].center
   return {
-    animation: true,
+    animation: false,
     pos: center,
     text: rings[counter % length].sales,
     anchor: [0.5, 0.5]
@@ -63,7 +64,7 @@ pie.style('title', rings => {
 pie.style('subtitle', rings => {
   let center = rings[0].center
   return {
-    animation: { duration: 800 },
+    animation: { duration: 500 },
     fontSize: 20,
     text: rings[counter % length].year + '年: ' + rings[counter % length].sales,
     anchor: [0.5, 0.5],
