@@ -44,7 +44,9 @@ const pie = new Pie({
   radius: 0.5,
   animation: {
     duration: 1000,
-    animateByTranslate: false
+    animateByTranslate: false,
+    useAnimationOnTitle: true,
+    useAnimationOnSubtitle: true
   },
   formatter: function(str) {
     return `${str} %`

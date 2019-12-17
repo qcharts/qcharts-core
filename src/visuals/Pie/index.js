@@ -65,6 +65,22 @@ export class Pie extends BaseVisual {
     return true
   }
 
+  get useAnimationOnSubtitle() {
+    let { animation } = this.attr()
+    if (animation && animation.useAnimationOnSubtitle === false) {
+      return false
+    }
+    return true
+  }
+
+  get useAnimationOnTitle() {
+    let { animation } = this.attr()
+    if (animation && animation.useAnimationOnTitle === false) {
+      return false
+    }
+    return true
+  }
+
   get center() {
     const { size } = this.attr()
     const [width, height] = size
@@ -378,8 +394,10 @@ export class Pie extends BaseVisual {
       )
     }
     const rendingLabel = (self, rings) => {
+      let useAnimationOnSubtitle = this.useAnimationOnSubtitle
+      let useAnimationOnTitle = this.useAnimationOnTitle
       let animateTextStyle = this.style('title')(rings, self.center)
-      let rotateTextStyle = this.style('subTitle')(rings, self.center)
+      let rotateTextStyle = this.style('subtitle')(rings, self.center)
       if (!animateTextStyle && !rotateTextStyle) {
         return
       }
@@ -403,7 +421,9 @@ export class Pie extends BaseVisual {
               {...animateTextStyle}
               text={formatter(lastAnimateText.text)}
               animation={self.resolveAnimation({
-                from: lastAnimateText,
+                from: useAnimationOnTitle
+                  ? lastAnimateText
+                  : self.lastAnimateText,
                 to: self.lastAnimateText,
                 duration: this.animateDuration,
                 delay: 0,
@@ -424,8 +444,16 @@ export class Pie extends BaseVisual {
               {...rotateTextStyle}
               text={lastRotateText.text}
               animation={self.resolveAnimation({
-                from: { text: lastRotateText.text, last: [1, 1] },
-                middle: { text: self.lastRotateText.text, scale: [0, 1] },
+                from: {
+                  text: useAnimationOnSubtitle
+                    ? lastRotateText.text
+                    : self.lastRotateText.text,
+                  last: [1, 1]
+                },
+                middle: {
+                  text: self.lastRotateText.text,
+                  scale: useAnimationOnSubtitle ? [0, 1] : [1, 1]
+                },
                 to: { text: self.lastRotateText.text, scale: [1, 1] },
                 duration: this.animateDuration,
                 delay: 0,
