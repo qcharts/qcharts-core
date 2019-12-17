@@ -36,8 +36,8 @@ pie.style('text', { color: '#fff' }
 | guideline:hover | 线       | 鼠标经过时指导线样式                                                                                        |
 | guideText       | 文本     | 指导文字样式                                                                                                |
 | guideText:hover | 文本     | 鼠标经过时指导文字样式                                                                                      |
-| title           | 文本     | 标题样式，若有数字则附带数字滚动动画，支持 animaition 属性设置动画，动画默认开启                            |
-| subtitle        | 文本     | 副标题样式，附带旋转动画，支持 animaition 属性设置动画，动画默认开启                                        |
+| title           | 文本     | 标题样式，若有数字则附带数字滚动动画，支持 animation 属性设置动画，动画默认开启                             |
+| subtitle        | 文本     | 副标题样式，附带旋转动画，支持 animation 属性设置动画，动画默认开启                                         |
 
 sector、title 和 subtitle 均支持 animation 属性，设置 Boolean 值来开启关闭动画，设置 Object 可配置动画参数，可参考 [动态环图 demo](#/examples/pie-donut)
 
