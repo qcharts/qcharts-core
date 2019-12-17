@@ -65,22 +65,6 @@ export class Pie extends BaseVisual {
     return true
   }
 
-  get useAnimationOnSubtitle() {
-    let { animation } = this.attr()
-    if (animation && animation.useAnimationOnSubtitle === false) {
-      return false
-    }
-    return true
-  }
-
-  get useAnimationOnTitle() {
-    let { animation } = this.attr()
-    if (animation && animation.useAnimationOnTitle === false) {
-      return false
-    }
-    return true
-  }
-
   get center() {
     const { size } = this.attr()
     const [width, height] = size
@@ -145,7 +129,7 @@ export class Pie extends BaseVisual {
       ring.pos = pos
       ring.fillColor = this.color(i)
       ring.lineWidth = 0
-
+      ring.center = this.center
       // ring.__patchParent__({ visual: 'pie', color: ring.fillColor })
 
       const normalState = this.style('sector')(
@@ -250,14 +234,22 @@ export class Pie extends BaseVisual {
   }
 
   clickToggle(ring, el) {
-    if (this.animateByTranslate) {
-      this.toggleTranslate(ring, null, el)
-    } else {
+    if (ring.animation === false) {
+      this.toggleTranslate(ring, null, el, false)
+      return
+    }
+    if (ring.animation && ring.animation.type === 'slide') {
       this.toggleAnimate(ring, null, el)
+    } else {
+      this.toggleTranslate(ring, null, el)
     }
   }
 
   toggleTranslate = (attrs, evt, el) => {
+    let duration =
+      attrs.animation && attrs.animation.duration
+        ? attrs.animation.duration * 0.001
+        : 0.3
     let isTranslated = el.isTranslated
     const offset = Math.max(10, attrs.maxRadius * 0.1)
     const { startAngle, endAngle } = attrs
@@ -268,12 +260,12 @@ export class Pie extends BaseVisual {
       target = el
     }
     if (isTranslated) {
-      target.transition(this.animateDuration * 0.001).attr('translate', [0, 0])
+      target.transition(duration).attr('translate', [0, 0])
       el.isTranslated = false
     } else {
       target
-        .transition(this.animateDuration * 0.001)
-        .attr('translate', translate)
+        .transition(duration)
+        .attr('translate', attrs.animation === false ? [0, 0] : translate)
       el.isTranslated = true
       for (let i = 0, len = this.$rings.length; i < len; i++) {
         if (
@@ -281,12 +273,10 @@ export class Pie extends BaseVisual {
           this.$rings[i].isTranslated === true
         ) {
           if (this.$rings[i].parentNode.attr('name') === 'pieRoot') {
-            this.$rings[i]
-              .transition(this.animateDuration * 0.001)
-              .attr('translate', [0, 0])
+            this.$rings[i].transition(duration).attr('translate', [0, 0])
           } else {
             this.$rings[i].parentNode
-              .transition(this.animateDuration * 0.001)
+              .transition(duration)
               .attr('translate', [0, 0])
           }
           this.$rings[i].isTranslated = false
@@ -295,6 +285,10 @@ export class Pie extends BaseVisual {
     }
   }
   toggleAnimate = (attrs, evt, el) => {
+    let duration =
+      attrs.animation && attrs.animation.duration
+        ? attrs.animation.duration * 0.001
+        : 0.3
     let isTranslated = el.isTranslated
     const offset = Math.max(this.attr('radiusOffset'), attrs.maxRadius * 0.1)
     let target = el.parentNode
@@ -302,13 +296,13 @@ export class Pie extends BaseVisual {
       target = el
     }
     if (isTranslated) {
-      el.transition(this.animateDuration * 0.001).attr({
+      el.transition(duration).attr({
         innerRadius: this.innerRadius,
         outerRadius: this.maxOuterRadius
       })
       el.isTranslated = false
     } else {
-      el.transition(this.animateDuration * 0.001).attr({
+      el.transition(duration).attr({
         innerRadius: this.innerRadius + offset,
         outerRadius: this.maxOuterRadius + offset
       })
@@ -319,7 +313,7 @@ export class Pie extends BaseVisual {
           el.id !== this.$rings[i].id &&
           this.$rings[i].isTranslated === true
         ) {
-          this.$rings[i].transition(this.animateDuration * 0.001).attr({
+          this.$rings[i].transition(duration).attr({
             innerRadius: this.innerRadius,
             outerRadius: this.maxOuterRadius
           })
@@ -394,23 +388,30 @@ export class Pie extends BaseVisual {
       )
     }
     const rendingLabel = (self, rings) => {
-      let useAnimationOnSubtitle = this.useAnimationOnSubtitle
-      let useAnimationOnTitle = this.useAnimationOnTitle
-      let animateTextStyle = this.style('title')(rings, self.center)
-      let rotateTextStyle = this.style('subtitle')(rings, self.center)
+      let animationTextStyleDuration = 300
+      let rotateTextStyleDuration = 300
+      let animateTextStyle = this.style('title')(rings)
+      let rotateTextStyle = this.style('subtitle')(rings)
       if (!animateTextStyle && !rotateTextStyle) {
         return
       }
       let lastAnimateText = ''
       let lastRotateText = ''
       if (animateTextStyle) {
+        animationTextStyleDuration =
+          animateTextStyle.animation && animateTextStyle.animation.duration
+            ? animateTextStyle.animation.duration
+            : 300
         lastAnimateText = self.lastAnimateText || {
           text: animateTextStyle.text
         }
         self.lastAnimateText = { text: animateTextStyle.text }
       }
-      // debugger
       if (rotateTextStyle) {
+        rotateTextStyleDuration =
+          rotateTextStyle.animation && rotateTextStyle.animation.duration
+            ? rotateTextStyle.animation.duration
+            : 300
         lastRotateText = self.lastRotateText || { text: rotateTextStyle.text }
         self.lastRotateText = { text: rotateTextStyle.text }
       }
@@ -421,11 +422,12 @@ export class Pie extends BaseVisual {
               {...animateTextStyle}
               text={formatter(lastAnimateText.text)}
               animation={self.resolveAnimation({
-                from: useAnimationOnTitle
-                  ? lastAnimateText
-                  : self.lastAnimateText,
+                from:
+                  animateTextStyle.animation === false
+                    ? self.lastAnimateText
+                    : lastAnimateText,
                 to: self.lastAnimateText,
-                duration: this.animateDuration,
+                duration: animationTextStyleDuration,
                 delay: 0,
                 useTween: true,
                 attrFormatter: attr => {
@@ -445,17 +447,18 @@ export class Pie extends BaseVisual {
               text={lastRotateText.text}
               animation={self.resolveAnimation({
                 from: {
-                  text: useAnimationOnSubtitle
-                    ? lastRotateText.text
-                    : self.lastRotateText.text,
+                  text:
+                    rotateTextStyle.animation === false
+                      ? self.lastRotateText.text
+                      : lastRotateText.text,
                   last: [1, 1]
                 },
                 middle: {
                   text: self.lastRotateText.text,
-                  scale: useAnimationOnSubtitle ? [0, 1] : [1, 1]
+                  scale: rotateTextStyle.animation === false ? [1, 1] : [0, 1]
                 },
                 to: { text: self.lastRotateText.text, scale: [1, 1] },
-                duration: this.animateDuration,
+                duration: rotateTextStyleDuration,
                 delay: 0,
                 useTween: false
               })}
