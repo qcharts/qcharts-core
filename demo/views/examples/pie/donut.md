@@ -42,24 +42,28 @@ chart.source(data, {
 const pie = new Pie({
   innerRadius: 0.4,
   radius: 0.5,
-  animation: {
-    duration: 1000,
-    animateByTranslate: false
-  },
   formatter: function(str) {
     return `${str} %`
   }
 })
-pie.style('sector', { lineWidth: 1, strokeColor: '#fff' })
-pie.style('title', (rings, center) => {
+pie.style('sector', {
+  animation: { duration: 800, type: 1 },
+  lineWidth: 1,
+  strokeColor: '#fff'
+})
+pie.style('title', rings => {
+  let center = rings[0].center
   return {
-    pos: [center[0], center[1]],
+    animation: true,
+    pos: center,
     text: rings[counter % length].sales,
     anchor: [0.5, 0.5]
   }
 })
-pie.style('subtitle', (rings, center) => {
+pie.style('subtitle', rings => {
+  let center = rings[0].center
   return {
+    animation: { duration: 800 },
     fontSize: 20,
     text: rings[counter % length].year + '年: ' + rings[counter % length].sales,
     anchor: [0.5, 0.5],
