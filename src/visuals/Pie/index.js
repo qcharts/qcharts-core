@@ -3,13 +3,7 @@ import { BaseVisual } from '../../core'
 import layout from './layout'
 import { withGuide } from './guide'
 import { withText } from './text'
-import {
-  flattern,
-  axis,
-  scaleLinear,
-  isObject,
-  formatAnimationAttr
-} from '../../util'
+import { flattern, axis, scaleLinear, formatAnimationAttr } from '../../util'
 
 export class Pie extends BaseVisual {
   constructor(attrs = {}) {
