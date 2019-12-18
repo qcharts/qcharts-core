@@ -3,7 +3,7 @@ import { BaseVisual } from '../../core'
 import layout from './layout'
 import { withGuide } from './guide'
 import { withText } from './text'
-import { flattern, axis, scaleLinear } from '../../util'
+import { flattern, axis, scaleLinear, isObject } from '../../util'
 
 export class Pie extends BaseVisual {
   constructor(attrs = {}) {
@@ -55,14 +55,6 @@ export class Pie extends BaseVisual {
       return animation.duration
     }
     return 300
-  }
-
-  get animateByTranslate() {
-    let { animation } = this.attr()
-    if (animation && animation.animateByTranslate === false) {
-      return false
-    }
-    return true
   }
 
   get center() {
@@ -385,7 +377,6 @@ export class Pie extends BaseVisual {
           }}
           onMouseleave={(evt, el) => {
             evt.stopDispatch()
-
             this.dataset.hoverData(null)
             el.attr('state', 'normal')
             this.chart.setCanvasCursor('default')
@@ -401,15 +392,6 @@ export class Pie extends BaseVisual {
       )
     }
     const rendingLabel = (self, rings) => {
-      let globalDuration = 300
-      if (this.attr('animation') === false) {
-        globalDuration = 0
-      } else if (this.attr('animation') && this.attr('animation').duration) {
-        globalDuration = this.attr('animation').duration
-      }
-
-      let animationTextStyleDuration = 300
-      let rotateTextStyleDuration = 300
       let animateTextStyle = this.style('title')(rings)
       let rotateTextStyle = this.style('subtitle')(rings)
       if (!animateTextStyle && !rotateTextStyle) {
@@ -417,29 +399,31 @@ export class Pie extends BaseVisual {
       }
       let lastAnimateText = ''
       let lastRotateText = ''
+      let titleAnimation = {}
+      let subTitleAnimation = {}
       if (animateTextStyle) {
-        if (animateTextStyle.animation) {
-          animationTextStyleDuration = animateTextStyle.animation.duration
-            ? animateTextStyle.animation.duration
-            : 300
-        } else {
-          animationTextStyleDuration = globalDuration
+        if (animateTextStyle.animation === false) {
+          titleAnimation.duration = 0
+        } else if (
+          isObject(animateTextStyle.animation) ||
+          !animateTextStyle.animation
+        ) {
+          titleAnimation = animateTextStyle.animation
         }
-
         lastAnimateText = self.lastAnimateText || {
           text: animateTextStyle.text
         }
         self.lastAnimateText = { text: animateTextStyle.text }
       }
       if (rotateTextStyle) {
-        if (rotateTextStyle.animation) {
-          rotateTextStyleDuration = rotateTextStyle.animation.duration
-            ? rotateTextStyle.animation.duration
-            : 300
-        } else {
-          rotateTextStyleDuration = globalDuration
+        if (rotateTextStyle.animation === false) {
+          subTitleAnimation.duration = 0
+        } else if (
+          isObject(rotateTextStyle.animation) ||
+          !rotateTextStyle.animation
+        ) {
+          subTitleAnimation = rotateTextStyle.animation
         }
-
         lastRotateText = self.lastRotateText || { text: rotateTextStyle.text }
         self.lastRotateText = { text: rotateTextStyle.text }
       }
@@ -449,47 +433,53 @@ export class Pie extends BaseVisual {
             <Label
               {...animateTextStyle}
               text={formatter(lastAnimateText.text)}
-              animation={self.resolveAnimation({
-                from:
-                  animateTextStyle.animation === false
-                    ? self.lastAnimateText
-                    : lastAnimateText,
-                to: self.lastAnimateText,
-                duration: animationTextStyleDuration,
-                delay: 0,
-                useTween: true,
-                attrFormatter: attr => {
-                  if (typeof attr.text === 'number') {
-                    let text = formatter(Math.round(attr.text))
-                    return { text: text }
-                  } else {
-                    return { text: formatter(attr.text) }
+              animation={self.resolveAnimation(
+                {
+                  from:
+                    animateTextStyle.animation === false
+                      ? self.lastAnimateText
+                      : lastAnimateText,
+                  to: self.lastAnimateText,
+                  duration: 300,
+                  delay: 0,
+                  useTween: true,
+                  attrFormatter: attr => {
+                    if (typeof attr.text === 'number') {
+                      let text = formatter(Math.round(attr.text))
+                      return { text: text }
+                    } else {
+                      return { text: formatter(attr.text) }
+                    }
                   }
-                }
-              })}
+                },
+                titleAnimation
+              )}
             />
           ) : null}
           {rotateTextStyle ? (
             <Label
               {...rotateTextStyle}
               text={lastRotateText.text}
-              animation={self.resolveAnimation({
-                from: {
-                  text:
-                    rotateTextStyle.animation === false
-                      ? self.lastRotateText.text
-                      : lastRotateText.text,
-                  last: [1, 1]
+              animation={self.resolveAnimation(
+                {
+                  from: {
+                    text:
+                      rotateTextStyle.animation === false
+                        ? self.lastRotateText.text
+                        : lastRotateText.text,
+                    last: [1, 1]
+                  },
+                  middle: {
+                    text: self.lastRotateText.text,
+                    scale: rotateTextStyle.animation === false ? [1, 1] : [0, 1]
+                  },
+                  to: { text: self.lastRotateText.text, scale: [1, 1] },
+                  duration: 300,
+                  delay: 0,
+                  useTween: false
                 },
-                middle: {
-                  text: self.lastRotateText.text,
-                  scale: rotateTextStyle.animation === false ? [1, 1] : [0, 1]
-                },
-                to: { text: self.lastRotateText.text, scale: [1, 1] },
-                duration: rotateTextStyleDuration,
-                delay: 0,
-                useTween: false
-              })}
+                subTitleAnimation
+              )}
             />
           ) : null}
         </Group>

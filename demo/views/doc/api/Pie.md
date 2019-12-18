@@ -39,7 +39,7 @@ pie.style('text', { color: '#fff' }
 | title           | 文本     | 标题样式，若有数字则附带数字滚动动画，支持 animation 属性设置动画，动画默认开启                             |
 | subtitle        | 文本     | 副标题样式，附带旋转动画，支持 animation 属性设置动画，动画默认开启                                         |
 
-sector、title 和 subtitle 均支持 animation 属性，设置 Boolean 值来开启关闭动画，优先级高于 attrs 中 animaition 属性，若未设置读取 attrs 中 animation 属性。设置 Object 可配置动画参数，可参考 [动态环图 demo](#/examples/pie-donut)
+sector、title 和 subtitle 均支持 animation 属性，设置 Boolean 值来开启关闭动画，优先级高于 attrs 中 animation 属性，若未设置读取 attrs 中 animation 属性。设置 Object 可配置动画参数，可参考 [动态环图 demo](#/examples/pie-donut)
 
 #### 弧饼图
 

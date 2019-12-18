@@ -53,14 +53,17 @@ class BaseNode {
    * 动画处理
    * @param {*} animation
    */
-  resolveAnimation(animation) {
+  resolveAnimation(animation, subAnimation) {
     const _animation = this.attr('animation')
-    if (_animation === false && !animation) {
-      return { ...animation, duration: 0 }
-    } else if (isObject(_animation)) {
-      return Object.assign({}, _animation, animation)
+
+    if (!_animation && !subAnimation) {
+      return { ...animation, duration: 0 } // 关掉动画
     } else {
-      return animation
+      if (isObject(_animation)) {
+        return Object.assign(animation, _animation, subAnimation)
+      } else {
+        return Object.assign(animation, subAnimation)
+      }
     }
   }
 
