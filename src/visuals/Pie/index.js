@@ -3,7 +3,13 @@ import { BaseVisual } from '../../core'
 import layout from './layout'
 import { withGuide } from './guide'
 import { withText } from './text'
-import { flattern, axis, scaleLinear, isObject } from '../../util'
+import {
+  flattern,
+  axis,
+  scaleLinear,
+  isObject,
+  formatAnimationAttr
+} from '../../util'
 
 export class Pie extends BaseVisual {
   constructor(attrs = {}) {
@@ -402,28 +408,14 @@ export class Pie extends BaseVisual {
       let titleAnimation = {}
       let subTitleAnimation = {}
       if (animateTextStyle) {
-        if (animateTextStyle.animation === false) {
-          titleAnimation.duration = 0
-        } else if (
-          isObject(animateTextStyle.animation) ||
-          !animateTextStyle.animation
-        ) {
-          titleAnimation = animateTextStyle.animation
-        }
+        titleAnimation = formatAnimationAttr(animateTextStyle.animation)
         lastAnimateText = self.lastAnimateText || {
           text: animateTextStyle.text
         }
         self.lastAnimateText = { text: animateTextStyle.text }
       }
       if (rotateTextStyle) {
-        if (rotateTextStyle.animation === false) {
-          subTitleAnimation.duration = 0
-        } else if (
-          isObject(rotateTextStyle.animation) ||
-          !rotateTextStyle.animation
-        ) {
-          subTitleAnimation = rotateTextStyle.animation
-        }
+        subTitleAnimation = formatAnimationAttr(rotateTextStyle.animation)
         lastRotateText = self.lastRotateText || { text: rotateTextStyle.text }
         self.lastRotateText = { text: rotateTextStyle.text }
       }

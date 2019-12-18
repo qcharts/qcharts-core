@@ -19,6 +19,7 @@ export { isWeixinApp }
 export { isEqual } from './isEqual'
 export { interpolate } from './interpolate'
 export { throttle } from './throttle'
+export { formatAnimationAttr } from './animation'
 
 export const flattern = arr => [].concat.apply([], arr)
 
