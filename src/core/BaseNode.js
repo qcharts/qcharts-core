@@ -4,8 +4,8 @@ import {
   invariant,
   isArray,
   isString,
-  isObject,
   isEqual,
+  formatAnimationAttr,
   clone
 } from '../util'
 import Dataset from './dataset'
@@ -54,17 +54,17 @@ class BaseNode {
    * @param {*} animation
    */
   resolveAnimation(animation, subAnimation) {
-    const _animation = this.attr('animation')
-
-    if (!_animation && !subAnimation) {
-      return { ...animation, duration: 0 } // 关掉动画
-    } else {
-      if (isObject(_animation)) {
-        return Object.assign(animation, _animation, subAnimation)
-      } else {
-        return Object.assign(animation, subAnimation)
-      }
+    const _animation = formatAnimationAttr(this.attr('animation'))
+    let res = Object.assign(animation, _animation, subAnimation)
+    if (
+      _animation.use === false &&
+      (typeof subAnimation === 'undefined' ||
+        JSON.stringify(subAnimation) === '{}' ||
+        (subAnimation && subAnimation.use === false))
+    ) {
+      res.duration = 0
     }
+    return res
   }
 
   /**
