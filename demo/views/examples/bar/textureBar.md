@@ -25,8 +25,8 @@ const bar = new Bar({
   transpose: true,
   barWidth: 30
 })
-const texture1 = 'http://p3.qhimg.com/t01128a717c0ff244f1.png'
-const texture2 = 'http://p0.qhimg.com/t011e930b32bd7c44b8.png'
+const texture1 = 'https://p3.ssl.qhimg.com/t01128a717c0ff244f1.png'
+const texture2 = 'https://p5.ssl.qhimg.com/t01c5d76eabda023606.png'
 bar
   .style('pillar', (attrs, data, i) => {
     if (i === 0) {
