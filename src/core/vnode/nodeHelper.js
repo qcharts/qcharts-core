@@ -57,6 +57,10 @@ export function animate(el, attrs) {
         .delay(delay)
         .duration(duration)
         .onUpdate(attr => {
+          // console.log(attr)
+          // if (attr.text) {
+          //   console.log(attr.text)
+          // }
           el.attr(attrFormatter(attr))
         })
         .start()

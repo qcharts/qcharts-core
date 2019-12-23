@@ -17,6 +17,11 @@ export default [
     path: 'line-multipleYAxis'
   },
   {
+    img: 'https://p5.ssl.qhimg.com/t013417fb93fa37e2ea.png',
+    title: '坐标轴间隔显示',
+    path: 'line-axisLine'
+  },
+  {
     img: 'https://p2.ssl.qhimg.com/t01d660089a40290d6a.png',
     title: '折线结束点',
     path: 'line-endPoint'

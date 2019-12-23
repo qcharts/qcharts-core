@@ -13,5 +13,4 @@ contexts.keys().forEach(key => {
     })
   }
 })
-
 export default routes

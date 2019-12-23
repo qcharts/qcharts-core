@@ -61,7 +61,13 @@ const axisTop = new Axis({
   orient: 'top'
 }).source(d2)
 
-const axisLeft = new Axis({ orient: 'left' }).style('scale', true)
+const axisLeft = new Axis({ orient: 'left' })
+  .style('scale', true)
+  .style('grid', function(attr, data, i) {
+    if (i === 6) {
+      return false
+    }
+  })
 
 const legend = new Legend({ align: ['center', 'bottom'] })
   .style('icon', { borderRadius: 10 })
