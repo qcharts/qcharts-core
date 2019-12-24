@@ -108,10 +108,10 @@ export default {
       oDemo.innerHTML = `<iframe class="chart-frame" frameborder="0"></iframe>`
 
       // FIXME: 发布以后改地址
-      let qchartsSrc = './qcharts.js';
-      // process.env.NODE_ENV === 'development'
-      //   ? location.origin + '/qcharts.js'
-      //   : 'https://unpkg.com/@qcharts/core@0.2/dist/index.js'
+      let qchartsSrc = location.origin + '/qcharts.js';
+      process.env.NODE_ENV === 'development'
+        ? location.origin + '/qcharts.js'
+        : 'https://s4.ssl.qhres.com/static/eee4270b9365f11e.js'
       const spritejsSrc =
         process.env.NODE_ENV === 'development'
           ? 'https://lib.baomitu.com/spritejs/2.29.4/spritejs.min.js'

@@ -5,14 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const common = require('./webpack.conf.common')
 
 module.exports = merge(common, {
-  // entry: path.resolve(__dirname, '../demo/'),
-  entry: {
-    app: path.resolve(__dirname, '../demo/'),
-    qcharts: path.resolve(__dirname, '../src/')
-  },
+  entry: path.resolve(__dirname, '../demo/'),
   output: {
     path: path.join(__dirname, '../docs'),
-    filename: '[name].js',
+    filename: '[name].[hash].js',
     chunkFilename: '[name].[hash:7].js'
   },
   module: {
