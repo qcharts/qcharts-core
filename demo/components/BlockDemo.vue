@@ -108,7 +108,7 @@ export default {
       oDemo.innerHTML = `<iframe class="chart-frame" frameborder="0"></iframe>`
 
       // FIXME: 发布以后改地址
-      let qchartsSrc = location.origin + '/qcharts.js';
+      let qchartsSrc = './qcharts.js';
       // process.env.NODE_ENV === 'development'
       //   ? location.origin + '/qcharts.js'
       //   : 'https://unpkg.com/@qcharts/core@0.2/dist/index.js'
