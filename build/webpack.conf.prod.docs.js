@@ -12,7 +12,7 @@ module.exports = merge(common, {
   },
   output: {
     path: path.join(__dirname, '../docs'),
-    filename: '[name].[hash].js',
+    filename: '[name].js',
     chunkFilename: '[name].[hash:7].js'
   },
   module: {
