@@ -59,13 +59,9 @@ typings/
 
 # dotenv environment variables file
 .env
-
-lib
-dist
 temp
 .DS_Store
 .idea
-lib
 stats.json
 tslint.json
 
