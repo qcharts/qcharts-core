@@ -75,4 +75,3 @@ tslint.json
 
 # build
 lib/
-dist/
