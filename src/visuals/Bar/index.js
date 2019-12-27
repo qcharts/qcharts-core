@@ -7,8 +7,11 @@ import { withText } from './text'
 export class Bar extends BaseVisual {
   constructor(attrs = {}) {
     super(attrs)
+    this.$groups = []
     this.$pillars = []
+    this.groups = []
     this.chartSize = []
+    this.hoverIndex = -1
   }
 
   getDefaultAttrs() {
@@ -74,6 +77,7 @@ export class Bar extends BaseVisual {
     let data = this.getData()
     const result = this.transform(data)
     this.pillars = result.barData
+    this.groups = result.groupData
     this.fromTos = this.pillars.map((pillar, i) => {
       return {
         from: {
@@ -128,6 +132,7 @@ export class Bar extends BaseVisual {
       }
     })
     this.pillars = newRenderData.barData
+    this.groups = newRenderData.groupData
     return newRenderData
   }
 
@@ -139,6 +144,20 @@ export class Bar extends BaseVisual {
   hideTooltip() {
     this.dataset.hoverData(null)
   }
+  dispatchAction(type, obj) {
+    let { index } = obj
+    if (type === 'hover') {
+      if (this.hoverIndex >= 0) {
+        this.$pillars[this.hoverIndex].attr('state', 'normal')
+        this.$groups[this.hoverIndex].attr('state', 'normal')
+      }
+      this.$pillars[index].attr('state', type)
+      this.$groups[index].attr('state', type)
+      this.showTooltip({}, this.groups[index].rects)
+      this.hoverIndex = index
+    }
+  }
+
   render(data) {
     return (
       <Group zIndex={100} enableCache={false} clipOverflow={false}>
@@ -154,7 +173,7 @@ export class Bar extends BaseVisual {
             }
             return (
               <Sprite
-                ref={el => this.ref('pillars', el)}
+                ref={el => this.ref('groups', el)}
                 {...pillar}
                 {...normalState}
                 hoverState={Object.assign(
@@ -190,6 +209,7 @@ export class Bar extends BaseVisual {
             return (
               <Group enableCache={false} clipOverflow={false}>
                 <RectSprite
+                  ref={el => this.ref('pillars', el)}
                   {...pillar}
                   {...from}
                   animation={this.resolveAnimation({
