@@ -45,12 +45,15 @@ const legend = new Legend({ align: ['center', 'bottom'] })
 chart.add([line, tooltip, axisBottom, axisLeft, legend])
 chart.render()
 let num = 0
-setTimeout(_ => {
+setInterval(_ => {
   if (num > 7) {
     num = 0
   }
-  line.dispatchAction('hover', { index: num++ })
-}, 1000)
+  let { width, height } = chart.canvas.getBoundingClientRect()
+  layerX = (width / 7) * num
+  layerY = Math.random() * height
+  line.dispatchAction('hover', { index: num++, layerX, layerY })
+}, 3000)
 ```
 
 :::
