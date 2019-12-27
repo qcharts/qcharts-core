@@ -102,11 +102,11 @@ export class Tooltip extends BasePlugin {
           !pos && this.setState({ hide: true }, true)
         } else {
           let { layerX: x, layerY: y, data } = d
-          // const { hide } = this.state
-          // if (hide) {
-          // 如果第一次出现，直接出现到当前位置
-          this.$group.attr('pos', [x, y])
-          // }
+          const { hide } = this.state
+          if (hide) {
+            // 如果第一次出现，直接出现到当前位置
+            this.$group.attr('pos', [x, y])
+          }
           data = isArray(data) ? data : [data]
           let [width, height] = this.$group.contentSize
           const [t, r, b, l] = this.$group.attr('padding')

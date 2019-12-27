@@ -27,7 +27,7 @@ export default [
     path: 'line-endPoint'
   },
   {
-    img: 'https://p2.ssl.qhimg.com/t01d660089a40290d6a.png',
+    img: 'https://p3.ssl.qhimg.com/t01b0370271bc225a11.png',
     title: '选中轮播',
     path: 'line-changeSelect'
   },
