@@ -145,7 +145,7 @@ export class Bar extends BaseVisual {
     this.dataset.hoverData(null)
   }
   dispatchAction(type, obj) {
-    let { index } = obj
+    let { index, layerX, layerY } = obj
     if (type === 'hover') {
       if (this.hoverIndex >= 0) {
         this.$pillars[this.hoverIndex].attr('state', 'normal')
@@ -153,7 +153,7 @@ export class Bar extends BaseVisual {
       }
       this.$pillars[index].attr('state', type)
       this.$groups[index].attr('state', type)
-      this.showTooltip({}, this.groups[index].rects)
+      this.showTooltip({ layerX, layerY }, this.groups[index].rects)
       this.hoverIndex = index
     }
   }

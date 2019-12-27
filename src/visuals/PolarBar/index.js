@@ -7,8 +7,10 @@ import layout from './layout'
 export class PolarBar extends BaseVisual {
   constructor(attrs = {}) {
     super(attrs)
+    this.$groups = []
     this.$pillars = []
     this.chartSize = []
+    this.groups = []
   }
 
   getDefaultAttrs() {
@@ -54,6 +56,10 @@ export class PolarBar extends BaseVisual {
     let [x, y] = [width / 2 - maxRadius, height / 2 - maxRadius]
     return [x, y]
   }
+  ref(name, el) {
+    this['$' + name].push(el)
+  }
+
   transform(data) {
     if (!data || data.length === 0) {
       return { barData: [], groupData: [] }
@@ -122,6 +128,7 @@ export class PolarBar extends BaseVisual {
     let data = this.getData()
     const result = this.transform(data)
     this.pillars = result.barData
+    this.groups = result.groupData
     this.fromTos = this.pillars.map((pillar, i) => {
       return {
         from: {
@@ -181,6 +188,7 @@ export class PolarBar extends BaseVisual {
       }
     })
     this.pillars = newRenderData.barData
+    this.groups = newRenderData.groupData
     return newRenderData
   }
 
@@ -245,6 +253,19 @@ export class PolarBar extends BaseVisual {
   hideTooltip() {
     this.dataset.hoverData(null)
   }
+  dispatchAction(type, obj) {
+    let { index, layerX, layerY } = obj
+    if (type === 'hover') {
+      if (this.hoverIndex >= 0) {
+        this.$pillars[this.hoverIndex].attr('state', 'normal')
+        this.$groups[this.hoverIndex].attr('state', 'normal')
+      }
+      this.$pillars[index].attr('state', type)
+      this.$groups[index].attr('state', type)
+      this.showTooltip({ layerX, layerY }, this.groups[index].rects)
+      this.hoverIndex = index
+    }
+  }
   render(data) {
     const translateOnClick = this.attr('translateOnClick')
     return (
@@ -261,6 +282,7 @@ export class PolarBar extends BaseVisual {
             }
             return (
               <Ring
+                ref={el => this.ref('groups', el)}
                 {...pillar}
                 {...normalState}
                 hoverState={Object.assign(

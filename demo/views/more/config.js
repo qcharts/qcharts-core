@@ -67,6 +67,11 @@ export default [
     path: 'polarBar-stackPolarBar'
   },
   {
+    img: 'https://p1.ssl.qhimg.com/t01b3333e493176bcb8.png',
+    title: '南丁格尔图选中轮播',
+    path: 'polarBar-changeSelect'
+  },
+  {
     img: 'https://p5.ssl.qhimg.com/t0111906506d1b724d5.png',
     title: '负值堆叠柱状图',
     path: 'bar-negativeStackBar'
