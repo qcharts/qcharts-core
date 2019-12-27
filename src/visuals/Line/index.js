@@ -44,7 +44,8 @@ export class Line extends BaseVisual {
   }
   dispatchAction(type, options) {
     if (type === 'hover') {
-      let { index = 0 } = options
+      // this.bgLeave.bind(this)
+      let { index = 1 } = options
       this.setHoverIndex(index, options)
     }
   }
@@ -136,8 +137,6 @@ export class Line extends BaseVisual {
       }
       this.dataset.hoverData({ ...options, data: hoverData })
       this.__guidelineIndex = tarIndex
-    } else {
-      this.bgLeave()
     }
   }
   bgMove(evt, el) {
@@ -156,7 +155,41 @@ export class Line extends BaseVisual {
       }
     }
     let { layerX, layerY } = evt
+    // this.dataset.hoverData({})
     this.setHoverIndex(tarIndex, { layerX, layerY })
+    // if ($guideline && tarIndex !== this.__guidelineIndex) {
+    //   $guideline.attr({ opacity: 1, x: tarX })
+    //   this.$symbols.forEach(line => {
+    //     line.forEach((symbol, j) => {
+    //       if (j !== tarIndex) {
+    //         symbol.attr('state', 'normal')
+    //       } else {
+    //         symbol.attr('state', 'hover')
+    //       }
+    //     })
+    //   })
+    //   let hoverData = []
+    //   this.renderData.forEach(line => {
+    //     line.data.forEach((data, i) => {
+    //       if (i === tarIndex && line.disabled !== true) {
+    //         hoverData.push({
+    //           ...data.dataOrigin,
+    //           color: data.color,
+    //           _value: data.__valueGetter__()
+    //         })
+    //       }
+    //     })
+    //   })
+    //   if (this.attr('stack') === true) {
+    //     hoverData.reverse()
+    //   } else {
+    //     hoverData.sort((a, b) => {
+    //       return b._value - a._value
+    //     })
+    //   }
+    //   this.dataset.hoverData({ ...evt, data: hoverData })
+    //   this.__guidelineIndex = tarIndex
+    // }
   }
   bgLeave(evt, el) {
     let $guideline = this.$refs['guideline']

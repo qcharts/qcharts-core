@@ -27,6 +27,11 @@ export default [
     path: 'line-endPoint'
   },
   {
+    img: 'https://p2.ssl.qhimg.com/t01d660089a40290d6a.png',
+    title: '选中轮播',
+    path: 'line-changeSelect'
+  },
+  {
     img: 'https://p5.ssl.qhimg.com/d/inn/e48ee7ed2877/mixLineAndBar.png',
     title: '图表组合',
     path: 'line-mixLineAndBar'
