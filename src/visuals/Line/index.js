@@ -4,6 +4,7 @@ import { layout } from './layout'
 import { mergeStyle } from '../../util/merge-style'
 import { getSymbolAndStyle } from '../../util/pointSymbol'
 import { Tween } from '../../tween'
+import { Tooltip } from '../../plugins/Tooltip'
 export class Line extends BaseVisual {
   constructor(attrs = {}) {
     super(attrs)
@@ -12,6 +13,7 @@ export class Line extends BaseVisual {
     this.$symbols = [] // symbols
     this.$lines = [] // lines
     this.__guidelineIndex = -1
+    this.isMoving = false
   }
   get name() {
     return 'Line'
@@ -141,12 +143,12 @@ export class Line extends BaseVisual {
   }
   bgMove(evt, el) {
     if (evt === undefined) return
+
     const { offsetX: x } = evt
     const pointsX = getPointX(this.renderData)
     let tarX = pointsX[0]
     let tarIndex = 0
     let dis = Math.abs(tarX - x)
-    // let $guideline = this.$refs['guideline']
     for (let i = 1; i < pointsX.length; i++) {
       if (Math.abs(pointsX[i] - x) < dis) {
         dis = Math.abs(pointsX[i] - x)
@@ -155,41 +157,14 @@ export class Line extends BaseVisual {
       }
     }
     let { layerX, layerY } = evt
-    // this.dataset.hoverData({})
+    if (!this.isMoving) {
+      let tooltip = this.chart.plugins.filter(d => d instanceof Tooltip)[0]
+      if (tooltip) {
+        tooltip.$group.attr('pos', [layerX, layerY])
+      }
+    }
     this.setHoverIndex(tarIndex, { layerX, layerY })
-    // if ($guideline && tarIndex !== this.__guidelineIndex) {
-    //   $guideline.attr({ opacity: 1, x: tarX })
-    //   this.$symbols.forEach(line => {
-    //     line.forEach((symbol, j) => {
-    //       if (j !== tarIndex) {
-    //         symbol.attr('state', 'normal')
-    //       } else {
-    //         symbol.attr('state', 'hover')
-    //       }
-    //     })
-    //   })
-    //   let hoverData = []
-    //   this.renderData.forEach(line => {
-    //     line.data.forEach((data, i) => {
-    //       if (i === tarIndex && line.disabled !== true) {
-    //         hoverData.push({
-    //           ...data.dataOrigin,
-    //           color: data.color,
-    //           _value: data.__valueGetter__()
-    //         })
-    //       }
-    //     })
-    //   })
-    //   if (this.attr('stack') === true) {
-    //     hoverData.reverse()
-    //   } else {
-    //     hoverData.sort((a, b) => {
-    //       return b._value - a._value
-    //     })
-    //   }
-    //   this.dataset.hoverData({ ...evt, data: hoverData })
-    //   this.__guidelineIndex = tarIndex
-    // }
+    this.isMoving = true
   }
   bgLeave(evt, el) {
     let $guideline = this.$refs['guideline']
@@ -203,6 +178,7 @@ export class Line extends BaseVisual {
       this.dataset.hoverData()
       this.__guidelineIndex = -1
     }
+    this.isMoving = false
   }
   setSymbol(i, j, el) {
     if (!this.$symbols[i]) {
