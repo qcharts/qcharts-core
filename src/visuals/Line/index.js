@@ -42,7 +42,12 @@ export class Line extends BaseVisual {
     this.renderData = lines
     return lines
   }
-
+  dispatchAction(type, options) {
+    if (type === 'hover') {
+      let { index = 0 } = options
+      this.setHoverIndex(index, options)
+    }
+  }
   beforeUpdate() {
     super.beforeUpdate()
     const lines = getLines(
@@ -94,21 +99,11 @@ export class Line extends BaseVisual {
   ref(name, el) {
     this.$refs[name] = el
   }
-  bgMove(evt, el) {
-    if (evt === undefined) return
-    const { offsetX: x } = evt
-    const pointsX = getPointX(this.renderData)
-    let tarX = pointsX[0]
-    let tarIndex = 0
-    let dis = Math.abs(tarX - x)
+  setHoverIndex(ind, options) {
     let $guideline = this.$refs['guideline']
-    for (let i = 1; i < pointsX.length; i++) {
-      if (Math.abs(pointsX[i] - x) < dis) {
-        dis = Math.abs(pointsX[i] - x)
-        tarX = pointsX[i]
-        tarIndex = i
-      }
-    }
+    let tarIndex = ind
+    const pointsX = getPointX(this.renderData)
+    let tarX = pointsX[ind]
     if ($guideline && tarIndex !== this.__guidelineIndex) {
       $guideline.attr({ opacity: 1, x: tarX })
       this.$symbols.forEach(line => {
@@ -139,9 +134,29 @@ export class Line extends BaseVisual {
           return b._value - a._value
         })
       }
-      this.dataset.hoverData({ ...evt, data: hoverData })
+      this.dataset.hoverData({ ...options, data: hoverData })
       this.__guidelineIndex = tarIndex
+    } else {
+      this.bgLeave()
     }
+  }
+  bgMove(evt, el) {
+    if (evt === undefined) return
+    const { offsetX: x } = evt
+    const pointsX = getPointX(this.renderData)
+    let tarX = pointsX[0]
+    let tarIndex = 0
+    let dis = Math.abs(tarX - x)
+    // let $guideline = this.$refs['guideline']
+    for (let i = 1; i < pointsX.length; i++) {
+      if (Math.abs(pointsX[i] - x) < dis) {
+        dis = Math.abs(pointsX[i] - x)
+        tarX = pointsX[i]
+        tarIndex = i
+      }
+    }
+    let { layerX, layerY } = evt
+    this.setHoverIndex(tarIndex, { layerX, layerY })
   }
   bgLeave(evt, el) {
     let $guideline = this.$refs['guideline']
