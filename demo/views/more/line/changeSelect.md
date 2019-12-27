@@ -26,7 +26,9 @@ chart.source(data, {
   text: 'date'
 })
 
-const line = new Line({ smooth: true }).style('point', { strokeColor: '#fff' })
+const line = new Line({ smooth: true })
+  .style('point', { strokeColor: '#fff' })
+  .style('point:hover', { strokeColor: '#f00' })
 
 const tooltip = new Tooltip({
   formatter: function(data) {
