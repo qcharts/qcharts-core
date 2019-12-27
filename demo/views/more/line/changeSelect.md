@@ -1,4 +1,4 @@
-## 折线结束点
+## 折线轮播选中
 
 :::demo
 
@@ -45,7 +45,7 @@ const legend = new Legend({ align: ['center', 'bottom'] })
 chart.add([line, tooltip, axisBottom, axisLeft, legend])
 chart.render()
 let num = 0
-setInterval(_ => {
+setTimeout(_ => {
   if (num > 7) {
     num = 0
   }
