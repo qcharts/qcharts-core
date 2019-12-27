@@ -59,7 +59,6 @@ module.exports = {
   },
   externals: {
     spritejs: 'spritejs',
-    // 'sprite-extend-shapes': 'spriteShapes',
     vue: 'Vue',
     'vue-router': 'VueRouter'
   },

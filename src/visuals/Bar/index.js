@@ -27,6 +27,9 @@ export class Bar extends BaseVisual {
   get name() {
     return this.attr('type')
   }
+  ref(name, el) {
+    this['$' + name].push(el)
+  }
   transform(data) {
     if (!data || data.length === 0) {
       return { barData: [], groupData: [] }
@@ -151,6 +154,7 @@ export class Bar extends BaseVisual {
             }
             return (
               <Sprite
+                ref={el => this.ref('pillars', el)}
                 {...pillar}
                 {...normalState}
                 hoverState={Object.assign(
@@ -162,7 +166,9 @@ export class Bar extends BaseVisual {
                   )
                 )}
                 onMouseenter={(_, el) =>
-                  !this.attr('mouseDisabled') && el.attr('state', 'hover')
+                  !this.attr('mouseDisabled') &&
+                  el.attr('state', 'hover') &&
+                  this.showTooltip(_, pillar.rects)
                 }
                 onMousemove={(evt, el) => {
                   !this.attr('mouseDisabled') &&
