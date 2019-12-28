@@ -29,7 +29,7 @@ const bar = new PolarBar({
 })
 bar
   .style('pillar', { lineWidth: 1, strokeColor: '#FFF' })
-  .style('pillar:hover', { lineWidth: 3, strokeColor: '#888' })
+
 const tooltip = new Tooltip({
   formatter: d => `${d.label}: ${d.value}`
 })
