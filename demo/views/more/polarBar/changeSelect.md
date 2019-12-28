@@ -47,7 +47,7 @@ setInterval(_ => {
   const angle = Math.PI / 2 - ((num + 0.5) * Math.PI * 2) / length
   layerX = center[0] + Math.cos(angle) * 100
   layerY = center[1] - Math.sin(angle) * 100
-  bar.dispatchAction('hover', { index: num++, layerX, layerY })
+  bar.dispatchAction('click', { index: num++, layerX, layerY })
 }, 1000)
 ```
 

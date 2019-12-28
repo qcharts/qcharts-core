@@ -11,6 +11,7 @@ export class PolarBar extends BaseVisual {
     this.$pillars = []
     this.chartSize = []
     this.groups = []
+    this.pillars = []
   }
 
   getDefaultAttrs() {
@@ -242,6 +243,15 @@ export class PolarBar extends BaseVisual {
       target.transition(0.3).attr('translate', translate)
 
       el.isTranslated = true
+      for (let i = 0, len = this.$pillars.length; i < len; i++) {
+        if (
+          el.id !== this.$pillars[i].id &&
+          this.$pillars[i].isTranslated === true
+        ) {
+          this.$pillars[i].transition(0.3).attr('translate', [0, 0])
+          this.$pillars[i].isTranslated = false
+        }
+      }
     }
   }
 
@@ -256,15 +266,18 @@ export class PolarBar extends BaseVisual {
   dispatchAction(type, obj) {
     let { index, layerX, layerY } = obj
     if (type === 'hover') {
-      if (this.hoverIndex >= 0) {
-        this.$pillars[this.hoverIndex].attr('state', 'normal')
-        this.$groups[this.hoverIndex].attr('state', 'normal')
+      if (this.actionIndex >= 0) {
+        this.$pillars[this.actionIndex].attr('state', 'normal')
+        this.$groups[this.actionIndex].attr('state', 'normal')
       }
       this.$pillars[index].attr('state', type)
       this.$groups[index].attr('state', type)
       this.showTooltip({ layerX, layerY }, this.groups[index].rects)
-      this.hoverIndex = index
+    } else if (type === 'click') {
+      this.toggleTranslate(this.pillars[index], null, this.$pillars[index])
+      this.showTooltip({ layerX, layerY }, this.groups[index].rects)
     }
+    this.actionIndex = index
   }
   render(data) {
     const translateOnClick = this.attr('translateOnClick')
