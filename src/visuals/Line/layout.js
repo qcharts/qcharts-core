@@ -71,7 +71,7 @@ export function layout(obj) {
         if (stack === true) {
           // 如果为堆叠，处理对应key叠加
           data.forEach((item, ind) => {
-            item[key] = item[key] + (baseArr[ind] || 0)
+            item[key] = (item[key] || 0) + (baseArr[ind] || 0)
             baseArr[ind] = item[key]
           })
         }
@@ -123,6 +123,7 @@ export function layout(obj) {
     })
     delete res['_x']
     delete res['_y']
+    console.log('res', res)
     return res
   }
 }
