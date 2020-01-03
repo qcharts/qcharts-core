@@ -74,12 +74,14 @@ export default function barLayout() {
           let innerRadius =
             BAR_MAX_HEIGHT * (1 - POSITIVE_RATIO) +
             barInnerRadius * tableSize * 0.5
+
           let rect = {
             innerRadius: innerRadius,
             outerRadius: innerRadius + barHeight,
             startAngle: startAngle,
             endAngle: startAngle + barAngle,
-            ...data[j][i]
+            ...data[j][i],
+            id: i * lenj + j,
           }
           if (rect.disabled) {
             rect.endAngle = rect.startAngle
@@ -128,7 +130,7 @@ export default function barLayout() {
             outerRadius: innerRadius + barHeight - stackGap,
             startAngle: startAngle,
             endAngle: startAngle + groupAngle,
-            ...data[j][i]
+            ...data[j][i],
           }
 
           if (rect.disabled) {
