@@ -85,6 +85,7 @@ export class Tooltip extends BasePlugin {
     return {
       throttleTime: 300,
       formatter: k => k.value || k,
+      sort: k => true,
       title: null,
       pos: null, // 一旦设置了此值，tooltip 的位置将固定
       _pos: null // 更新 pos 属性计算出的值，因为 pos 属性可以设置为 百分比
@@ -151,16 +152,18 @@ export class Tooltip extends BasePlugin {
       text = {},
       ...root
     } = this.getTheme()
-    const { hide, data = [] } = this.state
+    let { hide, data = [] } = this.state
     const titleGetter = this.attr('title')
+    const dataSort = this.attr('sort')
+    data = data.sort(dataSort)
     const title =
       typeof titleGetter === 'undefined'
         ? null
         : isFunction(titleGetter)
-          ? data && data.length
-            ? titleGetter(data)
-            : null
-          : titleGetter
+        ? data && data.length
+          ? titleGetter(data)
+          : null
+        : titleGetter
 
     const rootPaddingBottom = root.padding
       ? isArray(root.padding)

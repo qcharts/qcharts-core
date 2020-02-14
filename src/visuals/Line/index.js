@@ -133,9 +133,9 @@ export class Line extends BaseVisual {
       if (this.attr('stack') === true) {
         hoverData.reverse()
       } else {
-        hoverData.sort((a, b) => {
-          return b._value - a._value
-        })
+        // hoverData.sort((a, b) => {
+        //   return b._value - a._value
+        // })
       }
       this.dataset.hoverData({ ...options, data: hoverData })
       this.__guidelineIndex = tarIndex
