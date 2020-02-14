@@ -30,8 +30,9 @@ chart.render()
 
 ### 属性
 
-| 属性名    | 类型               | 默认值   | 描述                                 |
-| --------- | ------------------ | -------- | ------------------------------------ |
-| title     | String \| Function | `null`   | 标题                                 |
-| pos       | Array              | `null`   | 一旦设置了此值，tooltip 的位置将固定 |
-| formatter | Function           | `d => d` | 除标题外，其他文本格式化函数         |
+| 属性名    | 类型               | 默认值            | 描述                                 |
+| --------- | ------------------ | ----------------- | ------------------------------------ |
+| title     | String \| Function | `null`            | 标题                                 |
+| pos       | Array              | `null`            | 一旦设置了此值，tooltip 的位置将固定 |
+| sort      | Function           | `k=> return true` | 设置 tooltip 的数据的排序规则        |
+| formatter | Function           | `d => d`          | 除标题外，其他文本格式化函数         |
