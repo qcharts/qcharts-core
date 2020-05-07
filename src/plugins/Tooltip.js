@@ -104,18 +104,30 @@ export class Tooltip extends BasePlugin {
         } else {
           let { layerX: x, layerY: y, data } = d
           const { hide } = this.state
-          if (hide) {
-            // 如果第一次出现，直接出现到当前位置
-            this.$group.attr('pos', [x, y])
-          }
-          data = isArray(data) ? data : [data]
-          let [width, height] = this.$group.contentSize
-          const [t, r, b, l] = this.$group.attr('padding')
-          const { width: borderWidth } = this.$group.attr('border')
-          width += r + l + 2 * borderWidth
-          height += t + b + 2 * borderWidth
-
           const [chartWidth, chartHieght] = this.chart.getSize()
+          data = isArray(data) ? data : [data]
+          if (hide) {
+            let self = this
+            // 如果第一次出现，直接出现到当前位置
+            // this.$group.attr('pos', [x, y])
+            this.$group.on('afterdraw', function fixPos() {
+              let { width, height } = self.getWidthAndHeight()
+              setTimeout(() => {
+                self.setState({
+                  pos: refixTooltipPosition(
+                    x,
+                    y,
+                    width,
+                    height,
+                    chartWidth,
+                    chartHieght
+                  )
+                })
+              }, 300)
+              self.$group.removeEventListener('afterdraw', fixPos)
+            })
+          }
+          let { width, height } = this.getWidthAndHeight()
           this.setState(
             {
               pos:
@@ -144,6 +156,15 @@ export class Tooltip extends BasePlugin {
     return this.chart.resolveTheme('Tooltip')
   }
 
+  getWidthAndHeight() {
+    let [width, height] = this.$group.contentSize
+    const [t, r, b, l] = this.$group.attr('padding')
+    const { width: borderWidth } = this.$group.attr('border')
+    width += r + l + 2 * borderWidth
+    height += t + b + 2 * borderWidth
+    return { width, height }
+  }
+
   render() {
     const {
       title: titleStyle = {},
@@ -160,10 +181,10 @@ export class Tooltip extends BasePlugin {
       typeof titleGetter === 'undefined'
         ? null
         : isFunction(titleGetter)
-          ? data && data.length
-            ? titleGetter(data)
-            : null
-          : titleGetter
+        ? data && data.length
+          ? titleGetter(data)
+          : null
+        : titleGetter
 
     const rootPaddingBottom = root.padding
       ? isArray(root.padding)
