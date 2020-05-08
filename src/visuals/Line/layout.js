@@ -123,7 +123,6 @@ export function layout(obj) {
     })
     delete res['_x']
     delete res['_y']
-    console.log('res', res)
     return res
   }
 }
