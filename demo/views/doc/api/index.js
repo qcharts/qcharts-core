@@ -53,7 +53,7 @@ export default [
   },
 
   {
-    title: 'RadialBar(玉块图)',
+    title: 'RadialBar(玉玦图)',
     path: 'radialBar',
     component: () => import('./RadialBar.md')
   },
